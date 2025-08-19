@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2772c0aa7f7d627418f4e9bbb0d572e8
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Editor/Source/GUPS.EasyPerformanceMonitor.Editor.asmdef
+  uploadId: 740587

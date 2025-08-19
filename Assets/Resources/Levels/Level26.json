@@ -1,0 +1,220 @@
+{
+    "Index": 25,
+    "InitHoleDatas": [
+        {
+            "GridRangeX": {
+                "x": 1,
+                "y": 2
+            },
+            "GridRangeY": {
+                "x": 0,
+                "y": 1
+            },
+            "Value": 2
+        },
+        {
+            "GridRangeX": {
+                "x": 1,
+                "y": 2
+            },
+            "GridRangeY": {
+                "x": 2,
+                "y": 3
+            },
+            "Value": 6
+        }
+    ],
+    "GroupPassengerDatas": [
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 4,
+                "y": 5
+            },
+            "IsHidden": false,
+            "Value": 6
+        },
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 6,
+                "y": 7
+            },
+            "IsHidden": false,
+            "Value": 6
+        },
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 8,
+                "y": 9
+            },
+            "IsHidden": false,
+            "Value": 6
+        },
+        {
+            "GridRangeX": {
+                "x": 2,
+                "y": 3
+            },
+            "GridRangeY": {
+                "x": 8,
+                "y": 9
+            },
+            "IsHidden": false,
+            "Value": 6
+        },
+        {
+            "GridRangeX": {
+                "x": 4,
+                "y": 5
+            },
+            "GridRangeY": {
+                "x": 8,
+                "y": 9
+            },
+            "IsHidden": false,
+            "Value": 6
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 4,
+                "y": 5
+            },
+            "IsHidden": false,
+            "Value": 6
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 6,
+                "y": 7
+            },
+            "IsHidden": false,
+            "Value": 6
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 8,
+                "y": 9
+            },
+            "IsHidden": false,
+            "Value": 6
+        }
+    ],
+    "ConcreteBarrierDatas": [
+        {
+            "Index": 0
+        },
+        {
+            "Index": 18
+        }
+    ],
+    "TunnelDatas": [
+        {
+            "Index": 5,
+            "direction": {
+                "x": 0,
+                "y": -1
+            },
+            "Values": [
+                2
+            ]
+        },
+        {
+            "Index": 11,
+            "direction": {
+                "x": 0,
+                "y": -1
+            },
+            "Values": [
+                2
+            ]
+        },
+        {
+            "Index": 17,
+            "direction": {
+                "x": 0,
+                "y": -1
+            },
+            "Values": [
+                2
+            ]
+        },
+        {
+            "Index": 23,
+            "direction": {
+                "x": 0,
+                "y": -1
+            },
+            "Values": [
+                2
+            ]
+        }
+    ],
+    "BusDatas": [
+        {
+            "Index": 0,
+            "Value": 6
+        },
+        {
+            "Index": 1,
+            "Value": 2
+        },
+        {
+            "Index": 2,
+            "Value": 6
+        }
+    ],
+    "CurrentSlot": 2,
+    "GridPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -7.0
+    },
+    "GridSize": {
+        "x": 8,
+        "y": 12
+    },
+    "GridScale": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "HoleScale": {
+        "x": 4,
+        "y": 4
+    },
+    "BusGridPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 14.0
+    },
+    "BusGridSize": {
+        "x": 3,
+        "y": 1
+    },
+    "BusGridScale": {
+        "x": 4.0,
+        "y": 10.0
+    }
+}

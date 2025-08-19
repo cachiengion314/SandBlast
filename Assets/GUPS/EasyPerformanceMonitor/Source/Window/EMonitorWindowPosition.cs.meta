@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2fd76ee24e6c0bc47ac4121ab5830727
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Source/Window/EMonitorWindowPosition.cs
+  uploadId: 740587

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e70a09b8c67620143bc32efb988dd0dc
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 112000000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Demos/Demo_C/Lighting/LightingData.asset
+  uploadId: 740587

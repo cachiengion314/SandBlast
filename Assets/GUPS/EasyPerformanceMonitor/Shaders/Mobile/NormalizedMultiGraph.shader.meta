@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 132e798f802687b4ab504a00c621056f
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Shaders/Mobile/NormalizedMultiGraph.shader
+  uploadId: 740587

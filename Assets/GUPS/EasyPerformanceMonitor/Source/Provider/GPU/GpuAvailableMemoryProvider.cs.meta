@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 03e00e312f43088499f2476dee96fb04
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Source/Provider/GPU/GpuAvailableMemoryProvider.cs
+  uploadId: 740587

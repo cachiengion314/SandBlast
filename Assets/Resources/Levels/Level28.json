@@ -1,0 +1,673 @@
+{
+    "Index": 27,
+    "InitHoleDatas": [
+        {
+            "GridRangeX": {
+                "x": 1,
+                "y": 2
+            },
+            "GridRangeY": {
+                "x": 2,
+                "y": 3
+            },
+            "Value": 0
+        },
+        {
+            "GridRangeX": {
+                "x": 1,
+                "y": 2
+            },
+            "GridRangeY": {
+                "x": 5,
+                "y": 6
+            },
+            "Value": 7
+        },
+        {
+            "GridRangeX": {
+                "x": 3,
+                "y": 4
+            },
+            "GridRangeY": {
+                "x": 4,
+                "y": 5
+            },
+            "Value": 5
+        },
+        {
+            "GridRangeX": {
+                "x": 5,
+                "y": 6
+            },
+            "GridRangeY": {
+                "x": 3,
+                "y": 4
+            },
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 5,
+                "y": 6
+            },
+            "GridRangeY": {
+                "x": 8,
+                "y": 9
+            },
+            "Value": 1
+        }
+    ],
+    "GroupPassengerDatas": [
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 0,
+                "y": 1
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 2,
+                "y": 3
+            },
+            "IsHidden": false,
+            "Value": 0
+        },
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 4,
+                "y": 5
+            },
+            "IsHidden": false,
+            "Value": 0
+        },
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 6,
+                "y": 7
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 8,
+                "y": 9
+            },
+            "IsHidden": false,
+            "Value": 7
+        },
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 10,
+                "y": 11
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 12,
+                "y": 13
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 0,
+                "y": 1
+            },
+            "GridRangeY": {
+                "x": 16,
+                "y": 17
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 2,
+                "y": 3
+            },
+            "GridRangeY": {
+                "x": 0,
+                "y": 1
+            },
+            "IsHidden": false,
+            "Value": 0
+        },
+        {
+            "GridRangeX": {
+                "x": 2,
+                "y": 3
+            },
+            "GridRangeY": {
+                "x": 2,
+                "y": 3
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 2,
+                "y": 3
+            },
+            "GridRangeY": {
+                "x": 8,
+                "y": 9
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 2,
+                "y": 3
+            },
+            "GridRangeY": {
+                "x": 14,
+                "y": 15
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 2,
+                "y": 3
+            },
+            "GridRangeY": {
+                "x": 16,
+                "y": 17
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 2,
+                "y": 3
+            },
+            "GridRangeY": {
+                "x": 18,
+                "y": 19
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 4,
+                "y": 5
+            },
+            "GridRangeY": {
+                "x": 0,
+                "y": 1
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 4,
+                "y": 5
+            },
+            "GridRangeY": {
+                "x": 2,
+                "y": 3
+            },
+            "IsHidden": false,
+            "Value": 0
+        },
+        {
+            "GridRangeX": {
+                "x": 4,
+                "y": 5
+            },
+            "GridRangeY": {
+                "x": 8,
+                "y": 9
+            },
+            "IsHidden": false,
+            "Value": 5
+        },
+        {
+            "GridRangeX": {
+                "x": 4,
+                "y": 5
+            },
+            "GridRangeY": {
+                "x": 14,
+                "y": 15
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 4,
+                "y": 5
+            },
+            "GridRangeY": {
+                "x": 16,
+                "y": 17
+            },
+            "IsHidden": false,
+            "Value": 7
+        },
+        {
+            "GridRangeX": {
+                "x": 4,
+                "y": 5
+            },
+            "GridRangeY": {
+                "x": 18,
+                "y": 19
+            },
+            "IsHidden": false,
+            "Value": 0
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 0,
+                "y": 1
+            },
+            "IsHidden": false,
+            "Value": 5
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 4,
+                "y": 5
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 6,
+                "y": 7
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 12,
+                "y": 13
+            },
+            "IsHidden": false,
+            "Value": 7
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 14,
+                "y": 15
+            },
+            "IsHidden": false,
+            "Value": 7
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 16,
+                "y": 17
+            },
+            "IsHidden": false,
+            "Value": 0
+        },
+        {
+            "GridRangeX": {
+                "x": 6,
+                "y": 7
+            },
+            "GridRangeY": {
+                "x": 18,
+                "y": 19
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 8,
+                "y": 9
+            },
+            "GridRangeY": {
+                "x": 0,
+                "y": 1
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 8,
+                "y": 9
+            },
+            "GridRangeY": {
+                "x": 4,
+                "y": 5
+            },
+            "IsHidden": false,
+            "Value": 0
+        },
+        {
+            "GridRangeX": {
+                "x": 8,
+                "y": 9
+            },
+            "GridRangeY": {
+                "x": 6,
+                "y": 7
+            },
+            "IsHidden": false,
+            "Value": 7
+        },
+        {
+            "GridRangeX": {
+                "x": 8,
+                "y": 9
+            },
+            "GridRangeY": {
+                "x": 12,
+                "y": 13
+            },
+            "IsHidden": false,
+            "Value": 7
+        },
+        {
+            "GridRangeX": {
+                "x": 8,
+                "y": 9
+            },
+            "GridRangeY": {
+                "x": 14,
+                "y": 15
+            },
+            "IsHidden": false,
+            "Value": 5
+        },
+        {
+            "GridRangeX": {
+                "x": 8,
+                "y": 9
+            },
+            "GridRangeY": {
+                "x": 16,
+                "y": 17
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 10,
+                "y": 11
+            },
+            "GridRangeY": {
+                "x": 0,
+                "y": 1
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 10,
+                "y": 11
+            },
+            "GridRangeY": {
+                "x": 4,
+                "y": 5
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 10,
+                "y": 11
+            },
+            "GridRangeY": {
+                "x": 10,
+                "y": 11
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 10,
+                "y": 11
+            },
+            "GridRangeY": {
+                "x": 12,
+                "y": 13
+            },
+            "IsHidden": false,
+            "Value": 1
+        },
+        {
+            "GridRangeX": {
+                "x": 10,
+                "y": 11
+            },
+            "GridRangeY": {
+                "x": 14,
+                "y": 15
+            },
+            "IsHidden": false,
+            "Value": 5
+        },
+        {
+            "GridRangeX": {
+                "x": 12,
+                "y": 13
+            },
+            "GridRangeY": {
+                "x": 2,
+                "y": 3
+            },
+            "IsHidden": false,
+            "Value": 0
+        },
+        {
+            "GridRangeX": {
+                "x": 12,
+                "y": 13
+            },
+            "GridRangeY": {
+                "x": 4,
+                "y": 5
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 12,
+                "y": 13
+            },
+            "GridRangeY": {
+                "x": 12,
+                "y": 13
+            },
+            "IsHidden": false,
+            "Value": 4
+        },
+        {
+            "GridRangeX": {
+                "x": 12,
+                "y": 13
+            },
+            "GridRangeY": {
+                "x": 14,
+                "y": 15
+            },
+            "IsHidden": false,
+            "Value": 7
+        }
+    ],
+    "ConcreteBarrierDatas": [
+        {
+            "Index": 41
+        },
+        {
+            "Index": 65
+        }
+    ],
+    "TunnelDatas": [
+        {
+            "Index": 9,
+            "direction": {
+                "x": 1,
+                "y": 0
+            },
+            "Values": [
+                7
+            ]
+        },
+        {
+            "Index": 60,
+            "direction": {
+                "x": -1,
+                "y": 0
+            },
+            "Values": [
+                1
+            ]
+        }
+    ],
+    "BusDatas": [
+        {
+            "Index": 0,
+            "Value": 4
+        },
+        {
+            "Index": 1,
+            "Value": 7
+        },
+        {
+            "Index": 2,
+            "Value": 1
+        },
+        {
+            "Index": 3,
+            "Value": 5
+        },
+        {
+            "Index": 4,
+            "Value": 0
+        },
+        {
+            "Index": 5,
+            "Value": 1
+        },
+        {
+            "Index": 6,
+            "Value": 0
+        },
+        {
+            "Index": 7,
+            "Value": 1
+        },
+        {
+            "Index": 8,
+            "Value": 4
+        },
+        {
+            "Index": 9,
+            "Value": 7
+        },
+        {
+            "Index": 10,
+            "Value": 4
+        }
+    ],
+    "CurrentSlot": 4,
+    "GridPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": -11.0
+    },
+    "GridSize": {
+        "x": 14,
+        "y": 20
+    },
+    "GridScale": {
+        "x": 1.0,
+        "y": 1.0
+    },
+    "HoleScale": {
+        "x": 4,
+        "y": 4
+    },
+    "BusGridPosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 39.0
+    },
+    "BusGridSize": {
+        "x": 2,
+        "y": 6
+    },
+    "BusGridScale": {
+        "x": 4.0,
+        "y": 10.0
+    }
+}

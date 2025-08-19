@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 0d550f2c99c2b07459002f901e8a0fd0
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Shaders/Mobile/ColoredMultiGraph.shader
+  uploadId: 740587

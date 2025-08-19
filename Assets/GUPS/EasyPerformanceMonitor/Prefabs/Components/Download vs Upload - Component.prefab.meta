@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: bc484f0718e88954a8c30ce2aa16cb02
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Prefabs/Components/Download vs Upload
+    - Component.prefab
+  uploadId: 740587

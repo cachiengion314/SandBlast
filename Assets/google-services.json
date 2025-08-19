@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "45657847379",
+    "project_id": "testads-11ebe",
+    "storage_bucket": "testads-11ebe.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:45657847379:android:21e327e0d9d424f4fcf8a6",
+        "android_client_info": {
+          "package_name": "com.ads.test"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnYmMKwhpkbbHRXQ4_EcgL_g2-f6ipRFw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

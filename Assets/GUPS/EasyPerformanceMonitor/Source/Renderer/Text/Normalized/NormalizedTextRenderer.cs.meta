@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: f2fad6463295b4547b170ecc5e1f89d4
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Source/Renderer/Text/Normalized/NormalizedTextRenderer.cs
+  uploadId: 740587

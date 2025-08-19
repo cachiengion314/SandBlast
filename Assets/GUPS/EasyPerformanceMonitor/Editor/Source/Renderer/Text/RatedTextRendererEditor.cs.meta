@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: a07a81c29be825442afc6c1dfca0403b
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Editor/Source/Renderer/Text/RatedTextRendererEditor.cs
+  uploadId: 740587

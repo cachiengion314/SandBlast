@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 2c780e1516a81214783df86a90a31a72
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Editor/Source/Renderer/Graph/ColoredMultiGraphRendererEditor.cs
+  uploadId: 740587

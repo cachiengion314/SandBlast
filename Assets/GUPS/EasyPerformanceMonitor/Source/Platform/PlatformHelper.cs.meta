@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 46bcfd2ebc8c83742af20e5d03e2c252
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Source/Platform/PlatformHelper.cs
+  uploadId: 740587

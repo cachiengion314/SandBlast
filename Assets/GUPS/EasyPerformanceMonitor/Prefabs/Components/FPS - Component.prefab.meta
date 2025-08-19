@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: c715a07db4965174699fef1b5c16efda
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Prefabs/Components/FPS - Component.prefab
+  uploadId: 740587

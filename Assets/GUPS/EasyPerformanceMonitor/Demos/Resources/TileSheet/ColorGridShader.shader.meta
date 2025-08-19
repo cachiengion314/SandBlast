@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f33669e058484df439cbfcf8691b8be9
+timeCreated: 1476905493
+licenseType: Store
+ShaderImporter:
+  defaultTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Demos/Resources/TileSheet/ColorGridShader.shader
+  uploadId: 740587

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 818ad40782e87ce4694b4a2f27ce3966
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 258079
+  packageName: EasyPerformanceMonitor - 2025
+  packageVersion: 2025.1
+  assetPath: Assets/GUPS/EasyPerformanceMonitor/Demos/Demo_B/Source/Game/Car/Spawner.cs
+  uploadId: 740587
