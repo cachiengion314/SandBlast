@@ -9,21 +9,38 @@ public class LevelInformation
   [ViewOnly] public int Index;
   [ViewOnly] public float3 TopGridPosition;
   [ViewOnly] public int2 TopGridSize;
-  [Range(1,8)]
+  [Range(1, 8)]
   public int AmountSlot = 2;
   public ColorBlockPartitionData[] ColorBlockPartitionDatas;
+}
+[Serializable]
+public class GenerateLevelData
+{
+  public int ColorValue;
+  public int RowAmount;
 }
 
 public class LevelEditor : MonoBehaviour
 {
   [Header("Level Editor")]
+  [SerializeField] GridWorld gridWord;
   [SerializeField] GridEditorControl gridEditorPref;
   [SerializeField] GridEditorControl[] gridEditorInstance;
   [SerializeField] LevelInformation levelInformation;
+  [SerializeField] GenerateLevelData[] datas;
   [SerializeField][Range(1, 30)] int levelSelected = 1;
-  [SerializeField] GridWorld gridWord;
 
   [NaughtyAttributes.Button]
+  void GenerateLevelData()
+  {
+    float limitY = 10;
+    int y = GetGridY();
+    gridWord.GridScale = new float2(1, 1);
+    gridWord.GridSize = new int2(10, y);
+    gridWord.transform.position = new float3(0, limitY + y / 2, 0);
+    CreateGrid();
+    FillData(y);
+  }
   void CreateGrid()
   {
     ClearGrid();
@@ -39,6 +56,43 @@ public class LevelEditor : MonoBehaviour
       instance.transform.localScale = new Vector3(scale.x, scale.y, 1);
       gridEditorInstance[i] = instance;
     }
+  }
+
+  void FillData(int y)
+  {
+    var listRows = new List<int>(y);
+    for (int i = 0; i < y; i++) listRows.Add(i);
+    foreach (var data in datas)
+    {
+      for (int i = 0; i < data.RowAmount; i++)
+      {
+        var idx = UnityEngine.Random.Range(0, listRows.Count);
+        var row = listRows[idx];
+        listRows.RemoveAt(idx);
+        for (int x = 0; x < gridWord.GridSize.x; x++)
+        {
+          var grid = new int2(x, row);
+          var index = gridWord.ConvertGridPosToIndex(grid);
+          var block = gridEditorInstance[index];
+          block.type = GirdEditorControlType.Block;
+          block.data = new ColorBlockPartitionData
+          {
+            Index = index,
+            ColorValue = data.ColorValue,
+            Health = 1
+          };
+          block.OnValidate();
+        }
+      }
+    }
+  }
+
+  int GetGridY()
+  {
+    int y = 0;
+    foreach (var data in datas)
+      y += data.RowAmount;
+    return y;
   }
 
   [NaughtyAttributes.Button]
