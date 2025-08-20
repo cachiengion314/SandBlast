@@ -7,9 +7,11 @@ using UnityEngine;
 public class LevelInformation
 {
   [ViewOnly] public int Index;
-  [ViewOnly] public float3 GridPosition;
-  [ViewOnly] public int2 GridSize;
-  [ViewOnly] public float2 GridScale = new float2(1, 1);
+  [ViewOnly] public float3 TopGridPosition;
+  [ViewOnly] public int2 TopGridSize;
+  [Range(1,8)]
+  public int AmountSlot = 2;
+  public ColorBlockPartitionData[] ColorBlockPartitionDatas;
 }
 
 public class LevelEditor : MonoBehaviour
@@ -70,25 +72,55 @@ public class LevelEditor : MonoBehaviour
 
     if (levelInfo == null) { print("This level is not existed!"); return; }
     levelInformation = levelInfo;
-    
-    var gridPos = levelInformation.GridPosition;
-    gridWord.transform.position = new float3(gridPos.x, gridPos.z, gridPos.y);
-    gridWord.GridSize = levelInformation.GridSize / 2;
-    gridWord.GridScale = levelInformation.GridScale * 2;
-    
+
+    gridWord.transform.position = levelInformation.TopGridPosition;
+    gridWord.GridSize = levelInformation.TopGridSize;
     CreateGrid();
+
+    LoadColorBlockPartitionData();
+
     print("Load level successfully");
+  }
+
+  void LoadColorBlockPartitionData()
+  {
+    var ColorBlockPartitionDatas = levelInformation.ColorBlockPartitionDatas;
+    for (int i = 0; i < ColorBlockPartitionDatas.Length; i++)
+    {
+      var data = ColorBlockPartitionDatas[i];
+      var grid = gridEditorInstance[data.Index];
+      grid.type = GirdEditorControlType.Block;
+      grid.data = data;
+      grid.OnValidate();
+    }
   }
 
   [NaughtyAttributes.Button]
   void SaveLevel()
   {
     levelInformation.Index = levelSelected - 1;
+    levelInformation.TopGridPosition = gridWord.transform.position;
+    levelInformation.TopGridSize = gridWord.GridSize;
+
+    SaveColorBlockPartitionData();
 
     HoangNam.SaveSystem.Save(
       levelInformation,
       "Resources/Levels/" + KeyString.NAME_LEVEL_FILE + levelSelected
     );
     print("Save level successfully");
+  }
+
+  void SaveColorBlockPartitionData()
+  {
+    List<ColorBlockPartitionData> InitColorBlockPartitionDatas = new();
+    for (int i = 0; i < gridEditorInstance.Length; i++)
+    {
+      var grid = gridEditorInstance[i];
+      if (grid.type != GirdEditorControlType.Block) continue;
+      grid.data.Index = i;
+      InitColorBlockPartitionDatas.Add(grid.data);
+    }
+    levelInformation.ColorBlockPartitionDatas = InitColorBlockPartitionDatas.ToArray();
   }
 }

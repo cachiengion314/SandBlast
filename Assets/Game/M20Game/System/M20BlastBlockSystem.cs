@@ -1,0 +1,44 @@
+using System.Collections.Generic;
+using DG.Tweening;
+using UnityEngine;
+using UnityEngine.Pool;
+public partial class M20LevelSystem
+{
+    [SerializeField] Transform blastSlots;
+    [SerializeField] int maxAmmunition = 10;
+    Transform FindQueueSlotsPosParent(int currentSlot)
+    {
+        foreach (Transform child in blastSlots)
+        {
+            if (child.name.Equals($"{currentSlot}SlotPos"))
+                return child;
+        }
+        return null;
+    }
+    public void SetAmmunitionBlastColorAt(int colorValue)
+    {
+        var blastIndexEmpty = FindIndexEmptyBlast();
+        if (blastIndexEmpty == -1)
+        {
+            // khong co block empty
+            return;
+        }
+        var blast = _firingSlots[blastIndexEmpty];
+        if (!blast.TryGetComponent(out IColorBlock blastColor)) return;
+        blastColor.SetColorValue(colorValue);
+        if (!blast.TryGetComponent(out IGun blastGun)) return;
+        blastGun.SetAmmunition(maxAmmunition);
+    }
+
+    int FindIndexEmptyBlast()
+    {
+        for (int i = 0; i < _firingSlots.Count; i++)
+        {
+            var blast = _firingSlots[i];
+            if (blast == null) continue;
+            if (!blast.TryGetComponent(out IGun blastGun)) continue;
+            if (blastGun.GetAmmunition() == 0) return i;
+        }
+        return -1;
+    }
+}
