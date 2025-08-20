@@ -6,7 +6,7 @@ public partial class LevelSystem : MonoBehaviour
   [Header("Touch Control System")]
   bool _isUserScreenTouching;
   public bool IsUserScreenTouching { get { return _isUserScreenTouching; } }
-  readonly RaycastHit[] results = new RaycastHit[10];
+  Vector3 userTouchScreenPosition;
 
   void SubscribeTouchEvent()
   {
@@ -27,14 +27,14 @@ public partial class LevelSystem : MonoBehaviour
     _isUserScreenTouching = true;
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
 
-    userScreenPosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
+    userTouchScreenPosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
   }
 
   void OnFingerUpdate(LeanFinger finger)
   {
     _isUserScreenTouching = true;
 
-    userScreenPosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
+    userTouchScreenPosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
   }
 
   private void OnFingerInactive(LeanFinger finger)

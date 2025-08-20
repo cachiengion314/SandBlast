@@ -8,6 +8,7 @@ public partial class LevelSystem : MonoBehaviour
 {
   public static LevelSystem Instance { get; private set; }
   [SerializeField] GridWorld boardGrid;
+  [SerializeField] QuadMeshSystem quadMeshSystem;
   [SerializeField] M20LevelSystem m20LevelSystem;
   [SerializeField] CinemachineCamera cinemachineCamera;
   LevelInformation _levelInformation;
@@ -46,7 +47,7 @@ public partial class LevelSystem : MonoBehaviour
   {
     UnsubscribeTouchEvent();
     DisposeDataBuffers();
-    DisposeQuadMeshSystem();
+    quadMeshSystem.DisposeComponents();
   }
 
   void Update()
@@ -80,12 +81,15 @@ public partial class LevelSystem : MonoBehaviour
     boardGrid.GridScale = new float2(1, 1);
     boardGrid.GridSize = new int2(10, 10);
     boardGrid.InitConvertedComponents();
+
+    quadMeshSystem.InitComponents();
   }
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
     var amount = boardGrid.GridSize.x * boardGrid.GridSize.y;
-    SpawnQuadMeshes(amount);
+    SpawnAdditionQuads(amount, 0);
+    VisualizeActiveQuads();
   }
 
   public void LoadLevelFrom(int level)

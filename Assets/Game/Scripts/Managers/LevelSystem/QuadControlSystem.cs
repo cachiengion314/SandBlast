@@ -3,63 +3,51 @@ using UnityEngine;
 
 public partial class LevelSystem : MonoBehaviour
 {
-  [SerializeField] QuadMeshSystem quadMeshSystem;
-  [Range(1, 2000)]
-  [SerializeField] int currentQuadAmount;
-  Vector3 userScreenPosition;
+  int _currentQuadAmount;
 
   int GetAvailableQuadAmount(int _additionAmount = 0)
   {
     var availableAmount
-      = math.min(currentQuadAmount + _additionAmount, quadMeshSystem.QuadCapacity);
+      = math.min(_currentQuadAmount + _additionAmount, quadMeshSystem.QuadCapacity);
     return availableAmount;
   }
 
-  void SpawnQuadMeshes(int quadAmount)
+  void SpawnAdditionQuads(int additionAmount, int colorValue)
   {
-    // quadMeshSystem.InitComponents();
-
-    // var availableAmount = GetAvailableQuadAmount(quadAmount);
-    // for (int i = currentQuadAmount; i < availableAmount; ++i)
-    //   _quadActives[i] = true;
-
-    // for (int i = 0; i < amount; ++i)
-    // {
-    //   var isActive = _quadActives[i];
-    //   if (!isActive) continue;
-
-    //   var pos = _quadPositions[i];
-    //   pos = boardGrid.ConvertIndexToWorldPos(i);
-    //   _quadPositions[i] = pos;
-
-    //   var groupIdx = 0;
-    //   if (!_groupQuadDatas.ContainsKey(groupIdx))
-    //     _groupQuadDatas.Add(0, new GroupQuadData
-    //     {
-    //       GroupIndex = groupIdx,
-    //       Color = 1,
-    //       CenterPosition = 0f
-    //     });
-    //   _quadGroups[i] = groupIdx;
-
-    //   quadMeshSystem.OrderQuadMeshAt(i, pos, -1, -1);
-    // }
-
-    // quadMeshSystem.ApplyDrawOrders();
-  }
-
-  void DisposeQuadMeshSystem()
-  {
-    quadMeshSystem.DisposeComponents();
+    var availableAmount = GetAvailableQuadAmount(additionAmount);
+    var groupIdx = 0;
+    if (!_groupQuadDatas.ContainsKey(groupIdx))
+      _groupQuadDatas.Add(
+        groupIdx,
+        new GroupOfQuadsData
+        {
+          CenterPosition = 0,
+          ColorValue = colorValue
+        }
+      );
+    for (int i = _currentQuadAmount; i < availableAmount; ++i)
+    {
+      var data = new QuadData
+      {
+        Position = boardGrid.ConvertIndexToWorldPos(i),
+        GroupIndex = groupIdx,
+        IsActive = true,
+        ColorValue = colorValue,
+      };
+      _quadDatas[i] = data;
+    }
+    _currentQuadAmount = availableAmount;
   }
 
   void ControlQuadsInUpdate()
   {
-    // if (!_isUserScreenTouching) return;
-    // var amount = GetAvailableQuadAmount();
-    // for (int i = 0; i < amount; ++i)
+    if (!_isUserScreenTouching) return;
+
+    // var availableAmount = GetAvailableQuadAmount();
+
+    // for (int i = 0; i < availableAmount; ++i)
     // {
-    //   var isActive = _quadActives[i];
+    //   var isActive = _quadDatas[i];
     //   if (!isActive) continue;
     //   var pos = _quadPositions[i];
 

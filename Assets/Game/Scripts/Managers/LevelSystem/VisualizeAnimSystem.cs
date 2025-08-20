@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using DG.Tweening;
-using Firebase.Analytics;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -19,5 +16,17 @@ public struct AnimatedData
 
 public partial class LevelSystem : MonoBehaviour
 {
+  void VisualizeActiveQuads()
+  {
+    for (int i = 0; i < _currentQuadAmount; ++i)
+    {
+      var data = _quadDatas[i];
+      var isActive = data.IsActive;
+      if (!isActive) continue;
 
+      var pos = data.Position;
+      quadMeshSystem.OrderQuadMeshAt(i, pos, -1, -1);
+    }
+    quadMeshSystem.ApplyDrawOrders();
+  }
 }
