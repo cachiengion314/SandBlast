@@ -5,6 +5,7 @@ using UnityEngine;
 public partial class GridWorld : MonoBehaviour
 {
   [Header("Setting")]
+  [SerializeField] bool shouldDrawGrid;
   [Range(0, 10)]
   [SerializeField] int colorIndex;
   float3x3 _originalMatrix;
@@ -134,6 +135,7 @@ public partial class GridWorld : MonoBehaviour
   /// </summary>
   void DrawGrid()
   {
+    if (!shouldDrawGrid) return;
     for (int x = 0; x < gridSize.x; ++x)
     {
       for (int y = 0; y < gridSize.y; ++y)

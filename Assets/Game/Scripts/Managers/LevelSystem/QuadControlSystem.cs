@@ -19,22 +19,25 @@ public partial class LevelSystem : MonoBehaviour
     if (!_groupQuadDatas.ContainsKey(groupIdx))
       _groupQuadDatas.Add(
         groupIdx,
-        new GroupOfQuadsData
+        new GroupQuadsData
         {
           CenterPosition = 0,
           ColorValue = colorValue
         }
       );
+    var groupData = _groupQuadDatas[groupIdx];
+
     for (int i = _currentQuadAmount; i < availableAmount; ++i)
     {
       var data = new QuadData
       {
-        Position = boardGrid.ConvertIndexToWorldPos(i),
         GroupIndex = groupIdx,
-        IsActive = true,
+        Position = boardGrid.ConvertIndexToWorldPos(i),
         ColorValue = colorValue,
+        IsActive = true,
       };
       _quadDatas[i] = data;
+      _quadCenterOffsets[i] = data.Position - groupData.CenterPosition;
     }
     _currentQuadAmount = availableAmount;
   }
@@ -43,28 +46,45 @@ public partial class LevelSystem : MonoBehaviour
   {
     if (!_isUserScreenTouching) return;
 
-    // var availableAmount = GetAvailableQuadAmount();
+    foreach (var keyval in _groupQuadDatas)
+    {
+      // print("keyval.Key " + keyval.Key);
+      // continue;
+      // var _userTouchScreenPosition = new float3(
+      //   userTouchScreenPosition.x, userTouchScreenPosition.y, 0
+      // );
+      // var groupData = keyval.Value;
+      // var groupIdx = keyval.Key;
+      // groupData.CenterPosition = _userTouchScreenPosition;
+      // _groupQuadDatas[groupIdx] = groupData;
+    }
 
-    // for (int i = 0; i < availableAmount; ++i)
-    // {
-    //   var isActive = _quadDatas[i];
-    //   if (!isActive) continue;
-    //   var pos = _quadPositions[i];
+    var _userTouchScreenPosition = new float3(
+        userTouchScreenPosition.x, userTouchScreenPosition.y, 0
+      );
+    var _groupData = _groupQuadDatas[0];
+    var _groupIdx = 0;
+    _groupData.CenterPosition = _userTouchScreenPosition;
+    _groupQuadDatas[_groupIdx] = _groupData;
 
-    //   var _userScreenPosition = new float3(userScreenPosition.x, userScreenPosition.y, 0);
-    //   var _pos = pos - _userScreenPosition;
+    for (int i = 0; i < _currentQuadAmount; ++i)
+    {
+      var quadData = _quadDatas[i];
+      var isActive = quadData.IsActive;
+      if (!isActive) continue;
 
-    //   quadMeshSystem.OrderQuadMeshAt(i, pos, -1, -1);
-    //   _quadPositions[i] = pos;
-    // }
+      var offset = _quadCenterOffsets[i];
+      var groupIdx = quadData.GroupIndex;
 
-    // if (Input.GetKey(KeyCode.Space))
-    // {
-    //   if (currentQuadAmount < quadMeshSystem.QuadCapacity)
-    //     currentQuadAmount++;
-    //   _quadActives[currentQuadAmount - 1] = true;
-    // }
+      var groupData = _groupQuadDatas[groupIdx];
 
-    // quadMeshSystem.ApplyDrawOrders();
+      var nextQuadPos = groupData.CenterPosition + offset;
+      quadData.Position = nextQuadPos;
+
+      _quadDatas[i] = quadData;
+      quadMeshSystem.OrderQuadMeshAt(i, nextQuadPos, -1, -1);
+    }
+
+    quadMeshSystem.ApplyDrawOrders();
   }
 }

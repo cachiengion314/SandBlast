@@ -4,13 +4,13 @@ using UnityEngine;
 
 public struct QuadData
 {
-  public float3 Position;
   public int GroupIndex;
-  public bool IsActive;
+  public float3 Position;
   public int ColorValue;
+  public bool IsActive;
 }
 
-public struct GroupOfQuadsData
+public struct GroupQuadsData
 {
   public float3 CenterPosition;
   public int ColorValue;
@@ -19,17 +19,20 @@ public struct GroupOfQuadsData
 public partial class LevelSystem : MonoBehaviour
 {
   NativeArray<QuadData> _quadDatas;
-  NativeHashMap<int, GroupOfQuadsData> _groupQuadDatas;
+  NativeArray<float3> _quadCenterOffsets;
+  NativeHashMap<int, GroupQuadsData> _groupQuadDatas;
 
-  void InitEntitiesDataBuffers(LevelInformation levelInformation)
+  void InitDataBuffers(LevelInformation levelInformation)
   {
     _quadDatas = new NativeArray<QuadData>(quadMeshSystem.QuadCapacity, Allocator.Persistent);
-    _groupQuadDatas = new NativeHashMap<int, GroupOfQuadsData>(32, Allocator.Persistent);
+    _quadCenterOffsets = new NativeArray<float3>(quadMeshSystem.QuadCapacity, Allocator.Persistent);
+    _groupQuadDatas = new NativeHashMap<int, GroupQuadsData>(32, Allocator.Persistent);
   }
 
   void DisposeDataBuffers()
   {
     _quadDatas.Dispose();
+    _quadCenterOffsets.Dispose();
     _groupQuadDatas.Dispose();
   }
 }

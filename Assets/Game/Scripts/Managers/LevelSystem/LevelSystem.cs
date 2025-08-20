@@ -71,17 +71,19 @@ public partial class LevelSystem : MonoBehaviour
   void SetupCurrentLevel(LevelInformation levelInformation)
   {
     BakingGrids(levelInformation);
-    InitEntitiesDataBuffers(levelInformation);
+    InitDataBuffers(levelInformation);
     SpawnAndBakingEntityDatas(levelInformation);
     SetSizeCamera();
   }
 
   void BakingGrids(LevelInformation levelInformation)
   {
-    boardGrid.GridScale = new float2(1, 1);
-    boardGrid.GridSize = new int2(10, 10);
+    boardGrid.GridScale = new float2(.15f, .15f);
+    boardGrid.GridSize = new int2(80, 80);
     boardGrid.InitConvertedComponents();
 
+    quadMeshSystem.ScaleSize = boardGrid.GridScale;
+    quadMeshSystem.QuadCapacity = boardGrid.GridSize.x * boardGrid.GridSize.y;
     quadMeshSystem.InitComponents();
   }
 

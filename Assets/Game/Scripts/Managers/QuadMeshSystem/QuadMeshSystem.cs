@@ -20,7 +20,7 @@ public class QuadMeshSystem : MonoBehaviour
   /// Settings
   /// </summary>
   public float2 ScaleSize;
-  [Range(1, 2000)]
+  [Range(1, 10000)]
   public int QuadCapacity;
   [Header("Texture")]
   public float2 TextureResolution;
