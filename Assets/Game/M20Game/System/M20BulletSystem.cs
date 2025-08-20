@@ -114,7 +114,7 @@ public partial class M20LevelSystem
 
       _colorBlocks[targetColorBlock.GetIndex()] = null;
       OnColorBlockDestroyedByBullet(targetBlock.gameObject);
-
+      _amountColorBlock--;
       CleanReleaseFor(bullet);
     }
   }

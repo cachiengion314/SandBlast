@@ -215,4 +215,18 @@ public partial class M20LevelSystem
             }
         }
     }
+
+    bool IsThereAtLeastOneBlockOfTheSameColor(int colorValue)
+    {
+        for (int x = 0; x < topGrid.GridSize.x; ++x)
+        {
+            var grid = new int2(x, 0);
+            var idx = topGrid.ConvertGridPosToIndex(grid);
+            var obj = _colorBlocks[idx];
+            if (obj == null) continue;
+            if (!obj.TryGetComponent(out IColorBlock colorBlock)) continue;
+            if (colorBlock.GetColorValue() == colorValue) return true;
+        }
+        return false;
+    }
 }

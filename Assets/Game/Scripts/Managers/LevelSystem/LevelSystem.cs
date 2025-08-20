@@ -57,6 +57,8 @@ public partial class LevelSystem : MonoBehaviour
     m20LevelSystem.ArrangeColorBlocksUpdate();
     m20LevelSystem.LockAndFireTargetUpddate();
     m20LevelSystem.BulletPositionsUpdate();
+    m20LevelSystem.UpdateLoseLevel();
+    m20LevelSystem.UpdateWinLevel();
 
     ControlQuadsInUpdate();
     if (Input.GetKeyDown(KeyCode.Space))
