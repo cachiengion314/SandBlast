@@ -7,9 +7,28 @@ public partial class LevelSystem : MonoBehaviour
   [Range(1, 2000)]
   [SerializeField] int currentQuadAmount;
 
-  void SpawnQuadMeshes(int amount)
+  void SpawnQuadMeshes(int quadAmount)
   {
     quadMeshSystem.InitComponents();
+
+    currentQuadAmount = quadAmount;
+    var amount = math.min(currentQuadAmount, quadMeshSystem.QuadCapacity);
+    for (int i = 0; i < amount; ++i)
+      _quadActives[i] = true;
+
+    for (int i = 0; i < amount; ++i)
+    {
+      var isActive = _quadActives[i];
+      if (!isActive) continue;
+
+      var pos = _quadPositions[i];
+      pos = boardGrid.ConvertIndexToWorldPos(i);
+      _quadPositions[i] = pos;
+
+      quadMeshSystem.OrderQuadMeshAt(i, pos, -1, -1);
+    }
+
+    quadMeshSystem.ApplyDrawOrders();
   }
 
   void DisposeQuadMeshSystem()
@@ -22,7 +41,10 @@ public partial class LevelSystem : MonoBehaviour
     var amount = math.min(currentQuadAmount, quadMeshSystem.QuadCapacity);
     for (int i = 0; i < amount; ++i)
     {
+      var isActive = _quadActives[i];
+      if (!isActive) continue;
       var pos = _quadPositions[i];
+
       var velocity = new float3(0, 0, 0);
       if (Input.GetKey(KeyCode.UpArrow)) velocity = new float3(0, 1, 0);
       if (Input.GetKey(KeyCode.DownArrow)) velocity = new float3(0, -1, 0);
@@ -38,6 +60,7 @@ public partial class LevelSystem : MonoBehaviour
     if (Input.GetKey(KeyCode.Space))
     {
       currentQuadAmount++;
+      _quadActives[currentQuadAmount - 1] = true;
     }
 
     if (Input.GetKey(KeyCode.C))

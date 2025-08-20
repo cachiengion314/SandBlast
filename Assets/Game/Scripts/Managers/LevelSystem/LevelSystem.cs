@@ -2,16 +2,16 @@ using UnityEngine;
 using Unity.Cinemachine;
 using System.Collections;
 using DG.Tweening;
+using Unity.Mathematics;
 
 public partial class LevelSystem : MonoBehaviour
 {
   public static LevelSystem Instance { get; private set; }
+  [SerializeField] GridWorld boardGrid;
   [SerializeField] CinemachineCamera cinemachineCamera;
   LevelInformation _levelInformation;
   [SerializeField][Range(1, 30)] int levelSelected = 1;
   public bool IsSelectedLevel;
-  [SerializeField] GridWorld passengerGrid;
-  public GridWorld PassengerGrid => passengerGrid;
   bool isLoadedLevel = false;
 
   IEnumerator Start()
@@ -62,12 +62,14 @@ public partial class LevelSystem : MonoBehaviour
 
   void BakingGrids(LevelInformation levelInformation)
   {
-
+    boardGrid.GridScale = new float2(1, 1);
+    boardGrid.GridSize = new int2(10, 10);
+    boardGrid.InitConvertedComponents();
   }
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
-    SpawnQuadMeshes(10);
+    SpawnQuadMeshes(100);
   }
 
   public void LoadLevelFrom(int level)
