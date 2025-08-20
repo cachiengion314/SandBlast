@@ -1,751 +1,1415 @@
 {
     "Index": 17,
-    "InitHoleDatas": [
-        {
-            "GridRangeX": {
-                "x": 1,
-                "y": 2
-            },
-            "GridRangeY": {
-                "x": 1,
-                "y": 2
-            },
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 3,
-                "y": 4
-            },
-            "GridRangeY": {
-                "x": 1,
-                "y": 2
-            },
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 5,
-                "y": 6
-            },
-            "GridRangeY": {
-                "x": 1,
-                "y": 2
-            },
-            "Value": 2
-        }
-    ],
-    "GroupPassengerDatas": [
-        {
-            "GridRangeX": {
-                "x": 0,
-                "y": 1
-            },
-            "GridRangeY": {
-                "x": 0,
-                "y": 1
-            },
-            "IsHidden": false,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 0,
-                "y": 1
-            },
-            "GridRangeY": {
-                "x": 2,
-                "y": 3
-            },
-            "IsHidden": false,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 0,
-                "y": 1
-            },
-            "GridRangeY": {
-                "x": 4,
-                "y": 5
-            },
-            "IsHidden": false,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 0,
-                "y": 1
-            },
-            "GridRangeY": {
-                "x": 6,
-                "y": 7
-            },
-            "IsHidden": false,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 0,
-                "y": 1
-            },
-            "GridRangeY": {
-                "x": 8,
-                "y": 9
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 0,
-                "y": 1
-            },
-            "GridRangeY": {
-                "x": 10,
-                "y": 11
-            },
-            "IsHidden": true,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 0,
-                "y": 1
-            },
-            "GridRangeY": {
-                "x": 12,
-                "y": 13
-            },
-            "IsHidden": true,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 0,
-                "y": 1
-            },
-            "GridRangeY": {
-                "x": 14,
-                "y": 15
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 2,
-                "y": 3
-            },
-            "GridRangeY": {
-                "x": 0,
-                "y": 1
-            },
-            "IsHidden": false,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 2,
-                "y": 3
-            },
-            "GridRangeY": {
-                "x": 6,
-                "y": 7
-            },
-            "IsHidden": false,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 2,
-                "y": 3
-            },
-            "GridRangeY": {
-                "x": 8,
-                "y": 9
-            },
-            "IsHidden": true,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 2,
-                "y": 3
-            },
-            "GridRangeY": {
-                "x": 10,
-                "y": 11
-            },
-            "IsHidden": true,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 2,
-                "y": 3
-            },
-            "GridRangeY": {
-                "x": 12,
-                "y": 13
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 2,
-                "y": 3
-            },
-            "GridRangeY": {
-                "x": 14,
-                "y": 15
-            },
-            "IsHidden": true,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 4,
-                "y": 5
-            },
-            "GridRangeY": {
-                "x": 0,
-                "y": 1
-            },
-            "IsHidden": false,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 4,
-                "y": 5
-            },
-            "GridRangeY": {
-                "x": 6,
-                "y": 7
-            },
-            "IsHidden": false,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 4,
-                "y": 5
-            },
-            "GridRangeY": {
-                "x": 8,
-                "y": 9
-            },
-            "IsHidden": true,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 4,
-                "y": 5
-            },
-            "GridRangeY": {
-                "x": 10,
-                "y": 11
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 4,
-                "y": 5
-            },
-            "GridRangeY": {
-                "x": 12,
-                "y": 13
-            },
-            "IsHidden": true,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 4,
-                "y": 5
-            },
-            "GridRangeY": {
-                "x": 14,
-                "y": 15
-            },
-            "IsHidden": true,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 6,
-                "y": 7
-            },
-            "GridRangeY": {
-                "x": 0,
-                "y": 1
-            },
-            "IsHidden": false,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 6,
-                "y": 7
-            },
-            "GridRangeY": {
-                "x": 6,
-                "y": 7
-            },
-            "IsHidden": false,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 6,
-                "y": 7
-            },
-            "GridRangeY": {
-                "x": 8,
-                "y": 9
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 6,
-                "y": 7
-            },
-            "GridRangeY": {
-                "x": 10,
-                "y": 11
-            },
-            "IsHidden": true,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 6,
-                "y": 7
-            },
-            "GridRangeY": {
-                "x": 12,
-                "y": 13
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 6,
-                "y": 7
-            },
-            "GridRangeY": {
-                "x": 14,
-                "y": 15
-            },
-            "IsHidden": true,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 8,
-                "y": 9
-            },
-            "GridRangeY": {
-                "x": 0,
-                "y": 1
-            },
-            "IsHidden": false,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 8,
-                "y": 9
-            },
-            "GridRangeY": {
-                "x": 6,
-                "y": 7
-            },
-            "IsHidden": false,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 8,
-                "y": 9
-            },
-            "GridRangeY": {
-                "x": 8,
-                "y": 9
-            },
-            "IsHidden": true,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 8,
-                "y": 9
-            },
-            "GridRangeY": {
-                "x": 10,
-                "y": 11
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 8,
-                "y": 9
-            },
-            "GridRangeY": {
-                "x": 12,
-                "y": 13
-            },
-            "IsHidden": true,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 8,
-                "y": 9
-            },
-            "GridRangeY": {
-                "x": 14,
-                "y": 15
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 10,
-                "y": 11
-            },
-            "GridRangeY": {
-                "x": 0,
-                "y": 1
-            },
-            "IsHidden": false,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 10,
-                "y": 11
-            },
-            "GridRangeY": {
-                "x": 6,
-                "y": 7
-            },
-            "IsHidden": false,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 10,
-                "y": 11
-            },
-            "GridRangeY": {
-                "x": 8,
-                "y": 9
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 10,
-                "y": 11
-            },
-            "GridRangeY": {
-                "x": 10,
-                "y": 11
-            },
-            "IsHidden": true,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 10,
-                "y": 11
-            },
-            "GridRangeY": {
-                "x": 12,
-                "y": 13
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 10,
-                "y": 11
-            },
-            "GridRangeY": {
-                "x": 14,
-                "y": 15
-            },
-            "IsHidden": true,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 12,
-                "y": 13
-            },
-            "GridRangeY": {
-                "x": 0,
-                "y": 1
-            },
-            "IsHidden": false,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 12,
-                "y": 13
-            },
-            "GridRangeY": {
-                "x": 6,
-                "y": 7
-            },
-            "IsHidden": false,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 12,
-                "y": 13
-            },
-            "GridRangeY": {
-                "x": 8,
-                "y": 9
-            },
-            "IsHidden": true,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 12,
-                "y": 13
-            },
-            "GridRangeY": {
-                "x": 10,
-                "y": 11
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 12,
-                "y": 13
-            },
-            "GridRangeY": {
-                "x": 12,
-                "y": 13
-            },
-            "IsHidden": true,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 12,
-                "y": 13
-            },
-            "GridRangeY": {
-                "x": 14,
-                "y": 15
-            },
-            "IsHidden": true,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 14,
-                "y": 15
-            },
-            "GridRangeY": {
-                "x": 0,
-                "y": 1
-            },
-            "IsHidden": false,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 14,
-                "y": 15
-            },
-            "GridRangeY": {
-                "x": 2,
-                "y": 3
-            },
-            "IsHidden": false,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 14,
-                "y": 15
-            },
-            "GridRangeY": {
-                "x": 4,
-                "y": 5
-            },
-            "IsHidden": false,
-            "Value": 1
-        },
-        {
-            "GridRangeX": {
-                "x": 14,
-                "y": 15
-            },
-            "GridRangeY": {
-                "x": 6,
-                "y": 7
-            },
-            "IsHidden": false,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 14,
-                "y": 15
-            },
-            "GridRangeY": {
-                "x": 8,
-                "y": 9
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 14,
-                "y": 15
-            },
-            "GridRangeY": {
-                "x": 10,
-                "y": 11
-            },
-            "IsHidden": true,
-            "Value": 6
-        },
-        {
-            "GridRangeX": {
-                "x": 14,
-                "y": 15
-            },
-            "GridRangeY": {
-                "x": 12,
-                "y": 13
-            },
-            "IsHidden": true,
-            "Value": 2
-        },
-        {
-            "GridRangeX": {
-                "x": 14,
-                "y": 15
-            },
-            "GridRangeY": {
-                "x": 14,
-                "y": 15
-            },
-            "IsHidden": true,
-            "Value": 2
-        }
-    ],
-    "ConcreteBarrierDatas": [],
-    "TunnelDatas": [],
-    "BusDatas": [
+    "TopGridPosition": {
+        "x": 0.0,
+        "y": 21.0,
+        "z": 0.0
+    },
+    "TopGridSize": {
+        "x": 10,
+        "y": 28
+    },
+    "AmountSlot": 7,
+    "ColorBlockPartitionDatas": [
         {
             "Index": 0,
-            "Value": 2
+            "ColorValue": 4,
+            "Health": 1
         },
         {
             "Index": 1,
-            "Value": 1
+            "ColorValue": 5,
+            "Health": 1
         },
         {
             "Index": 2,
-            "Value": 2
+            "ColorValue": 6,
+            "Health": 1
         },
         {
             "Index": 3,
-            "Value": 1
+            "ColorValue": 1,
+            "Health": 1
         },
         {
             "Index": 4,
-            "Value": 2
+            "ColorValue": 1,
+            "Health": 1
         },
         {
             "Index": 5,
-            "Value": 6
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 6,
+            "ColorValue": 7,
+            "Health": 1
         },
         {
             "Index": 7,
-            "Value": 6
+            "ColorValue": 7,
+            "Health": 1
         },
         {
             "Index": 8,
-            "Value": 1
+            "ColorValue": 5,
+            "Health": 1
         },
         {
             "Index": 9,
-            "Value": 2
+            "ColorValue": 6,
+            "Health": 1
         },
         {
             "Index": 10,
-            "Value": 1
+            "ColorValue": 5,
+            "Health": 1
         },
         {
             "Index": 11,
-            "Value": 6
+            "ColorValue": 2,
+            "Health": 1
         },
         {
             "Index": 12,
-            "Value": 2
+            "ColorValue": 4,
+            "Health": 1
         },
         {
             "Index": 13,
-            "Value": 6
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 14,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 15,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 16,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 17,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 18,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 19,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 20,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 21,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 22,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 23,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 24,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 25,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 26,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 27,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 28,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 29,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 30,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 31,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 32,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 33,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 34,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 35,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 36,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 37,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 38,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 39,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 40,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 41,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 42,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 43,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 44,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 45,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 46,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 47,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 48,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 49,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 50,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 51,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 52,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 53,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 54,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 55,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 56,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 57,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 58,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 59,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 60,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 61,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 62,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 63,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 64,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 65,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 66,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 67,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 68,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 69,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 70,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 71,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 72,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 73,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 74,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 75,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 76,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 77,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 78,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 79,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 80,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 81,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 82,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 83,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 84,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 85,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 86,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 87,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 88,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 89,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 90,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 91,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 92,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 93,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 94,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 95,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 96,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 97,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 98,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 99,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 100,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 101,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 102,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 103,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 104,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 105,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 106,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 107,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 108,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 109,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 110,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 111,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 112,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 113,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 114,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 115,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 116,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 117,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 118,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 119,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 120,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 121,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 122,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 123,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 124,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 125,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 126,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 127,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 128,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 129,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 130,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 131,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 132,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 133,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 134,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 135,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 136,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 137,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 138,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 139,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 140,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 141,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 142,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 143,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 144,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 145,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 146,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 147,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 148,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 149,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 150,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 151,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 152,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 153,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 154,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 155,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 156,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 157,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 158,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 159,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 160,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 161,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 162,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 163,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 164,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 165,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 166,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 167,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 168,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 169,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 170,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 171,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 172,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 173,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 174,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 175,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 176,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 177,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 178,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 179,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 180,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 181,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 182,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 183,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 184,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 185,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 186,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 187,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 188,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 189,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 190,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 191,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 192,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 193,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 194,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 195,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 196,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 197,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 198,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 199,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 200,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 201,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 202,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 203,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 204,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 205,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 206,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 207,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 208,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 209,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 210,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 211,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 212,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 213,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 214,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 215,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 216,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 217,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 218,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 219,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 220,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 221,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 222,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 223,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 224,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 225,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 226,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 227,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 228,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 229,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 230,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 231,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 232,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 233,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 234,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 235,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 236,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 237,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 238,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 239,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 240,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 241,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 242,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 243,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 244,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 245,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 246,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 247,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 248,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 249,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 250,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 251,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 252,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 253,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 254,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 255,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 256,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 257,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 258,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 259,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 260,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 261,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 262,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 263,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 264,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 265,
+            "ColorValue": 0,
+            "Health": 1
+        },
+        {
+            "Index": 266,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 267,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 268,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 269,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 270,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 271,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 272,
+            "ColorValue": 3,
+            "Health": 1
+        },
+        {
+            "Index": 273,
+            "ColorValue": 1,
+            "Health": 1
+        },
+        {
+            "Index": 274,
+            "ColorValue": 2,
+            "Health": 1
+        },
+        {
+            "Index": 275,
+            "ColorValue": 5,
+            "Health": 1
+        },
+        {
+            "Index": 276,
+            "ColorValue": 6,
+            "Health": 1
+        },
+        {
+            "Index": 277,
+            "ColorValue": 7,
+            "Health": 1
+        },
+        {
+            "Index": 278,
+            "ColorValue": 4,
+            "Health": 1
+        },
+        {
+            "Index": 279,
+            "ColorValue": 4,
+            "Health": 1
         }
-    ],
-    "CurrentSlot": 4,
-    "GridPosition": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": -9.0
-    },
-    "GridSize": {
-        "x": 16,
-        "y": 16
-    },
-    "GridScale": {
-        "x": 1.0,
-        "y": 1.0
-    },
-    "HoleScale": {
-        "x": 4,
-        "y": 4
-    },
-    "BusGridPosition": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 44.0
-    },
-    "BusGridSize": {
-        "x": 2,
-        "y": 7
-    },
-    "BusGridScale": {
-        "x": 4.0,
-        "y": 10.0
-    }
+    ]
 }
