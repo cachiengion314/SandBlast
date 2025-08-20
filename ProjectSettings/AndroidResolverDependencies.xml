@@ -37,7 +37,7 @@
     <package>com.unity3d.ads:unity-ads:4.16.1</package>
     <package>com.unity3d.ads-mediation:admob-adapter:4.3.53</package>
     <package>com.unity3d.ads-mediation:applovin-adapter:4.3.54</package>
-    <package>com.unity3d.ads-mediation:mediation-sdk:8.10.0</package>
+    <package>com.unity3d.ads-mediation:mediation-sdk:8.11.0</package>
     <package>com.unity3d.ads-mediation:mintegral-adapter:4.3.45</package>
     <package>com.unity3d.ads-mediation:unityads-adapter:4.3.59</package>
     <package>com.unity3d.ads-mediation:vungle-adapter:4.3.31</package>
@@ -61,7 +61,7 @@
   </files>
   <settings>
     <setting name="androidAbis" value="arm64-v8a" />
-    <setting name="bundleId" value="com.cmz.holecrowd" />
+    <setting name="bundleId" value="com.ads.test" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />
     <setting name="gradlePropertiesTemplateEnabled" value="True" />

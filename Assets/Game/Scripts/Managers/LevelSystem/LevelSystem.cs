@@ -1,7 +1,4 @@
-using Unity.Mathematics;
 using UnityEngine;
-using System.Collections.Generic;
-using TMPro;
 using Unity.Cinemachine;
 using System.Collections;
 using DG.Tweening;
@@ -43,6 +40,8 @@ public partial class LevelSystem : MonoBehaviour
   void OnDestroy()
   {
     UnsubscribeTouchEvent();
+    DisposeDataBuffers();
+    DisposeQuadMeshSystem();
   }
 
   void Update()
@@ -50,6 +49,7 @@ public partial class LevelSystem : MonoBehaviour
     if (!isLoadedLevel) return;
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
 
+    ControlQuadsInUpdate();
   }
 
   void SetupCurrentLevel(LevelInformation levelInformation)
@@ -62,12 +62,12 @@ public partial class LevelSystem : MonoBehaviour
 
   void BakingGrids(LevelInformation levelInformation)
   {
-    
+
   }
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
-
+    SpawnQuadMeshes(10);
   }
 
   public void LoadLevelFrom(int level)
@@ -82,7 +82,6 @@ public partial class LevelSystem : MonoBehaviour
 
   void SetSizeCamera()
   {
-    // var size = 27;
-    // cinemachineCamera.Lens.OrthographicSize = size;
+
   }
 }

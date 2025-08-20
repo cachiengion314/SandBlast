@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "685219197976",
-    "project_id": "m21-hole-crowd",
-    "storage_bucket": "m21-hole-crowd.firebasestorage.app"
+    "project_number": "45657847379",
+    "project_id": "testads-11ebe",
+    "storage_bucket": "testads-11ebe.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:685219197976:android:9888bdf31d1bb62ce97f6d",
+        "mobilesdk_app_id": "1:45657847379:android:21e327e0d9d424f4fcf8a6",
         "android_client_info": {
-          "package_name": "com.cmz.holecrowd"
+          "package_name": "com.ads.test"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyDm_zt4bpuxfAW_JuT0SNcpgpmy1bgR5hM"
+          "current_key": "AIzaSyCnYmMKwhpkbbHRXQ4_EcgL_g2-f6ipRFw"
         }
       ],
       "services": {
