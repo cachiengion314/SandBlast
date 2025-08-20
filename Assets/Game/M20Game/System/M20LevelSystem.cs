@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using Firebase.Analytics;
 using UnityEngine;
 
@@ -21,6 +22,7 @@ public partial class M20LevelSystem : MonoBehaviour
     public Transform SpawnedParent => spawnedParent;
     [Header("Grids")]
     [SerializeField] GridWorld topGrid;
+    int _amountColorBlock = 0;
     public void SetupCurrentLevel(LevelInformation levelInformation)
     {
         topGrid.transform.position = levelInformation.TopGridPosition;
@@ -47,6 +49,7 @@ public partial class M20LevelSystem : MonoBehaviour
                 colorBlock.gameObject.SetActive(false);
 
             _colorBlocks[index] = colorBlock;
+            _amountColorBlock++;
         }
 
         var slots = FindQueueSlotsPosParent(levelInformation.AmountSlot);
@@ -65,5 +68,47 @@ public partial class M20LevelSystem : MonoBehaviour
             }
             _firingSlots.Add(blast.gameObject);
         }
+    }
+
+    public void UpdateWinLevel()
+    {
+        if (_amountColorBlock > 0) return;
+        GameManager.Instance.SetGameState(GameState.Gamewin);
+        DOVirtual.DelayedCall(1f, GameplayPanel.Instance.ToggleLevelCompleteModal);
+
+        FirebaseAnalytics.LogEvent(KeyString.FIREBASE_END_LEVEL,
+          new Parameter[]
+          {
+        new ("level_id", (GameManager.Instance.CurrentLevelIndex + 1).ToString()),
+        new ("result", 1),
+          });
+    }
+
+    public void UpdateLoseLevel()
+    {
+        var emptyIndex = FindIndexEmptyBlast();
+        if (emptyIndex != -1) return;
+        if (_needMovingColorBlocks.Count > 0) return;
+
+        for (int i = 0; i < _firingSlots.Count; i++)
+        {
+            var blast = _firingSlots[i];
+            if (blast == null) continue;
+            if (!blast.TryGetComponent(out IColorBlock colorBlast)) continue;
+            if (IsThereAtLeastOneBlockOfTheSameColor(colorBlast.GetColorValue())) return;
+        }
+
+        GameManager.Instance.SetGameState(GameState.Gameover);
+        DOVirtual.DelayedCall(1f, () =>
+        {
+            GameplayPanel.Instance.ToggleLevelFailedModal();
+        });
+
+        FirebaseAnalytics.LogEvent(KeyString.FIREBASE_END_LEVEL,
+           new Parameter[]
+           {
+        new ("level_id", (GameManager.Instance.CurrentLevelIndex + 1).ToString()),
+        new ("result", 0),
+           });
     }
 }
