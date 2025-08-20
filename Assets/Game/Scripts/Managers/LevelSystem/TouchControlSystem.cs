@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using Lean.Touch;
-using Unity.Mathematics;
 using UnityEngine;
 
 public partial class LevelSystem : MonoBehaviour
@@ -13,33 +11,30 @@ public partial class LevelSystem : MonoBehaviour
   void SubscribeTouchEvent()
   {
     LeanTouch.OnFingerDown += OnFingerDown;
-    LeanTouch.OnGesture += OnGesture;
+    LeanTouch.OnFingerUpdate += OnFingerUpdate;
     LeanTouch.OnFingerInactive += OnFingerInactive;
   }
 
   void UnsubscribeTouchEvent()
   {
     LeanTouch.OnFingerDown -= OnFingerDown;
-    LeanTouch.OnGesture -= OnGesture;
+    LeanTouch.OnFingerUpdate -= OnFingerUpdate;
     LeanTouch.OnFingerInactive -= OnFingerInactive;
   }
 
   private void OnFingerDown(LeanFinger finger)
   {
     _isUserScreenTouching = true;
-
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
-    Vector3 startTouchPos = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
 
-    var ray = new Ray(startTouchPos, Camera.main.transform.forward);
-    var hitCount = Physics.RaycastNonAlloc(ray, results);
-    if (hitCount == 0) return;
-  
+    userScreenPosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
   }
 
-  void OnGesture(List<LeanFinger> list)
+  void OnFingerUpdate(LeanFinger finger)
   {
     _isUserScreenTouching = true;
+
+    userScreenPosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
   }
 
   private void OnFingerInactive(LeanFinger finger)

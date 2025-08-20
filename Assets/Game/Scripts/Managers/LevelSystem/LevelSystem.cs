@@ -38,7 +38,7 @@ public partial class LevelSystem : MonoBehaviour
 
     m20LevelSystem.SetupCurrentLevel(_levelInformation);
     SetupCurrentLevel(_levelInformation);
-    
+
     isLoadedLevel = true;
   }
 
@@ -82,7 +82,8 @@ public partial class LevelSystem : MonoBehaviour
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
-    SpawnQuadMeshes(100);
+    var amount = boardGrid.GridSize.x * boardGrid.GridSize.y;
+    SpawnQuadMeshes(amount);
   }
 
   public void LoadLevelFrom(int level)

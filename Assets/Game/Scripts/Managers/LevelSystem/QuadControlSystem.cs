@@ -6,29 +6,46 @@ public partial class LevelSystem : MonoBehaviour
   [SerializeField] QuadMeshSystem quadMeshSystem;
   [Range(1, 2000)]
   [SerializeField] int currentQuadAmount;
+  Vector3 userScreenPosition;
+
+  int GetAvailableQuadAmount(int _additionAmount = 0)
+  {
+    var availableAmount
+      = math.min(currentQuadAmount + _additionAmount, quadMeshSystem.QuadCapacity);
+    return availableAmount;
+  }
 
   void SpawnQuadMeshes(int quadAmount)
   {
-    quadMeshSystem.InitComponents();
+    // quadMeshSystem.InitComponents();
 
-    currentQuadAmount = quadAmount;
-    var amount = math.min(currentQuadAmount, quadMeshSystem.QuadCapacity);
-    for (int i = 0; i < amount; ++i)
-      _quadActives[i] = true;
+    // var availableAmount = GetAvailableQuadAmount(quadAmount);
+    // for (int i = currentQuadAmount; i < availableAmount; ++i)
+    //   _quadActives[i] = true;
 
-    for (int i = 0; i < amount; ++i)
-    {
-      var isActive = _quadActives[i];
-      if (!isActive) continue;
+    // for (int i = 0; i < amount; ++i)
+    // {
+    //   var isActive = _quadActives[i];
+    //   if (!isActive) continue;
 
-      var pos = _quadPositions[i];
-      pos = boardGrid.ConvertIndexToWorldPos(i);
-      _quadPositions[i] = pos;
+    //   var pos = _quadPositions[i];
+    //   pos = boardGrid.ConvertIndexToWorldPos(i);
+    //   _quadPositions[i] = pos;
 
-      quadMeshSystem.OrderQuadMeshAt(i, pos, -1, -1);
-    }
+    //   var groupIdx = 0;
+    //   if (!_groupQuadDatas.ContainsKey(groupIdx))
+    //     _groupQuadDatas.Add(0, new GroupQuadData
+    //     {
+    //       GroupIndex = groupIdx,
+    //       Color = 1,
+    //       CenterPosition = 0f
+    //     });
+    //   _quadGroups[i] = groupIdx;
 
-    quadMeshSystem.ApplyDrawOrders();
+    //   quadMeshSystem.OrderQuadMeshAt(i, pos, -1, -1);
+    // }
+
+    // quadMeshSystem.ApplyDrawOrders();
   }
 
   void DisposeQuadMeshSystem()
@@ -38,36 +55,28 @@ public partial class LevelSystem : MonoBehaviour
 
   void ControlQuadsInUpdate()
   {
-    var amount = math.min(currentQuadAmount, quadMeshSystem.QuadCapacity);
-    for (int i = 0; i < amount; ++i)
-    {
-      var isActive = _quadActives[i];
-      if (!isActive) continue;
-      var pos = _quadPositions[i];
+    // if (!_isUserScreenTouching) return;
+    // var amount = GetAvailableQuadAmount();
+    // for (int i = 0; i < amount; ++i)
+    // {
+    //   var isActive = _quadActives[i];
+    //   if (!isActive) continue;
+    //   var pos = _quadPositions[i];
 
-      var velocity = new float3(0, 0, 0);
-      if (Input.GetKey(KeyCode.UpArrow)) velocity = new float3(0, 1, 0);
-      if (Input.GetKey(KeyCode.DownArrow)) velocity = new float3(0, -1, 0);
-      if (Input.GetKey(KeyCode.LeftArrow)) velocity = new float3(-1, 0, 0);
-      if (Input.GetKey(KeyCode.RightArrow)) velocity = new float3(1, 0, 0);
+    //   var _userScreenPosition = new float3(userScreenPosition.x, userScreenPosition.y, 0);
+    //   var _pos = pos - _userScreenPosition;
 
-      pos += 10 * Time.deltaTime * velocity;
+    //   quadMeshSystem.OrderQuadMeshAt(i, pos, -1, -1);
+    //   _quadPositions[i] = pos;
+    // }
 
-      quadMeshSystem.OrderQuadMeshAt(i, pos, -1, -1);
-      _quadPositions[i] = pos;
-    }
+    // if (Input.GetKey(KeyCode.Space))
+    // {
+    //   if (currentQuadAmount < quadMeshSystem.QuadCapacity)
+    //     currentQuadAmount++;
+    //   _quadActives[currentQuadAmount - 1] = true;
+    // }
 
-    if (Input.GetKey(KeyCode.Space))
-    {
-      currentQuadAmount++;
-      _quadActives[currentQuadAmount - 1] = true;
-    }
-
-    if (Input.GetKey(KeyCode.C))
-    {
-      quadMeshSystem.OrderUVMappingAt(0, new float2(32, 32), new float2(64, 64));
-    }
-
-    quadMeshSystem.ApplyDrawOrders();
+    // quadMeshSystem.ApplyDrawOrders();
   }
 }
