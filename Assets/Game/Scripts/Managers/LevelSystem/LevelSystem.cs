@@ -9,6 +9,7 @@ using DG.Tweening;
 public partial class LevelSystem : MonoBehaviour
 {
   public static LevelSystem Instance { get; private set; }
+  [SerializeField] M20LevelSystem m20LevelSystem;
   [SerializeField] CinemachineCamera cinemachineCamera;
   LevelInformation _levelInformation;
   [SerializeField][Range(1, 30)] int levelSelected = 1;
@@ -35,8 +36,12 @@ public partial class LevelSystem : MonoBehaviour
 
     GameManager.Instance.SetGameState(GameState.Gameplay);
     SubscribeTouchEvent();
+    m20LevelSystem.InitPool();
     yield return new WaitForSeconds(0.1f);
+
+    m20LevelSystem.SetupCurrentLevel(_levelInformation);
     SetupCurrentLevel(_levelInformation);
+    
     isLoadedLevel = true;
   }
 
@@ -49,7 +54,15 @@ public partial class LevelSystem : MonoBehaviour
   {
     if (!isLoadedLevel) return;
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
+    m20LevelSystem.FindNeedArrangeCollumnInUpdate();
+    m20LevelSystem.ArrangeColorBlocksUpdate();
+    m20LevelSystem.LockAndFireTargetUpddate();
+    m20LevelSystem.BulletPositionsUpdate();
 
+    if (Input.GetKeyDown(KeyCode.Space))
+    {
+      m20LevelSystem.SetAmmunitionBlastColorAt(0);
+    }
   }
 
   void SetupCurrentLevel(LevelInformation levelInformation)

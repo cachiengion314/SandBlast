@@ -15,10 +15,9 @@ public partial class SoundManager : MonoBehaviour
   [SerializeField] AudioClip pressBtnSfx;
   [SerializeField] AudioClip winLevelSfx;
   [SerializeField] AudioClip loseLevelSfx;
-  [SerializeField] AudioClip clickHoleSfx;
-  [SerializeField] AudioClip passengerMoveSfx;
-  [SerializeField] AudioClip busFullSfx;
   [SerializeField] AudioClip CollectCoinSfx;
+  [SerializeField] AudioClip ShootingSfx;
+  [SerializeField] AudioClip destoyColorBlockSfx;
 
   [Header("Components")]
   [SerializeField] AudioSource audioSource;
@@ -64,40 +63,24 @@ public partial class SoundManager : MonoBehaviour
     AudioSource.PlayClipAtPoint(pressBtnSfx, Vector3.forward * -5, 1f);
   }
 
-  public void PlayClickHoleSfx()
+  public void PlayShootingSfx()
   {
     if (GameManager.Instance.IsHapticOn)
     {
       HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
     }
     if (!GameManager.Instance.IsSoundOn) return;
-    AudioSource.PlayClipAtPoint(clickHoleSfx, Vector3.forward * -5, 1f);
+    AudioSource.PlayClipAtPoint(ShootingSfx, Vector3.forward * -5, 1f);
   }
 
-  bool _isPassengerMoveSfx = false;
-  public void PlayPassengerMoveSfx()
-  {
-    if (_isPassengerMoveSfx) return;
-    _isPassengerMoveSfx = true;
-    float duration = passengerMoveSfx.length;
-    DOVirtual.DelayedCall(duration/2, () => _isPassengerMoveSfx = false);
-
-    if (GameManager.Instance.IsHapticOn)
-    {
-      HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
-    }
-    if (!GameManager.Instance.IsSoundOn) return;
-    AudioSource.PlayClipAtPoint(passengerMoveSfx, Vector3.forward * -5, 1f);
-  }
-
-  public void PlayBusFullSfx()
+  public void PlayDestoyColorBlockSfx()
   {
     if (GameManager.Instance.IsHapticOn)
     {
       HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
     }
     if (!GameManager.Instance.IsSoundOn) return;
-    AudioSource.PlayClipAtPoint(busFullSfx, Vector3.forward * -5, 1f);
+    AudioSource.PlayClipAtPoint(destoyColorBlockSfx, Vector3.forward * -5, 1f);
   }
 
   public void PlayCollectCoinSfx()

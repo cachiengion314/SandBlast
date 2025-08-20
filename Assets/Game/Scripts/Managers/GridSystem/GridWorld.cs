@@ -19,6 +19,7 @@ public partial class GridWorld : MonoBehaviour
   [SerializeField] float2 gridScale;
   public float2 GridScale { get { return gridScale; } set { gridScale = value; } }
   public float2 Offset { get; private set; }
+  readonly int2[] directions = new int2[] { new(1, 0), new(0, 1), new(-1, 0), new(0, -1) };
 
   private void Update()
   {
@@ -93,6 +94,25 @@ public partial class GridWorld : MonoBehaviour
     if (gridPos.x > gridSize.x - 1 || gridPos.x < 0) return true;
     if (gridPos.y > gridSize.y - 1 || gridPos.y < 0) return true;
     return false;
+  }
+
+  public float3[] FindNeighborsAt(float3 worldPos)
+  {
+    float3[] neighbors = new float3[directions.Length];
+    var gridPos = ConvertWorldPosToGridPos(worldPos);
+    for (int i = 0; i < directions.Length; ++i)
+    {
+      var dir = directions[i];
+      var neighbor = gridPos + dir;
+      if (IsGridPosOutsideAt(neighbor))
+      {
+        neighbors[i] = new float3(-1, -1, -1);
+        continue;
+      }
+      float3 wPos = ConvertGridPosToWorldPos(neighbor);
+      neighbors[i] = wPos;
+    }
+    return neighbors;
   }
 
   public float3 ConvertToRotated(in float3 worldPos)
