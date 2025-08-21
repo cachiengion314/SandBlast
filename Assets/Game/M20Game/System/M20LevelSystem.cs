@@ -60,7 +60,7 @@ public partial class M20LevelSystem : MonoBehaviour
             if (blast.TryGetComponent<IColorBlock>(out var blastColor))
             {
                 blastColor.SetIndex(-1);
-                blastColor.SetColorValue(0);
+                blastColor.SetColorValue(-1);
             }
             if (blast.TryGetComponent<IGun>(out var blastGun))
             {
