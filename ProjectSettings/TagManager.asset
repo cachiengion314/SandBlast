@@ -10,11 +10,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - CuttingMask
+  - Slot
   - Water
   - UI
-  - Cutting
-  - BelowAll
+  - 
+  - 
   - 
   - 
   - 

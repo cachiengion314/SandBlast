@@ -3,11 +3,13 @@ using Unity.Cinemachine;
 using System.Collections;
 using DG.Tweening;
 using Unity.Mathematics;
+using Unity.Collections;
 
 public partial class LevelSystem : MonoBehaviour
 {
   public static LevelSystem Instance { get; private set; }
   [SerializeField] GridWorld boardGrid;
+  [SerializeField] GridWorld slotGrid;
   [SerializeField] QuadMeshSystem quadMeshSystem;
   [SerializeField] M20LevelSystem m20LevelSystem;
   [SerializeField] CinemachineCamera cinemachineCamera;
@@ -32,7 +34,6 @@ public partial class LevelSystem : MonoBehaviour
     }
     else LoadLevelFrom(GameManager.Instance.CurrentLevelIndex + 1);
 
-    GameManager.Instance.SetGameState(GameState.Gameplay);
     SubscribeTouchEvent();
     m20LevelSystem.InitPool();
     yield return new WaitForSeconds(0.1f);
@@ -41,6 +42,7 @@ public partial class LevelSystem : MonoBehaviour
     SetupCurrentLevel(_levelInformation);
 
     isLoadedLevel = true;
+    GameManager.Instance.SetGameState(GameState.Gameplay);
   }
 
   void OnDestroy()
@@ -78,9 +80,15 @@ public partial class LevelSystem : MonoBehaviour
 
   void BakingGrids(LevelInformation levelInformation)
   {
-    boardGrid.GridScale = new float2(.15f, .15f);
-    boardGrid.GridSize = new int2(80, 80);
+    var quadScale = new float2(.15f, .15f);
+
+    boardGrid.GridScale = quadScale;
+    boardGrid.GridSize = new int2(10 * 8, 20 * 8);
     boardGrid.InitConvertedComponents();
+
+    slotGrid.GridScale = quadScale;
+    slotGrid.GridSize = new int2(22, 22);
+    slotGrid.InitConvertedComponents();
 
     quadMeshSystem.ScaleSize = boardGrid.GridScale;
     quadMeshSystem.QuadCapacity = boardGrid.GridSize.x * boardGrid.GridSize.y;
@@ -89,8 +97,16 @@ public partial class LevelSystem : MonoBehaviour
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
-    var amount = boardGrid.GridSize.x * boardGrid.GridSize.y;
-    SpawnAdditionQuads(amount, 0);
+    var blockPositions = new NativeArray<float2>(4, Allocator.Temp);
+    blockPositions[0] = new(0, -1);
+    blockPositions[1] = new(0, 0);
+    blockPositions[2] = new(0, 1);
+    blockPositions[3] = new(1, 1);
+    OrderBlockShapeAt(0, blockPositions, 0);
+    OrderBlockShapeAt(1, blockPositions, 0);
+    OrderBlockShapeAt(2, blockPositions, 0);
+    blockPositions.Dispose();
+
     VisualizeActiveQuads();
   }
 

@@ -14,6 +14,7 @@ public struct GroupQuadsData
 {
   public float3 CenterPosition;
   public int ColorValue;
+  public bool IsPlaced;
 }
 
 public partial class LevelSystem : MonoBehaviour

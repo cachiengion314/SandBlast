@@ -1,4 +1,5 @@
 using Lean.Touch;
+using Unity.Mathematics;
 using UnityEngine;
 
 public partial class LevelSystem : MonoBehaviour
@@ -6,7 +7,8 @@ public partial class LevelSystem : MonoBehaviour
   [Header("Touch Control System")]
   bool _isUserScreenTouching;
   public bool IsUserScreenTouching { get { return _isUserScreenTouching; } }
-  Vector3 userTouchScreenPosition;
+  float3 touchOffset = new(0, 2.5f, 0);
+  float3 userTouchScreenPosition;
 
   void SubscribeTouchEvent()
   {
@@ -28,6 +30,14 @@ public partial class LevelSystem : MonoBehaviour
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
 
     userTouchScreenPosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
+    Collider2D[] colliders = Physics2D.OverlapPointAll(
+      new float2(userTouchScreenPosition.x, userTouchScreenPosition.y)
+    );
+    var slot = FindSlotIn(colliders);
+    if (slot == null) return;
+
+    var slotIdx = FindSlotIndexOf(slot.transform);
+    OnTouchSlot(slotIdx);
   }
 
   void OnFingerUpdate(LeanFinger finger)
@@ -40,18 +50,7 @@ public partial class LevelSystem : MonoBehaviour
   private void OnFingerInactive(LeanFinger finger)
   {
     _isUserScreenTouching = false;
-  }
 
-  public Collider FindObjIn<T>(RaycastHit[] cols, int hitCount)
-  {
-    for (int i = 0; i < hitCount; ++i)
-    {
-      if (cols[i].collider == null) continue;
-      if (cols[i].collider.TryGetComponent<T>(out var comp))
-      {
-        return cols[i].collider;
-      }
-    }
-    return default;
+    OnInactive();
   }
 }

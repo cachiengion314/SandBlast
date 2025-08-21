@@ -20,7 +20,7 @@ public class QuadMeshSystem : MonoBehaviour
   /// Settings
   /// </summary>
   public float2 ScaleSize;
-  [Range(1, 10000)]
+  [Range(1, 12800)]
   public int QuadCapacity;
   [Header("Texture")]
   public float2 TextureResolution;
@@ -33,7 +33,6 @@ public class QuadMeshSystem : MonoBehaviour
     uv = new Vector2[4 * QuadCapacity];
     triangles = new int[6 * QuadCapacity];
 
-    // Dispose existing NativeArrays if they exist
     if (_vertices.IsCreated) _vertices.Dispose();
     if (_uv.IsCreated) _uv.Dispose();
     if (_triangles.IsCreated) _triangles.Dispose();
@@ -60,6 +59,14 @@ public class QuadMeshSystem : MonoBehaviour
 
   public void ApplyDrawOrders()
   {
+    for (int i = 0; i < _vertices.Length; ++i)
+    {
+      vertices[i] = _vertices[i];
+      uv[i] = _uv[i];
+    }
+    for (int i = 0; i < triangles.Length; ++i)
+      triangles[i] = _triangles[i];
+
     mesh.vertices = vertices;
     mesh.uv = uv;
     mesh.triangles = triangles;
@@ -68,19 +75,19 @@ public class QuadMeshSystem : MonoBehaviour
 
   public void OrderUVMappingAt(int index, float2 lowerLeftBoundPos, float2 upperRightBoundPos)
   {
-    uv[index * 4] = new float2(
+    _uv[index * 4] = new float2(
       lowerLeftBoundPos.x / TextureResolution.x,
       lowerLeftBoundPos.y / TextureResolution.y
     );
-    uv[index * 4 + 1] = new float2(
+    _uv[index * 4 + 1] = new float2(
       lowerLeftBoundPos.x / TextureResolution.x,
       upperRightBoundPos.y / TextureResolution.y
     );
-    uv[index * 4 + 2] = new float2(
+    _uv[index * 4 + 2] = new float2(
       upperRightBoundPos.x / TextureResolution.x,
       upperRightBoundPos.y / TextureResolution.y
     );
-    uv[index * 4 + 3] = new float2(
+    _uv[index * 4 + 3] = new float2(
       lowerLeftBoundPos.x / TextureResolution.x,
       upperRightBoundPos.y / TextureResolution.y
     );
@@ -100,22 +107,22 @@ public class QuadMeshSystem : MonoBehaviour
     float2 _upperRightBoundPos
   )
   {
-    vertices[index * 4]
+    _vertices[index * 4]
       = pos + new float3(-.5f * ScaleSize.x, -.5f * ScaleSize.y, 0);
-    vertices[index * 4 + 1]
+    _vertices[index * 4 + 1]
       = pos + new float3(-.5f * ScaleSize.x, .5f * ScaleSize.y, 0);
-    vertices[index * 4 + 2]
+    _vertices[index * 4 + 2]
       = pos + new float3(.5f * ScaleSize.x, .5f * ScaleSize.y, 0);
-    vertices[index * 4 + 3]
+    _vertices[index * 4 + 3]
       = pos + new float3(.5f * ScaleSize.x, -.5f * ScaleSize.y, 0);
 
-    triangles[index * 6] = index * 4;
-    triangles[index * 6 + 1] = index * 4 + 1;
-    triangles[index * 6 + 2] = index * 4 + 2;
+    _triangles[index * 6] = index * 4;
+    _triangles[index * 6 + 1] = index * 4 + 1;
+    _triangles[index * 6 + 2] = index * 4 + 2;
 
-    triangles[index * 6 + 3] = index * 4;
-    triangles[index * 6 + 4] = index * 4 + 2;
-    triangles[index * 6 + 5] = index * 4 + 3;
+    _triangles[index * 6 + 3] = index * 4;
+    _triangles[index * 6 + 4] = index * 4 + 2;
+    _triangles[index * 6 + 5] = index * 4 + 3;
 
     var lowerLeftBoundPos = _lowerLeftBoundPos;
     if (lowerLeftBoundPos.Equals(-1)) lowerLeftBoundPos = LowerLeftBoundPosition;
