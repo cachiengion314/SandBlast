@@ -6,36 +6,21 @@ public partial class M20LevelSystem
 {
     void OnOutOfAmmunition(GameObject blast)
     {
+        if (!blast.TryGetComponent(out IColorBlock colorBlast)) return;
+        if (colorBlast.GetColorValue() == -1) return;
+        colorBlast.SetColorValue(-1);
+
         if (!blast.TryGetComponent<ISpriteRend>(out var sprite)) return;
-        if (DOTween.IsTweening(sprite.GetBodyRenderer().transform)) return;
-
-        // var duration = .2f;
-        // sprite.GetBodyRenderer().DOColor(Color.gray, duration * 2f);
-        // var originalScale = sprite.GetBodyRenderer().transform.localScale;
-        // sprite.GetBodyRenderer().transform.DOScale(1.3f * originalScale, duration)
-        //   .SetLoops(2, LoopType.Yoyo)
-        //   .OnComplete(
-        //     () =>
-        //     {
-        //         sprite.GetBodyRenderer().transform.DOScale(.7f * originalScale, duration)
-        //     .SetLoops(2, LoopType.Incremental)
-        //     .OnComplete(
-        //       () =>
-        //       {
-        //             SoundManager.Instance.PlayDestoyShootingBlockSfx();
-
-        //             ShakeCameraBy(new float3(.0f, -.25f, .0f));
-        //             AddToShakeQueue(blast.transform.position);
-        //             ShakeBottomGrid(blast.transform.position);
-        //             if (blast.TryGetComponent(out IColorBlock color))
-        //                 SpawnColorSplashEfxAt(blast.transform.position, color.GetColorValue());
-
-        //             _firingSlots.Remove(blast);
-        //             Destroy(blast);
-        //         }
-        //     );
-        //     }
-        //   );
+        var duration = 0.3f;
+        DOTween.To(
+            () => 1f,
+            (value) => sprite.GetBodyRenderer().material.SetFloat("_Saturation", value),
+            0f, duration
+        ).SetEase(Ease.InOutSine);
+        blast.transform.DORotate(new Vector3(0, 0, 0), duration)
+             .SetEase(Ease.InOutSine); 
+        if (blast.TryGetComponent(out IColorBlock color))
+            SpawnColorSplashEfxAt(blast.transform.position, color.GetColorValue());
     }
     void OnColorBlockDestroyedByBullet(GameObject colorBlock)
     {
@@ -73,7 +58,7 @@ public partial class M20LevelSystem
         sprite.GetBodyRenderer()
           .transform.DOMove(targetPos, duration);
     }
-    
+
     void OnFireTarget(GameObject blastBlock, GameObject target)
     {
         if (!blastBlock.TryGetComponent<ISpriteRend>(out var sprite)) return;

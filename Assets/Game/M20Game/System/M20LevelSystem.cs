@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using Firebase.Analytics;
+using Unity.Mathematics;
 using UnityEngine;
 
 [Serializable]
@@ -51,6 +52,7 @@ public partial class M20LevelSystem : MonoBehaviour
             _colorBlocks[index] = colorBlock;
             _amountColorBlock++;
         }
+        VisualizeStartColorBlock();
 
         var slots = FindQueueSlotsPosParent(levelInformation.AmountSlot);
         for (int i = 0; i < slots.childCount; i++)
@@ -60,13 +62,35 @@ public partial class M20LevelSystem : MonoBehaviour
             if (blast.TryGetComponent<IColorBlock>(out var blastColor))
             {
                 blastColor.SetIndex(-1);
-                blastColor.SetColorValue(0);
+                blastColor.SetColorValue(-1);
             }
             if (blast.TryGetComponent<IGun>(out var blastGun))
             {
                 blastGun.SetAmmunition(0);
             }
             _firingSlots.Add(blast.gameObject);
+        }
+    }
+
+    void VisualizeStartColorBlock()
+    {
+        Sequence seq = DOTween.Sequence();
+        var spaceY = 0.1f;
+        var spaceX = 0.03f;
+        var duration = 0.3f;
+
+        for (int i = 0; i < _colorBlocks.Length; i++)
+        {
+            var block = _colorBlocks[i];
+            if (block == null) continue;
+            var blockPos = topGrid.ConvertIndexToWorldPos(i);
+            var blockGrid = topGrid.ConvertIndexToGridPos(i);
+
+            block.transform.position = blockPos + new float3(0f, 7f, 0f);
+
+            seq.Insert(spaceX * blockGrid.x + spaceY * blockGrid.y,
+            block.transform.DOMove(blockPos, duration)
+            .SetEase(Ease.OutQuart));
         }
     }
 

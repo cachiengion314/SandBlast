@@ -18,16 +18,20 @@ public partial class M20LevelSystem
     public void SetAmmunitionBlastColorAt(int colorValue)
     {
         var blastIndexEmpty = FindIndexEmptyBlast();
-        if (blastIndexEmpty == -1)
-        {
-            // khong co block empty
-            return;
-        }
+        if (blastIndexEmpty == -1) return;
+
         var blast = _firingSlots[blastIndexEmpty];
-        if (!blast.TryGetComponent(out IColorBlock blastColor)) return;
-        blastColor.SetColorValue(colorValue);
         if (!blast.TryGetComponent(out IGun blastGun)) return;
         blastGun.SetAmmunition(maxAmmunition);
+        if (!blast.TryGetComponent(out IColorBlock blastColor)) return;
+        blastColor.SetColorValue(colorValue);
+        if (!blast.TryGetComponent(out ISpriteRend spriteRend)) return;
+        var duration = 0.3f;
+        DOTween.To(
+            () => 0f,
+            (value) => spriteRend.GetBodyRenderer().material.SetFloat("_Saturation", value),
+            1f, duration
+        ).SetEase(Ease.InOutSine);
     }
 
     int FindIndexEmptyBlast()

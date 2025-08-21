@@ -66,7 +66,7 @@ public partial class LevelSystem : MonoBehaviour
     ControlQuadsInUpdate();
     if (Input.GetKeyDown(KeyCode.Space))
     {
-      m20LevelSystem.SetAmmunitionBlastColorAt(0);
+      m20LevelSystem.SetAmmunitionBlastColorAt(2);
     }
   }
 
