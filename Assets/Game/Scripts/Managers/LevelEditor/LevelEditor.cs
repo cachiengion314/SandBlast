@@ -12,12 +12,19 @@ public class LevelInformation
   [Range(1, 8)]
   public int AmountSlot = 2;
   public ColorBlockPartitionData[] ColorBlockPartitionDatas;
+  public AvailableColorData[] AvailableColorDatas;
 }
 [Serializable]
-public class GenerateLevelData
+public struct GenerateLevelData
 {
   public int ColorValue;
   public int RowAmount;
+}
+
+[Serializable]
+public struct ShapeData
+{
+  public float2[] blockSlotPositions;
 }
 
 public class LevelEditor : MonoBehaviour

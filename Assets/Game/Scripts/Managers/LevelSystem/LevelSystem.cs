@@ -105,18 +105,50 @@ public partial class LevelSystem : MonoBehaviour
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
-    var blockSlotPositions = new NativeArray<float2>(4, Allocator.Temp);
-    blockSlotPositions[0] = new(.0f, .5f);
-    blockSlotPositions[1] = new(1.0f, .5f);
-    blockSlotPositions[2] = new(.0f, -.5f);
-    blockSlotPositions[3] = new(-1.0f, -.5f);
-    OrderBlockShapeAt(0, blockSlotPositions, 2);
-    OrderBlockShapeAt(1, blockSlotPositions, 3);
-    OrderBlockShapeAt(2, blockSlotPositions, 4);
-    blockSlotPositions.Dispose();
+    if (!IsSlotsEmpty()) return;
+
+    for (int i = 0; i < slotsParent.childCount; i++)
+    {
+      var colorValue = GetRamdomColor();
+      using var blockSlotPositions = GetRandomShape();
+      OrderBlockShapeAt(i, blockSlotPositions, colorValue);
+
+      if (!_groupQuadDatas.ContainsKey(i)) return;
+      var groupData = _groupQuadDatas[i];
+      groupData.IsPlaced = false;
+      _groupQuadDatas[i] = groupData;
+    }
 
     VisualizeActiveQuads();
     ApplyDrawOrders();
+  }
+
+  bool IsSlotsEmpty()
+  {
+    for (int i = 0; i < slotsParent.childCount; i++)
+      if (!IsSlotEmptyAt(i)) return false;
+    return true;
+  }
+
+  int GetRamdomColor()
+  {
+    float randomNumber = UnityEngine.Random.Range(0f, 100f);
+    float threshold = 0;
+    var availableColorDatas = _levelInformation.AvailableColorDatas;
+    for (int i = 0; i < availableColorDatas.Length; i++)
+    {
+      var ratio = availableColorDatas[i].ratio;
+      threshold += ratio;
+      if (randomNumber < threshold)
+        return availableColorDatas[i].ColorValue;
+    }
+    return availableColorDatas[0].ColorValue;
+  }
+
+  NativeArray<float2> GetRandomShape()
+  {
+    var randomIndex = UnityEngine.Random.Range(0, 8);
+    return RendererSystem.Instance.GetShapeAt(randomIndex);
   }
 
   public void LoadLevelFrom(int level)

@@ -20,6 +20,7 @@ public partial class GameplayPanel : MonoBehaviour
   [SerializeField] Transform UseBooster1Modal;
   [SerializeField] Transform UseBooster2Modal;
   [SerializeField] Transform UseBooster3Modal;
+  [SerializeField] Transform HackModal;
 
   private void Awake()
   {
@@ -202,5 +203,11 @@ public partial class GameplayPanel : MonoBehaviour
     {
       CloseModal(BuyBooster3Modal);
     }
+  }
+
+  public void ToggleHackModal()
+  {
+    SoundManager.Instance.PlayPressBtnSfx();
+    HackModal.gameObject.SetActive(!HackModal.gameObject.activeSelf);
   }
 }

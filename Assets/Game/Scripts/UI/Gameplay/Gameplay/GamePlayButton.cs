@@ -107,4 +107,12 @@ public partial class GameplayPanel
             SceneManager.LoadScene(KeyString.NAME_SCENE_GAMEPLAY);
         });
     }
+
+    public void ShowHack()
+    {
+        if (Debug.isDebugBuild)
+        {
+            ToggleHackModal();
+        }
+    }
 }
