@@ -15,10 +15,8 @@ public partial class GridWorld : MonoBehaviour
   [Range(-90, 90)]
   [SerializeField] float degAroundX;
   public float DegAroundX { get { return degAroundX; } }
-  [SerializeField] int2 gridSize;
-  public int2 GridSize { get { return gridSize; } set { gridSize = value; } }
-  [SerializeField] float2 gridScale;
-  public float2 GridScale { get { return gridScale; } set { gridScale = value; } }
+  public int2 GridSize;
+  public float2 GridScale;
   public float2 Offset { get; private set; }
   readonly int2[] directions = new int2[] { new(1, 0), new(0, 1), new(-1, 0), new(0, -1) };
 
@@ -33,19 +31,19 @@ public partial class GridWorld : MonoBehaviour
   {
     _originalMatrix = HoangNam.Utility.GetMatrixWith(0);
     _rotatedMatrix = HoangNam.Utility.GetMatrixWith(degAroundX);
-    Offset = new Vector2((gridSize.x - 1) / 2f, (gridSize.y - 1) / 2f);
+    Offset = new Vector2((GridSize.x - 1) / 2f, (GridSize.y - 1) / 2f);
   }
 
   public int ConvertGridPosToIndex(in int2 gridPos)
   {
-    var index = gridSize.y * gridPos.x + gridPos.y;
+    var index = GridSize.y * gridPos.x + gridPos.y;
     return index;
   }
 
   public int2 ConvertIndexToGridPos(in int index)
   {
-    int x = (int)(uint)math.floor(index / gridSize.y);
-    int y = index - (x * gridSize.y);
+    int x = (int)(uint)math.floor(index / GridSize.y);
+    int y = index - (x * GridSize.y);
     return new int2(x, y);
   }
 
@@ -54,7 +52,7 @@ public partial class GridWorld : MonoBehaviour
     var A2 = gridPos;
     var O2 = Offset;
     var O2A2 = A2 - O2;
-    var A1 = new float2(O2A2.x * gridScale.x, O2A2.y * gridScale.y);
+    var A1 = new float2(O2A2.x * GridScale.x, O2A2.y * GridScale.y);
     var worldPos = new float3(A1.x, A1.y, 0);
     return ConvertToRotated(worldPos);
   }
@@ -62,7 +60,7 @@ public partial class GridWorld : MonoBehaviour
   public int2 ConvertWorldPosToGridPos(in float3 worldPos)
   {
     var O1A1 = ConvertToNonRotated(worldPos);
-    var O2A2 = new float2(O1A1.x * 1 / gridScale.x, O1A1.y * 1 / gridScale.y);
+    var O2A2 = new float2(O1A1.x * 1 / GridScale.x, O1A1.y * 1 / GridScale.y);
     var A2 = Offset + new float2(O2A2.x, O2A2.y);
     int xRound = (int)math.round(A2.x);
     int yRound = (int)math.round(A2.y);
@@ -92,8 +90,8 @@ public partial class GridWorld : MonoBehaviour
 
   public bool IsGridPosOutsideAt(int2 gridPos)
   {
-    if (gridPos.x > gridSize.x - 1 || gridPos.x < 0) return true;
-    if (gridPos.y > gridSize.y - 1 || gridPos.y < 0) return true;
+    if (gridPos.x > GridSize.x - 1 || gridPos.x < 0) return true;
+    if (gridPos.y > GridSize.y - 1 || gridPos.y < 0) return true;
     return false;
   }
 
@@ -136,12 +134,12 @@ public partial class GridWorld : MonoBehaviour
   void DrawGrid()
   {
     if (!shouldDrawGrid) return;
-    for (int x = 0; x < gridSize.x; ++x)
+    for (int x = 0; x < GridSize.x; ++x)
     {
-      for (int y = 0; y < gridSize.y; ++y)
+      for (int y = 0; y < GridSize.y; ++y)
       {
         var worldPos = ConvertGridPosToWorldPos(new int2(x, y));
-        HoangNam.Utility.DrawQuad(worldPos, gridScale, degAroundX, (ColorIndex)colorIndex);
+        HoangNam.Utility.DrawQuad(worldPos, GridScale, degAroundX, (ColorIndex)colorIndex);
       }
     }
   }
@@ -156,8 +154,8 @@ public partial class GridWorld : MonoBehaviour
 
     var centerPos = transform.position;
     var rotatedMatrix = HoangNam.Utility.GetMatrixWith(degAroundX);
-    var x = gridSize.x * gridScale.x;
-    var y = gridSize.y * gridScale.y;
+    var x = GridSize.x * GridScale.x;
+    var y = GridSize.y * GridScale.y;
     var leftDir = new Vector3(-x / 2f, 0, 0);
     var bottomDir = new Vector3(0, -y / 2f, 0);
     var rightDir = new Vector3(x / 2f, 0, 0);

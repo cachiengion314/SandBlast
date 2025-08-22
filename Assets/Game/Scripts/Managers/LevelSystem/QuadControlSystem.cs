@@ -5,7 +5,29 @@ using UnityEngine;
 public partial class LevelSystem : MonoBehaviour
 {
   int _currentQuadAmount;
-  int _currentGrabbingGroup = -1;
+  int _currentGrabbingGroupIndex = -1;
+
+  int GetCurrentBlockAmount()
+  {
+    return _currentQuadAmount / 64;
+  }
+
+  bool IsBlockShapeOutsideAt(int groupIdx)
+  {
+    var _currentBlockAmount = GetCurrentBlockAmount();
+    for (int i = 0; i < _currentBlockAmount; ++i)
+    {
+      var data = _blockDatas[i];
+      var isActive = data.IsActive;
+      if (!isActive) continue;
+      var _groupIdx = data.GroupIndex;
+      if (_groupIdx != groupIdx) continue;
+
+      var blockPos = data.Position;
+      if (blockGrid.IsPosOutsideAt(blockPos)) return true;
+    }
+    return false;
+  }
 
   int GetAvailableQuadAmount(int _additionAmount = 0)
   {
@@ -14,25 +36,36 @@ public partial class LevelSystem : MonoBehaviour
     return availableAmount;
   }
 
-  int2 ConvertBlockPosToSlotGridPos(float2 blockPos)
+  float3 ConvertSlotPosToWorldPos(float2 blockSlotPos)
+  {
+    var slotPos = (float3)slotGrid.transform.position;
+    var blockPos = slotPos + new float3(
+      blockSlotPos.x * quadGrid.GridScale.x * 8,
+      blockSlotPos.y * quadGrid.GridScale.y * 8,
+      0
+    );
+    return blockPos;
+  }
+
+  int2 ConvertBlockPosToSlotGridPos(float2 blockSlotPos)
   {
     var centerSlot = new int2(
       (int)math.floor(slotGrid.GridSize.x / 2f),
       (int)math.floor(slotGrid.GridSize.y / 2f)
     );
     var r = new int2(
-      (int)math.floor(centerSlot.x + blockPos.x * 8),
-      (int)math.floor(centerSlot.y + blockPos.y * 8)
+      (int)math.floor(centerSlot.x + blockSlotPos.x * 8),
+      (int)math.floor(centerSlot.y + blockSlotPos.y * 8)
     );
-    var slotGridPos = r - new int2(4, 4);
+    var slotGridPos = r - 4;
     return slotGridPos;
   }
 
-  void OrderUnitBlockAt(int startIndex, float2 blockPos, int groupIndex, int colorValue)
+  void OrderUnitBlockAt(int startIndex, float2 blockSlotPos, int groupIndex, int colorValue)
   {
     var groupData = _groupQuadDatas[groupIndex];
 
-    var startSlotGridPos = ConvertBlockPosToSlotGridPos(blockPos);
+    var startSlotGridPos = ConvertBlockPosToSlotGridPos(blockSlotPos);
     var startX = startSlotGridPos.x;
     var startY = startSlotGridPos.y;
 
@@ -62,11 +95,12 @@ public partial class LevelSystem : MonoBehaviour
   /// </summary>
   void OrderBlockShapeAt(
     int slotIndex,
-    NativeArray<float2> blockPositions,
+    NativeArray<float2> blockSlotPositions,
     int colorValue
   )
   {
-    var slotPos = SetSlotGridPositionAt(slotIndex);
+    var _currentBlockAmount = GetCurrentBlockAmount();
+    var slotPos = SetAndGetSlotGridPositionAt(slotIndex);
 
     var groupIdx = slotIndex;
     if (!_groupQuadDatas.ContainsKey(groupIdx))
@@ -80,49 +114,86 @@ public partial class LevelSystem : MonoBehaviour
         }
       );
 
-    for (int i = 0; i < blockPositions.Length; ++i)
+    for (int i = 0; i < blockSlotPositions.Length; ++i)
     {
-      var blockPos = blockPositions[i];
-      OrderUnitBlockAt(_currentQuadAmount + i * 64, blockPos, groupIdx, colorValue);
+      var blockSlotPos = blockSlotPositions[i];
+      OrderUnitBlockAt(_currentQuadAmount + i * 64, blockSlotPos, groupIdx, colorValue);
+
+      var blockPos = ConvertSlotPosToWorldPos(blockSlotPos);
+      var blockData = new BlockData
+      {
+        GroupIndex = groupIdx,
+        Position = blockPos,
+        ColorValue = colorValue,
+        IsActive = true,
+        CenterOffset = blockPos - slotPos,
+      };
+      _blockDatas[_currentBlockAmount + i] = blockData;
     }
 
-    var additionAmount = blockPositions.Length * 64;
+    var additionAmount = blockSlotPositions.Length * 64;
     var availableAmount = GetAvailableQuadAmount(additionAmount);
     _currentQuadAmount = availableAmount;
   }
 
-  void ControlQuadsInUpdate()
+  void OrderBlockPositionsTo(float3 targetPos, int groupIdx)
   {
-    if (_currentGrabbingGroup == -1) return;
-    if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
-    if (!_isUserScreenTouching) return;
-    if (!_groupQuadDatas.ContainsKey(_currentGrabbingGroup)) return;
+    var groupData = _groupQuadDatas[groupIdx];
+    groupData.CenterPosition = targetPos;
+    _groupQuadDatas[groupIdx] = groupData;
 
-    var _userTouchScreenPos = new float3(
-      userTouchScreenPosition.x, userTouchScreenPosition.y, 0
-    );
-    var _groupData = _groupQuadDatas[_currentGrabbingGroup];
-    _groupData.CenterPosition = _userTouchScreenPos + touchOffset;
-    _groupQuadDatas[_currentGrabbingGroup] = _groupData;
+    var _currentBlockAmount = GetCurrentBlockAmount();
+    for (int i = 0; i < _currentBlockAmount; ++i)
+    {
+      var blockData = _blockDatas[i];
+      if (!blockData.IsActive) continue;
+      if (blockData.GroupIndex != groupIdx) continue;
+
+      var offset = blockData.CenterOffset;
+      var nextBlockPos = groupData.CenterPosition + offset;
+      blockData.Position = nextBlockPos;
+
+      _blockDatas[i] = blockData;
+    }
 
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
       var quadData = _quadDatas[i];
-      var isActive = quadData.IsActive;
-      if (!isActive) continue;
+      if (!quadData.IsActive) continue;
+      if (quadData.GroupIndex != groupIdx) continue;
 
-      var groupIdx = quadData.GroupIndex;
-      if (groupIdx != _currentGrabbingGroup) continue;
-
-      var groupData = _groupQuadDatas[groupIdx];
       var offset = _quadCenterOffsets[i];
       var nextQuadPos = groupData.CenterPosition + offset;
       quadData.Position = nextQuadPos;
 
       _quadDatas[i] = quadData;
-      quadMeshSystem.OrderQuadMeshAt(i, nextQuadPos, -1, -1);
+      OrderQuadMeshAt(i, nextQuadPos, quadData.ColorValue);
     }
+  }
 
+  void GrabbingBlockControlInUpdate()
+  {
+    if (_currentGrabbingGroupIndex == -1) return;
+    if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
+    if (!_isUserScreenTouching) return;
+    if (!_groupQuadDatas.ContainsKey(_currentGrabbingGroupIndex)) return;
+
+    var _userTouchScreenPos = new float3(
+      userTouchScreenPosition.x, userTouchScreenPosition.y, 0
+    );
+    var targetPos = _userTouchScreenPos + touchOffset;
+    OrderBlockPositionsTo(targetPos, _currentGrabbingGroupIndex);
+    ApplyDrawOrders();
+  }
+
+  void OrderQuadMeshAt(int index, float3 pos, int colorValue)
+  {
+    var uvGridPos = RendererSystem.Instance.GetUVGridPosFrom(colorValue);
+    quadMeshSystem.OrderQuadMeshAt(index, pos, uvGridPos);
+  }
+
+  void ApplyDrawOrders()
+  {
     quadMeshSystem.ApplyDrawOrders();
   }
 }

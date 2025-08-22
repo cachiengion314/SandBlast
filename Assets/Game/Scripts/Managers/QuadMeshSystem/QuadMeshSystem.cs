@@ -19,13 +19,31 @@ public class QuadMeshSystem : MonoBehaviour
   /// <summary>
   /// Settings
   /// </summary>
-  public float2 ScaleSize;
+  public float2 QuadScale;
   [Range(1, 12800)]
   public int QuadCapacity;
   [Header("Texture")]
-  public float2 TextureResolution;
-  public float2 LowerLeftBoundPosition;
-  public float2 UpperRightBoundPosition;
+  public int2 GridResolution;
+  public int2 TextureResolution;
+  public int2 LowerLeftBoundPosition;
+  public int2 UpperRightBoundPosition;
+
+  public NativeArray<int2> GetTexBoundPositionsFrom(in int2 uvGridPos)
+  {
+    var amountTexEachGridInX = (int)math.floor(TextureResolution.x / (float)GridResolution.x);
+    var amountTexEachGridInY = (int)math.floor(TextureResolution.y / (float)GridResolution.y);
+    var lowerLeftTexPos = new int2(
+      amountTexEachGridInX * uvGridPos.x, amountTexEachGridInY * uvGridPos.y
+    );
+    var upperRightTexPos = new int2(
+      amountTexEachGridInX * (uvGridPos.x + 1), amountTexEachGridInY * (uvGridPos.y + 1)
+    );
+
+    var arr = new NativeArray<int2>(2, Allocator.Temp);
+    arr[0] = lowerLeftTexPos;
+    arr[1] = upperRightTexPos;
+    return arr;
+  }
 
   public void InitComponents()
   {
@@ -73,48 +91,48 @@ public class QuadMeshSystem : MonoBehaviour
     meshFilter.mesh = mesh;
   }
 
-  public void OrderUVMappingAt(int index, float2 lowerLeftBoundPos, float2 upperRightBoundPos)
+  public void OrderUVMappingAt(int index, int2 uvGridPos)
+  {
+    using var arr = GetTexBoundPositionsFrom(uvGridPos);
+    var lowerLeftBoundPos = arr[0];
+    var upperRightBoundPos = arr[1];
+    OrderUVMappingAt(index, lowerLeftBoundPos, upperRightBoundPos);
+  }
+
+  public void OrderUVMappingAt(int index, int2 lowerLeftBoundPos, int2 upperRightBoundPos)
   {
     _uv[index * 4] = new float2(
-      lowerLeftBoundPos.x / TextureResolution.x,
-      lowerLeftBoundPos.y / TextureResolution.y
+      lowerLeftBoundPos.x / (float)TextureResolution.x,
+      lowerLeftBoundPos.y / (float)TextureResolution.y
     );
     _uv[index * 4 + 1] = new float2(
-      lowerLeftBoundPos.x / TextureResolution.x,
-      upperRightBoundPos.y / TextureResolution.y
+      lowerLeftBoundPos.x / (float)TextureResolution.x,
+      upperRightBoundPos.y / (float)TextureResolution.y
     );
     _uv[index * 4 + 2] = new float2(
-      upperRightBoundPos.x / TextureResolution.x,
-      upperRightBoundPos.y / TextureResolution.y
+      upperRightBoundPos.x / (float)TextureResolution.x,
+      upperRightBoundPos.y / (float)TextureResolution.y
     );
     _uv[index * 4 + 3] = new float2(
-      lowerLeftBoundPos.x / TextureResolution.x,
-      upperRightBoundPos.y / TextureResolution.y
+      lowerLeftBoundPos.x / (float)TextureResolution.x,
+      upperRightBoundPos.y / (float)TextureResolution.y
     );
   }
 
-  /// <summary>
-  /// _lowerLeftBoundPos = -1, _upperRightBoundPos = -1 for a default value
-  /// </summary>
-  /// <param name="pos"></param>
-  /// <param name="index"></param>
-  /// <param name="_lowerLeftBoundPos"></param>
-  /// <param name="_upperRightBoundPos"></param>
   public void OrderQuadMeshAt(
     int index,
     float3 pos,
-    float2 _lowerLeftBoundPos,
-    float2 _upperRightBoundPos
+    int2 _uvGridPos
   )
   {
     _vertices[index * 4]
-      = pos + new float3(-.5f * ScaleSize.x, -.5f * ScaleSize.y, 0);
+      = pos + new float3(-.5f * QuadScale.x, -.5f * QuadScale.y, 0);
     _vertices[index * 4 + 1]
-      = pos + new float3(-.5f * ScaleSize.x, .5f * ScaleSize.y, 0);
+      = pos + new float3(-.5f * QuadScale.x, .5f * QuadScale.y, 0);
     _vertices[index * 4 + 2]
-      = pos + new float3(.5f * ScaleSize.x, .5f * ScaleSize.y, 0);
+      = pos + new float3(.5f * QuadScale.x, .5f * QuadScale.y, 0);
     _vertices[index * 4 + 3]
-      = pos + new float3(.5f * ScaleSize.x, -.5f * ScaleSize.y, 0);
+      = pos + new float3(.5f * QuadScale.x, -.5f * QuadScale.y, 0);
 
     _triangles[index * 6] = index * 4;
     _triangles[index * 6 + 1] = index * 4 + 1;
@@ -124,10 +142,13 @@ public class QuadMeshSystem : MonoBehaviour
     _triangles[index * 6 + 4] = index * 4 + 2;
     _triangles[index * 6 + 5] = index * 4 + 3;
 
-    var lowerLeftBoundPos = _lowerLeftBoundPos;
-    if (lowerLeftBoundPos.Equals(-1)) lowerLeftBoundPos = LowerLeftBoundPosition;
-    var upperRightBoundPos = _upperRightBoundPos;
-    if (upperRightBoundPos.Equals(-1)) upperRightBoundPos = UpperRightBoundPosition;
-    OrderUVMappingAt(index, lowerLeftBoundPos, upperRightBoundPos);
+    if (_uvGridPos.Equals(-1))
+    {
+      OrderUVMappingAt(index, LowerLeftBoundPosition, UpperRightBoundPosition);
+      return;
+    }
+
+    var arr = GetTexBoundPositionsFrom(_uvGridPos);
+    OrderUVMappingAt(index, arr[0], arr[1]);
   }
 }

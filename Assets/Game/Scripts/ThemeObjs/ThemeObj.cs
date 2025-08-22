@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "ThemeObj", menuName = "ScriptableObjects/ThemeObj", order = 0)]
@@ -7,4 +8,5 @@ public class ThemeObj : ScriptableObject
   public Color[] colorValues;
   public Sprite[] colorBlocks;
   public Sprite[] blastBlockSprites;
+  public int2[] UVGridPositions;
 }
