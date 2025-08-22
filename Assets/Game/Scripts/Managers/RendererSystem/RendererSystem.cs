@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -51,5 +52,13 @@ public class RendererSystem : MonoBehaviour
     var theme = GetCurrentTheme();
     if (colorValue < 0 || colorValue > theme.blastBlockSprites.Length - 1) return theme.blastBlockSprites[^1];
     return theme.blastBlockSprites[colorValue];
+  }
+
+  public NativeArray<float2> GetShapeAt(int index)
+  {
+    var theme = GetCurrentTheme();
+    if (index < 0 || index > theme.Shapes.Length - 1)
+      return new NativeArray<float2>(theme.Shapes[^1].blockSlotPositions, Allocator.Temp);
+    return new NativeArray<float2>(theme.Shapes[index].blockSlotPositions, Allocator.Temp);
   }
 }

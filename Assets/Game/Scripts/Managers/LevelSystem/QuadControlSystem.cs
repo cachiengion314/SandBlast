@@ -149,6 +149,9 @@ public partial class LevelSystem : MonoBehaviour
       if (!blockData.IsActive) continue;
       if (blockData.GroupIndex != groupIdx) continue;
 
+      var blockGroupId = blockData.GroupIndex;
+      if (_groupQuadDatas[blockGroupId].IsPlaced) continue;
+
       var offset = blockData.CenterOffset;
       var nextBlockPos = groupData.CenterPosition + offset;
       blockData.Position = nextBlockPos;
@@ -161,6 +164,8 @@ public partial class LevelSystem : MonoBehaviour
       var quadData = _quadDatas[i];
       if (!quadData.IsActive) continue;
       if (quadData.GroupIndex != groupIdx) continue;
+      var quadGroupId = quadData.GroupIndex;
+      if (_groupQuadDatas[quadGroupId].IsPlaced) continue;
 
       var offset = _quadCenterOffsets[i];
       var nextQuadPos = groupData.CenterPosition + offset;

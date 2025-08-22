@@ -5,12 +5,18 @@ using Unity.Mathematics;
 using UnityEngine;
 
 [Serializable]
-public class ColorBlockPartitionData
+public struct ColorBlockPartitionData
 {
     [ViewOnly] public int Index;
     public int ColorValue;
     [Range(1, 5)]
-    public int Health = 1;
+    public int Health;
+}
+[Serializable]
+public struct AvailableColorData
+{
+    public int ColorValue;
+    public float ratio;
 }
 
 public partial class M20LevelSystem : MonoBehaviour

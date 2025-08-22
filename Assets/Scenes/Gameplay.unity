@@ -22408,11 +22408,11 @@ MonoBehaviour:
     y: 1
   QuadCapacity: 12800
   GridResolution:
-    x: 8
-    y: 8
+    x: 3
+    y: 3
   TextureResolution:
-    x: 2048
-    y: 2048
+    x: 128
+    y: 128
   LowerLeftBoundPosition:
     x: 1792
     y: 1792

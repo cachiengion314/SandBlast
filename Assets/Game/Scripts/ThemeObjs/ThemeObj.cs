@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -9,4 +10,5 @@ public class ThemeObj : ScriptableObject
   public Sprite[] colorBlocks;
   public Sprite[] blastBlockSprites;
   public int2[] UVGridPositions;
+  public ShapeData[] Shapes;
 }
