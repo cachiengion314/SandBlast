@@ -52,5 +52,6 @@ public partial class LevelSystem : MonoBehaviour
     _isUserScreenTouching = false;
 
     OnInactive();
+    
   }
 }

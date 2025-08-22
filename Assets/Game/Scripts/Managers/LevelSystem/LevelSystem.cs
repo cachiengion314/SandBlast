@@ -104,18 +104,29 @@ public partial class LevelSystem : MonoBehaviour
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
+    if (!IsSlotsEmpty()) return;
+
     var blockSlotPositions = new NativeArray<float2>(4, Allocator.Temp);
     blockSlotPositions[0] = new(.0f, .5f);
     blockSlotPositions[1] = new(1.0f, .5f);
     blockSlotPositions[2] = new(.0f, -.5f);
     blockSlotPositions[3] = new(-1.0f, -.5f);
+
     OrderBlockShapeAt(0, blockSlotPositions, 2);
     OrderBlockShapeAt(1, blockSlotPositions, 3);
     OrderBlockShapeAt(2, blockSlotPositions, 4);
+    
     blockSlotPositions.Dispose();
 
     VisualizeActiveQuads();
     ApplyDrawOrders();
+  }
+
+  bool IsSlotsEmpty()
+  {
+    for (int i = 0; i < slotsParent.childCount; i++)
+      if (!IsSlotEmptyAt(0)) return false;
+    return true;
   }
 
   public void LoadLevelFrom(int level)
