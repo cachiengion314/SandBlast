@@ -24,7 +24,7 @@ public partial class GridWorld : MonoBehaviour
 
   public void BakingPathFinding()
   {
-    _nodeMap = new NativeArray<GridNode>(gridSize.x * gridSize.y, Allocator.Persistent);
+    _nodeMap = new NativeArray<GridNode>(GridSize.x * GridSize.y, Allocator.Persistent);
     for (int x = 0; x < GridSize.x; ++x)
     {
       for (int y = 0; y < GridSize.y; ++y)

@@ -23,6 +23,14 @@ public class RendererSystem : MonoBehaviour
     return themes[0];
   }
 
+  public int2 GetUVGridPosFrom(int colorValue)
+  {
+    var theme = GetCurrentTheme();
+    var index = math.max(colorValue, 0);
+    if (index > theme.UVGridPositions.Length - 1) return theme.UVGridPositions[^1];
+    return theme.UVGridPositions[index];
+  }
+
   public Color GetColorBy(int colorValue)
   {
     var theme = GetCurrentTheme();

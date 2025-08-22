@@ -39,3 +39,20 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 046fcce4645414d5faeb0ea720cc329e, type: 3}
   - {fileID: 21300000, guid: b51648aa45da14e6a8d641c7f3f22759, type: 3}
   - {fileID: 21300000, guid: 2599e57c933054eadb7c84f3e7f26646, type: 3}
+  UVGridPositions:
+  - x: 0
+    y: 0
+  - x: 1
+    y: 0
+  - x: 2
+    y: 0
+  - x: 3
+    y: 0
+  - x: 4
+    y: 0
+  - x: 5
+    y: 0
+  - x: 6
+    y: 0
+  - x: 7
+    y: 0

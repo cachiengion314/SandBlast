@@ -2226,7 +2226,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87040a67180cc4f81b6800a4e219ab8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  boardGrid: {fileID: 1083012360}
+  quadGrid: {fileID: 963933630}
+  blockGrid: {fileID: 1083012360}
   slotGrid: {fileID: 243784473}
   quadMeshSystem: {fileID: 2081467839}
   m20LevelSystem: {fileID: 498812701}
@@ -2250,6 +2251,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2081467836}
+  - {fileID: 963933631}
   - {fileID: 1083012359}
   - {fileID: 243784474}
   - {fileID: 201795461}
@@ -2469,15 +2471,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ef2ba4da84aa4dffad73c8a8d329ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldDrawGrid: 0
+  shouldDrawGrid: 1
   colorIndex: 3
   degAroundX: 0
-  gridSize:
-    x: 6
-    y: 6
-  gridScale:
-    x: 2
-    y: 2
+  GridSize:
+    x: 1
+    y: 1
+  GridScale:
+    x: 1
+    y: 1
 --- !u!4 &243784474
 Transform:
   m_ObjectHideFlags: 0
@@ -2487,7 +2489,7 @@ Transform:
   m_GameObject: {fileID: 243784472}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -8449,6 +8451,59 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 938938685}
   m_CullTransparentMesh: 1
+--- !u!1 &963933629
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 963933631}
+  - component: {fileID: 963933630}
+  m_Layer: 0
+  m_Name: QuadGrid
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &963933630
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963933629}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ef2ba4da84aa4dffad73c8a8d329ae8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shouldDrawGrid: 0
+  colorIndex: 10
+  degAroundX: 0
+  GridSize:
+    x: 1
+    y: 1
+  GridScale:
+    x: 1
+    y: 1
+--- !u!4 &963933631
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 963933629}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 229877049}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &975811026
 GameObject:
   m_ObjectHideFlags: 0
@@ -10010,7 +10065,7 @@ GameObject:
   - component: {fileID: 1083012359}
   - component: {fileID: 1083012360}
   m_Layer: 0
-  m_Name: BoardGrid
+  m_Name: BlockGrid
   m_TagString: Untagged
   m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
@@ -10025,7 +10080,7 @@ Transform:
   m_GameObject: {fileID: 1083012358}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -3.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10043,15 +10098,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ef2ba4da84aa4dffad73c8a8d329ae8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldDrawGrid: 0
-  colorIndex: 3
+  shouldDrawGrid: 1
+  colorIndex: 7
   degAroundX: 0
-  gridSize:
-    x: 6
-    y: 6
-  gridScale:
-    x: 2
-    y: 2
+  GridSize:
+    x: 1
+    y: 1
+  GridScale:
+    x: 1
+    y: 1
 --- !u!1 &1091424737
 GameObject:
   m_ObjectHideFlags: 0
@@ -15547,10 +15602,10 @@ MonoBehaviour:
   shouldDrawGrid: 0
   colorIndex: 3
   degAroundX: 0
-  gridSize:
-    x: 6
-    y: 6
-  gridScale:
+  GridSize:
+    x: 10
+    y: 9
+  GridScale:
     x: 1
     y: 1
 --- !u!4 &1644978963
@@ -18661,19 +18716,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuadMeshSystem
   meshFilter: {fileID: 2081467838}
-  ScaleSize:
-    x: 0.9
-    y: 0.9
-  QuadCapacity: 10000
+  QuadScale:
+    x: 1
+    y: 1
+  QuadCapacity: 12800
+  GridResolution:
+    x: 8
+    y: 8
   TextureResolution:
-    x: 512
-    y: 512
+    x: 2048
+    y: 2048
   LowerLeftBoundPosition:
-    x: 0
-    y: 480
+    x: 1792
+    y: 1792
   UpperRightBoundPosition:
-    x: 32
-    y: 512
+    x: 2048
+    y: 2048
 --- !u!1 &2096923414
 GameObject:
   m_ObjectHideFlags: 0

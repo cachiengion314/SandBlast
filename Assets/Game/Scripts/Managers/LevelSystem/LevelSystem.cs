@@ -8,7 +8,8 @@ using Unity.Collections;
 public partial class LevelSystem : MonoBehaviour
 {
   public static LevelSystem Instance { get; private set; }
-  [SerializeField] GridWorld boardGrid;
+  [SerializeField] GridWorld quadGrid;
+  [SerializeField] GridWorld blockGrid;
   [SerializeField] GridWorld slotGrid;
   [SerializeField] QuadMeshSystem quadMeshSystem;
   [SerializeField] M20LevelSystem m20LevelSystem;
@@ -22,7 +23,7 @@ public partial class LevelSystem : MonoBehaviour
   {
     if (Instance == null)
     {
-      DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(1500, 100);
+      DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(100, 50);
       Instance = this;
     }
     else Destroy(gameObject);
@@ -56,6 +57,7 @@ public partial class LevelSystem : MonoBehaviour
   {
     if (!isLoadedLevel) return;
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
+
     m20LevelSystem.FindNeedArrangeCollumnInUpdate();
     m20LevelSystem.ArrangeColorBlocksUpdate();
     m20LevelSystem.LockAndFireTargetUpddate();
@@ -63,11 +65,12 @@ public partial class LevelSystem : MonoBehaviour
     m20LevelSystem.UpdateLoseLevel();
     m20LevelSystem.UpdateWinLevel();
 
-    ControlQuadsInUpdate();
     if (Input.GetKeyDown(KeyCode.Space))
     {
       m20LevelSystem.SetAmmunitionBlastColorAt(2);
     }
+
+    GrabbingBlockControlInUpdate();
   }
 
   void SetupCurrentLevel(LevelInformation levelInformation)
@@ -82,32 +85,37 @@ public partial class LevelSystem : MonoBehaviour
   {
     var quadScale = new float2(.15f, .15f);
 
-    boardGrid.GridScale = quadScale;
-    boardGrid.GridSize = new int2(10 * 8, 20 * 8);
-    boardGrid.InitConvertedComponents();
+    blockGrid.GridScale = quadScale * 8;
+    blockGrid.GridSize = new int2(10, 12);
+    blockGrid.InitConvertedComponents();
+
+    quadGrid.GridScale = quadScale;
+    quadGrid.GridSize = new int2(blockGrid.GridSize.x * 8, blockGrid.GridSize.y * 8);
+    quadGrid.InitConvertedComponents();
 
     slotGrid.GridScale = quadScale;
     slotGrid.GridSize = new int2(22, 22);
     slotGrid.InitConvertedComponents();
 
-    quadMeshSystem.ScaleSize = boardGrid.GridScale;
-    quadMeshSystem.QuadCapacity = boardGrid.GridSize.x * boardGrid.GridSize.y;
+    quadMeshSystem.QuadScale = quadGrid.GridScale;
+    quadMeshSystem.QuadCapacity = quadGrid.GridSize.x * quadGrid.GridSize.y;
     quadMeshSystem.InitComponents();
   }
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
-    var blockPositions = new NativeArray<float2>(4, Allocator.Temp);
-    blockPositions[0] = new(0, -1);
-    blockPositions[1] = new(0, 0);
-    blockPositions[2] = new(0, 1);
-    blockPositions[3] = new(1, 1);
-    OrderBlockShapeAt(0, blockPositions, 0);
-    OrderBlockShapeAt(1, blockPositions, 0);
-    OrderBlockShapeAt(2, blockPositions, 0);
-    blockPositions.Dispose();
+    var blockSlotPositions = new NativeArray<float2>(4, Allocator.Temp);
+    blockSlotPositions[0] = new(.0f, .5f);
+    blockSlotPositions[1] = new(1.0f, .5f);
+    blockSlotPositions[2] = new(.0f, -.5f);
+    blockSlotPositions[3] = new(-1.0f, -.5f);
+    OrderBlockShapeAt(0, blockSlotPositions, 2);
+    OrderBlockShapeAt(1, blockSlotPositions, 3);
+    OrderBlockShapeAt(2, blockSlotPositions, 4);
+    blockSlotPositions.Dispose();
 
     VisualizeActiveQuads();
+    ApplyDrawOrders();
   }
 
   public void LoadLevelFrom(int level)

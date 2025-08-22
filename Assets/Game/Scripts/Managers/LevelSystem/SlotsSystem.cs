@@ -5,14 +5,14 @@ public partial class LevelSystem : MonoBehaviour
 {
   [SerializeField] Transform slotsParent;
 
-  float3 SetSlotGridPositionAt(int slotIndex)
+  float3 SetAndGetSlotGridPositionAt(int slotIndex)
   {
-    var slotPos = FindSlotPositionAt(slotIndex);
+    var slotPos = GetSlotPositionAt(slotIndex);
     slotGrid.transform.position = slotPos;
     return slotPos;
   }
 
-  float3 FindSlotPositionAt(int slotIndex)
+  float3 GetSlotPositionAt(int slotIndex)
   {
     if (slotIndex < 0) return -1;
     if (slotIndex > slotsParent.childCount - 1) return -1;
@@ -58,18 +58,27 @@ public partial class LevelSystem : MonoBehaviour
   {
     if (IsSlotEmptyAt(slotIndex)) return;
 
-    _currentGrabbingGroup = slotIndex;
+    _currentGrabbingGroupIndex = slotIndex;
   }
 
   void OnInactive()
   {
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
-    if (!_groupQuadDatas.ContainsKey(_currentGrabbingGroup)) return;
+    if (!_groupQuadDatas.ContainsKey(_currentGrabbingGroupIndex)) return;
+    if (IsBlockShapeOutsideAt(_currentGrabbingGroupIndex))
+    {
+      var slotPos = SetAndGetSlotGridPositionAt(_currentGrabbingGroupIndex);
+      OrderBlockPositionsTo(slotPos, _currentGrabbingGroupIndex);
+      ApplyDrawOrders();
 
-    var groupData = _groupQuadDatas[_currentGrabbingGroup];
+      _currentGrabbingGroupIndex = -1;
+      return;
+    }
+
+    var groupData = _groupQuadDatas[_currentGrabbingGroupIndex];
     groupData.IsPlaced = true;
-    _groupQuadDatas[_currentGrabbingGroup] = groupData;
+    _groupQuadDatas[_currentGrabbingGroupIndex] = groupData;
 
-    _currentGrabbingGroup = -1;
+    _currentGrabbingGroupIndex = -1;
   }
 }
