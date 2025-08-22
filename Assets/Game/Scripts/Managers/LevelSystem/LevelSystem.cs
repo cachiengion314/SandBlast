@@ -105,8 +105,6 @@ public partial class LevelSystem : MonoBehaviour
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
-    if (!IsSlotsEmpty()) return;
-
     for (int i = 0; i < slotsParent.childCount; i++)
     {
       var colorValue = GetRamdomColor();
