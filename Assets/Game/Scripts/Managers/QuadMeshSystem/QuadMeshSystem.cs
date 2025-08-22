@@ -119,44 +119,6 @@ public class QuadMeshSystem : MonoBehaviour
     );
   }
 
-  /// <summary>
-  /// _lowerLeftBoundPos = -1, _upperRightBoundPos = -1 for a default value
-  /// </summary>
-  /// <param name="pos"></param>
-  /// <param name="index"></param>
-  /// <param name="_lowerLeftBoundPos"></param>
-  /// <param name="_upperRightBoundPos"></param>
-  public void OrderQuadMeshAt(
-    int index,
-    float3 pos,
-    int2 _lowerLeftBoundPos,
-    int2 _upperRightBoundPos
-  )
-  {
-    _vertices[index * 4]
-      = pos + new float3(-.5f * QuadScale.x, -.5f * QuadScale.y, 0);
-    _vertices[index * 4 + 1]
-      = pos + new float3(-.5f * QuadScale.x, .5f * QuadScale.y, 0);
-    _vertices[index * 4 + 2]
-      = pos + new float3(.5f * QuadScale.x, .5f * QuadScale.y, 0);
-    _vertices[index * 4 + 3]
-      = pos + new float3(.5f * QuadScale.x, -.5f * QuadScale.y, 0);
-
-    _triangles[index * 6] = index * 4;
-    _triangles[index * 6 + 1] = index * 4 + 1;
-    _triangles[index * 6 + 2] = index * 4 + 2;
-
-    _triangles[index * 6 + 3] = index * 4;
-    _triangles[index * 6 + 4] = index * 4 + 2;
-    _triangles[index * 6 + 5] = index * 4 + 3;
-
-    var lowerLeftBoundPos = _lowerLeftBoundPos;
-    if (lowerLeftBoundPos.Equals(-1)) lowerLeftBoundPos = LowerLeftBoundPosition;
-    var upperRightBoundPos = _upperRightBoundPos;
-    if (upperRightBoundPos.Equals(-1)) upperRightBoundPos = UpperRightBoundPosition;
-    OrderUVMappingAt(index, lowerLeftBoundPos, upperRightBoundPos);
-  }
-
   public void OrderQuadMeshAt(
     int index,
     float3 pos,
