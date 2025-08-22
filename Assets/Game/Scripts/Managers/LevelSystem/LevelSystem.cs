@@ -71,6 +71,7 @@ public partial class LevelSystem : MonoBehaviour
     }
 
     GrabbingBlockControlInUpdate();
+    CalculateGravityForQuadsInUpdate();
   }
 
   void SetupCurrentLevel(LevelInformation levelInformation)

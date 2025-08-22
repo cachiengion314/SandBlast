@@ -7,9 +7,26 @@ public partial class LevelSystem : MonoBehaviour
   int _currentQuadAmount;
   int _currentGrabbingGroupIndex = -1;
 
+  void OrderQuadMeshAt(int index, float3 pos, int colorValue)
+  {
+    var uvGridPos = RendererSystem.Instance.GetUVGridPosFrom(colorValue);
+    quadMeshSystem.OrderQuadMeshAt(index, pos, uvGridPos);
+  }
+
+  void ApplyDrawOrders()
+  {
+    quadMeshSystem.ApplyDrawOrders();
+  }
+
   int GetCurrentBlockAmount()
   {
     return _currentQuadAmount / 64;
+  }
+
+  bool IsQuadPlaced(int groupdIndex)
+  {
+    var groupData = _groupQuadDatas[groupdIndex];
+    return groupData.IsPlaced;
   }
 
   bool IsBlockShapeOutsideAt(int groupIdx)
@@ -186,14 +203,25 @@ public partial class LevelSystem : MonoBehaviour
     ApplyDrawOrders();
   }
 
-  void OrderQuadMeshAt(int index, float3 pos, int colorValue)
+  void CalculateGravityForQuadsInUpdate()
   {
-    var uvGridPos = RendererSystem.Instance.GetUVGridPosFrom(colorValue);
-    quadMeshSystem.OrderQuadMeshAt(index, pos, uvGridPos);
-  }
+    var uniformVelocity = new float3(0, -1, 0) * Time.deltaTime;
 
-  void ApplyDrawOrders()
-  {
-    quadMeshSystem.ApplyDrawOrders();
+    for (int i = 0; i < _currentQuadAmount; ++i)
+    {
+      var quadData = _quadDatas[i];
+      if (!quadData.IsActive) continue;
+      if (!IsQuadPlaced(quadData.GroupIndex)) continue;
+
+      var currQuadPos = quadData.Position;
+      var nextQuadPos = currQuadPos + uniformVelocity;
+      if (quadGrid.IsPosOutsideAt(nextQuadPos)) continue;
+
+      quadData.Position = nextQuadPos;
+      _quadDatas[i] = quadData;
+      OrderQuadMeshAt(i, nextQuadPos, quadData.ColorValue);
+    }
+
+    ApplyDrawOrders();
   }
 }
