@@ -84,7 +84,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void BakingGrids(LevelInformation levelInformation)
   {
-    var quadScale = new float2(.15f, .15f);
+    var quadScale = new float2(.11f, .11f);
 
     blockGrid.GridScale = quadScale * 8;
     blockGrid.GridSize = new int2(10, 12);
@@ -115,7 +115,6 @@ public partial class LevelSystem : MonoBehaviour
 
       if (!_groupQuadDatas.ContainsKey(i)) return;
       var groupData = _groupQuadDatas[i];
-      groupData.IsPlaced = false;
       _groupQuadDatas[i] = groupData;
     }
 

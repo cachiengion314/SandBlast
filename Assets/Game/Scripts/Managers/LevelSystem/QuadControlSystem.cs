@@ -5,6 +5,7 @@ using UnityEngine;
 public partial class LevelSystem : MonoBehaviour
 {
   int _currentQuadAmount;
+  int _placedShapesAmount;
   int _currentGrabbingGroupIndex = -1;
 
   void OrderQuadMeshAt(int index, float3 pos, int colorValue)
@@ -18,15 +19,21 @@ public partial class LevelSystem : MonoBehaviour
     quadMeshSystem.ApplyDrawOrders();
   }
 
+  void AssignQuadsToNewGroup(int newGroupIdx, int oldGroupIdx)
+  {
+    for (int i = 0; i < _currentQuadAmount; ++i)
+    {
+      var quadData = _quadDatas[i];
+      if (quadData.GroupIndex != oldGroupIdx) continue;
+      quadData.GroupIndex = newGroupIdx;
+      _quadDatas[i] = quadData;
+    }
+    _groupQuadDatas.Remove(oldGroupIdx);
+  }
+
   int GetCurrentBlockAmount()
   {
     return _currentQuadAmount / 64;
-  }
-
-  bool IsQuadPlaced(int groupdIndex)
-  {
-    var groupData = _groupQuadDatas[groupdIndex];
-    return groupData.IsPlaced;
   }
 
   bool IsBlockShapeOutsideAt(int groupIdx)
@@ -35,8 +42,6 @@ public partial class LevelSystem : MonoBehaviour
     for (int i = 0; i < _currentBlockAmount; ++i)
     {
       var data = _blockDatas[i];
-      var isActive = data.IsActive;
-      if (!isActive) continue;
       var _groupIdx = data.GroupIndex;
       if (_groupIdx != groupIdx) continue;
 
@@ -97,7 +102,6 @@ public partial class LevelSystem : MonoBehaviour
           GroupIndex = groupIndex,
           Position = slotGrid.ConvertGridPosToWorldPos(gridPos),
           ColorValue = colorValue,
-          IsActive = true,
         };
         _quadDatas[i] = data;
         _quadCenterOffsets[i] = data.Position - groupData.CenterPosition;
@@ -117,7 +121,7 @@ public partial class LevelSystem : MonoBehaviour
   )
   {
     var _currentBlockAmount = GetCurrentBlockAmount();
-    var slotPos = SetAndGetSlotGridPositionAt(slotIndex);
+    var slotPos = GetAndSetSlotGridPositionAt(slotIndex);
 
     var groupIdx = slotIndex;
     if (!_groupQuadDatas.ContainsKey(groupIdx))
@@ -127,7 +131,7 @@ public partial class LevelSystem : MonoBehaviour
         {
           CenterPosition = slotPos,
           ColorValue = colorValue,
-          IsPlaced = false
+          IsActive = true
         }
       );
 
@@ -141,8 +145,6 @@ public partial class LevelSystem : MonoBehaviour
       {
         GroupIndex = groupIdx,
         Position = blockPos,
-        ColorValue = colorValue,
-        IsActive = true,
         CenterOffset = blockPos - slotPos,
       };
       _blockDatas[_currentBlockAmount + i] = blockData;
@@ -163,11 +165,7 @@ public partial class LevelSystem : MonoBehaviour
     for (int i = 0; i < _currentBlockAmount; ++i)
     {
       var blockData = _blockDatas[i];
-      if (!blockData.IsActive) continue;
       if (blockData.GroupIndex != groupIdx) continue;
-
-      var blockGroupId = blockData.GroupIndex;
-      if (_groupQuadDatas[blockGroupId].IsPlaced) continue;
 
       var offset = blockData.CenterOffset;
       var nextBlockPos = groupData.CenterPosition + offset;
@@ -179,10 +177,7 @@ public partial class LevelSystem : MonoBehaviour
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
       var quadData = _quadDatas[i];
-      if (!quadData.IsActive) continue;
       if (quadData.GroupIndex != groupIdx) continue;
-      var quadGroupId = quadData.GroupIndex;
-      if (_groupQuadDatas[quadGroupId].IsPlaced) continue;
 
       var offset = _quadCenterOffsets[i];
       var nextQuadPos = groupData.CenterPosition + offset;
@@ -210,13 +205,13 @@ public partial class LevelSystem : MonoBehaviour
 
   void CalculateGravityForQuadsInUpdate()
   {
-    var uniformVelocity = new float3(0, -1, 0) * Time.deltaTime;
+    var uniformVelocity = 4.5f * Time.deltaTime * new float3(0, -1, 0);
 
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
       var quadData = _quadDatas[i];
-      if (!quadData.IsActive) continue;
-      if (!IsQuadPlaced(quadData.GroupIndex)) continue;
+      if (!_groupQuadDatas[quadData.GroupIndex].IsActive) continue;
+      if (IsSlotIndex(quadData.GroupIndex)) continue;
 
       var currQuadPos = quadData.Position;
       var nextQuadPos = currQuadPos + uniformVelocity;
