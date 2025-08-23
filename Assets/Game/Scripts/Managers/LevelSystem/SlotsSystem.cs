@@ -7,14 +7,14 @@ public partial class LevelSystem : MonoBehaviour
 
   int GenerateUniqueGroupIdx()
   {
-    var newGroupIdx = 3 + _placedShapesAmount;
+    var newGroupIdx = slotsParent.childCount + _placedShapesAmount;
     _placedShapesAmount++;
     return newGroupIdx;
   }
 
   bool IsSlotIndex(int groupIdx)
   {
-    return groupIdx < 3;
+    return groupIdx < slotsParent.childCount;
   }
 
   float3 GetAndSetSlotGridPositionAt(int slotIndex)
@@ -65,6 +65,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void OnTouchSlot(int slotIndex)
   {
+    if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
     if (IsSlotEmptyAt(slotIndex)) return;
 
     _currentGrabbingGroupIndex = slotIndex;
