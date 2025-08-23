@@ -22408,11 +22408,11 @@ MonoBehaviour:
     y: 1
   QuadCapacity: 12800
   GridResolution:
-    x: 3
-    y: 3
+    x: 4
+    y: 8
   TextureResolution:
     x: 128
-    y: 128
+    y: 256
   LowerLeftBoundPosition:
     x: 1792
     y: 1792
@@ -24054,7 +24054,7 @@ PrefabInstance:
     - target: {fileID: 2140242392129971658, guid: a6f6e9e13b37b4db7bd8993d98c0039f,
         type: 3}
       propertyPath: m_Name
-      value: DrakPanel
+      value: DarkPanel
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

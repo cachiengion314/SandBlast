@@ -10,7 +10,8 @@ public partial class LevelSystem : MonoBehaviour
 
   void OrderQuadMeshAt(int index, float3 pos, int colorValue)
   {
-    var uvGridPos = RendererSystem.Instance.GetUVGridPosFrom(colorValue);
+    // var uvGridPos = RendererSystem.Instance.GetUVGridPosFrom(colorValue);
+    var uvGridPos = quadMeshSystem.ConvertIndexToGridPos(colorValue);
     quadMeshSystem.OrderQuadMeshAt(index, pos, uvGridPos);
   }
 
@@ -92,16 +93,26 @@ public partial class LevelSystem : MonoBehaviour
     var startY = startSlotGridPos.y;
 
     var i = startIndex;
+    var colorGird = quadMeshSystem.ConvertIndexToGridPos(colorValue);
     for (int x = startX; x < startX + 8; ++x)
     {
       for (int y = startY; y < startY + 8; ++y)
       {
+        var newColorIndex = colorValue;
+        var ratio = UnityEngine.Random.Range(0f, 100f);
+        if (ratio > 80f)
+        {
+          var xColor = UnityEngine.Random.Range(0, quadMeshSystem.GridResolution.x);
+          var newColorGrid = new int2(xColor, colorGird.y);
+          newColorIndex = quadMeshSystem.ConvertGirdPosToIndex(newColorGrid);
+        }
+
         var gridPos = new int2(x, y);
         var data = new QuadData
         {
           GroupIndex = groupIndex,
           Position = slotGrid.ConvertGridPosToWorldPos(gridPos),
-          ColorValue = colorValue,
+          ColorValue = newColorIndex,
         };
         _quadDatas[i] = data;
         _quadCenterOffsets[i] = data.Position - groupData.CenterPosition;

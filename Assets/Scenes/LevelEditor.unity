@@ -9590,11 +9590,21 @@ MonoBehaviour:
       Health: 1
     AvailableColorDatas:
     - ColorValue: 0
-      ratio: 30
+      ratio: 10
     - ColorValue: 1
-      ratio: 30
+      ratio: 10
     - ColorValue: 2
-      ratio: 40
+      ratio: 10
+    - ColorValue: 3
+      ratio: 10
+    - ColorValue: 4
+      ratio: 10
+    - ColorValue: 5
+      ratio: 10
+    - ColorValue: 6
+      ratio: 10
+    - ColorValue: 7
+      ratio: 30
   datas:
   - ColorValue: 2
     RowAmount: 7

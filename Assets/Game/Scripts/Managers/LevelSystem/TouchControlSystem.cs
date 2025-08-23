@@ -26,6 +26,7 @@ public partial class LevelSystem : MonoBehaviour
 
   private void OnFingerDown(LeanFinger finger)
   {
+    if (!isLoadedLevel) return;
     _isUserScreenTouching = true;
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
 
@@ -42,6 +43,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void OnFingerUpdate(LeanFinger finger)
   {
+    if (!isLoadedLevel) return;
     _isUserScreenTouching = true;
 
     userTouchScreenPosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
@@ -49,9 +51,11 @@ public partial class LevelSystem : MonoBehaviour
 
   private void OnFingerInactive(LeanFinger finger)
   {
+    if (!isLoadedLevel) return;
     _isUserScreenTouching = false;
 
     OnInactive();
+    if (!IsSlotsEmpty()) return;
     SpawnAndBakingEntityDatas(_levelInformation);
   }
 }
