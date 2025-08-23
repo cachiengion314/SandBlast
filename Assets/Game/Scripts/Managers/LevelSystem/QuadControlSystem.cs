@@ -102,7 +102,7 @@ public partial class LevelSystem : MonoBehaviour
         var ratio = UnityEngine.Random.Range(0f, 100f);
         if (ratio > 80f)
         {
-          var xColor = UnityEngine.Random.Range(0, quadMeshSystem.GridResolution.x -1);
+          var xColor = UnityEngine.Random.Range(0, quadMeshSystem.GridResolution.x - 1);
           var newColorGrid = new int2(xColor, colorGird.y);
           newColorIndex = quadMeshSystem.ConvertGirdPosToIndex(newColorGrid);
         }
@@ -121,6 +121,19 @@ public partial class LevelSystem : MonoBehaviour
     }
   }
 
+  int FindFirstInactivedGroupIdx()
+  {
+    using var kvArray = _groupQuadDatas.GetKeyValueArrays(Allocator.Temp);
+    for (int i = 0; i < kvArray.Length; ++i)
+    {
+      var key = kvArray.Keys[i];
+      var val = kvArray.Values[i];
+      if (val.IsActive) continue;
+      return key;
+    }
+    return -1;
+  }
+
   /// <summary>
   /// block position is position from block space with (0,0) at the center of the slot.
   /// One unit block equal to an 8x8 quads size
@@ -132,6 +145,9 @@ public partial class LevelSystem : MonoBehaviour
   )
   {
     var _currentBlockAmount = GetCurrentBlockAmount();
+    var additionAmount = blockSlotPositions.Length * 64;
+    var startSpawnedQuadIndex = _currentQuadAmount;
+
     var slotPos = GetAndSetSlotGridPositionAt(slotIndex);
 
     var groupIdx = slotIndex;
@@ -141,15 +157,28 @@ public partial class LevelSystem : MonoBehaviour
         new GroupQuadsData
         {
           CenterPosition = slotPos,
+          StartSpawnedQuadIndex = startSpawnedQuadIndex,
+          QuadsAmount = additionAmount,
           ColorValue = colorValue,
           IsActive = true
         }
       );
 
+    var foundGroupIdx = FindFirstInactivedGroupIdx();
+    if (foundGroupIdx != -1)
+    {
+      startSpawnedQuadIndex = _groupQuadDatas[foundGroupIdx].StartSpawnedQuadIndex;
+      var groupData = _groupQuadDatas[groupIdx];
+      groupData.StartSpawnedQuadIndex = startSpawnedQuadIndex;
+      groupData.QuadsAmount = _groupQuadDatas[foundGroupIdx].QuadsAmount;
+      _groupQuadDatas[groupIdx] = groupData;
+      _groupQuadDatas.Remove(foundGroupIdx);
+    }
+
     for (int i = 0; i < blockSlotPositions.Length; ++i)
     {
       var blockSlotPos = blockSlotPositions[i];
-      OrderUnitBlockAt(_currentQuadAmount + i * 64, blockSlotPos, groupIdx, colorValue);
+      OrderUnitBlockAt(startSpawnedQuadIndex + i * 64, blockSlotPos, groupIdx, colorValue);
 
       var blockPos = ConvertSlotPosToWorldPos(blockSlotPos);
       var blockData = new BlockData
@@ -161,12 +190,11 @@ public partial class LevelSystem : MonoBehaviour
       _blockDatas[_currentBlockAmount + i] = blockData;
     }
 
-    var additionAmount = blockSlotPositions.Length * 64;
     var availableAmount = GetAvailableQuadAmount(additionAmount);
     _currentQuadAmount = availableAmount;
   }
 
-  void OrderBlockPositionsTo(float3 targetPos, int groupIdx)
+  void OrderShapePositionsTo(float3 targetPos, int groupIdx)
   {
     var groupData = _groupQuadDatas[groupIdx];
     groupData.CenterPosition = targetPos;
@@ -210,7 +238,7 @@ public partial class LevelSystem : MonoBehaviour
       userTouchScreenPosition.x, userTouchScreenPosition.y, 0
     );
     var targetPos = _userTouchScreenPos + touchOffset;
-    OrderBlockPositionsTo(targetPos, _currentGrabbingGroupIndex);
+    OrderShapePositionsTo(targetPos, _currentGrabbingGroupIndex);
     ApplyDrawOrders();
   }
 
@@ -221,6 +249,8 @@ public partial class LevelSystem : MonoBehaviour
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
       var quadData = _quadDatas[i];
+
+      if (!_groupQuadDatas.ContainsKey(quadData.GroupIndex)) continue;
       if (!_groupQuadDatas[quadData.GroupIndex].IsActive) continue;
       if (IsSlotIndex(quadData.GroupIndex)) continue;
 
