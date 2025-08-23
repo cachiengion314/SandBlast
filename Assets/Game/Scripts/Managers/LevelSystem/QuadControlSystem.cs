@@ -102,7 +102,7 @@ public partial class LevelSystem : MonoBehaviour
         var ratio = UnityEngine.Random.Range(0f, 100f);
         if (ratio > 80f)
         {
-          var xColor = UnityEngine.Random.Range(0, quadMeshSystem.GridResolution.x);
+          var xColor = UnityEngine.Random.Range(0, quadMeshSystem.GridResolution.x -1);
           var newColorGrid = new int2(xColor, colorGird.y);
           newColorIndex = quadMeshSystem.ConvertGirdPosToIndex(newColorGrid);
         }
