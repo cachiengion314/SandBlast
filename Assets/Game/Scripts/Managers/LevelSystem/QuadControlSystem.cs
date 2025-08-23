@@ -215,7 +215,13 @@ public partial class LevelSystem : MonoBehaviour
 
       var currQuadPos = quadData.Position;
       var nextQuadPos = currQuadPos + uniformVelocity;
-      if (quadGrid.IsPosOutsideAt(nextQuadPos)) continue;
+      if (quadGrid.IsPosOutsideAt(nextQuadPos))
+      {
+        var groupData = _groupQuadDatas[quadData.GroupIndex];
+        groupData.IsActive = false;
+        _groupQuadDatas[quadData.GroupIndex] = groupData;
+        continue;
+      }
 
       quadData.Position = nextQuadPos;
       _quadDatas[i] = quadData;
