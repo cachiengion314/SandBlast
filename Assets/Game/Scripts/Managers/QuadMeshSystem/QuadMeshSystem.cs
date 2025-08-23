@@ -45,6 +45,19 @@ public class QuadMeshSystem : MonoBehaviour
     return arr;
   }
 
+  public int2 ConvertIndexToGridPos(in int index)
+  {
+    int x = index % GridResolution.x;
+    int y = index / GridResolution.x;
+    return new int2(x, y);
+  }
+
+  public int ConvertGirdPosToIndex(in int2 girdPos)
+  {
+    int index = girdPos.x + girdPos.y * GridResolution.x;
+    return index;
+  }
+
   public void InitComponents()
   {
     vertices = new Vector3[4 * QuadCapacity];
