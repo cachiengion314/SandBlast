@@ -6,8 +6,6 @@ public struct BlockData
 {
   public int GroupIndex;
   public float3 Position;
-  public int ColorValue;
-  public bool IsActive;
   public float3 CenterOffset;
 }
 
@@ -16,14 +14,13 @@ public struct QuadData
   public int GroupIndex;
   public float3 Position;
   public int ColorValue;
-  public bool IsActive;
 }
 
 public struct GroupQuadsData
 {
   public float3 CenterPosition;
   public int ColorValue;
-  public bool IsPlaced;
+  public bool IsActive;
 }
 
 public partial class LevelSystem : MonoBehaviour

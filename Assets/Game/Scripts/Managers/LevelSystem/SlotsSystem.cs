@@ -5,7 +5,19 @@ public partial class LevelSystem : MonoBehaviour
 {
   [SerializeField] Transform slotsParent;
 
-  float3 SetAndGetSlotGridPositionAt(int slotIndex)
+  int GenerateUniqueGroupIdx()
+  {
+    var newGroupIdx = 3 + _placedShapesAmount;
+    _placedShapesAmount++;
+    return newGroupIdx;
+  }
+
+  bool IsSlotIndex(int groupIdx)
+  {
+    return groupIdx < 3;
+  }
+
+  float3 GetAndSetSlotGridPositionAt(int slotIndex)
   {
     var slotPos = GetSlotPositionAt(slotIndex);
     slotGrid.transform.position = slotPos;
@@ -41,9 +53,6 @@ public partial class LevelSystem : MonoBehaviour
   int GetCurrentGroupIndexInSlot(int slotIndex)
   {
     if (!_groupQuadDatas.ContainsKey(slotIndex)) return -1;
-    var groupData = _groupQuadDatas[slotIndex];
-    if (groupData.IsPlaced) return -1;
-
     return slotIndex;
   }
 
@@ -67,7 +76,7 @@ public partial class LevelSystem : MonoBehaviour
     if (!_groupQuadDatas.ContainsKey(_currentGrabbingGroupIndex)) return;
     if (IsBlockShapeOutsideAt(_currentGrabbingGroupIndex))
     {
-      var slotPos = SetAndGetSlotGridPositionAt(_currentGrabbingGroupIndex);
+      var slotPos = GetAndSetSlotGridPositionAt(_currentGrabbingGroupIndex);
       OrderBlockPositionsTo(slotPos, _currentGrabbingGroupIndex);
       ApplyDrawOrders();
 
@@ -75,9 +84,17 @@ public partial class LevelSystem : MonoBehaviour
       return;
     }
 
-    var groupData = _groupQuadDatas[_currentGrabbingGroupIndex];
-    groupData.IsPlaced = true;
-    _groupQuadDatas[_currentGrabbingGroupIndex] = groupData;
+    var oldGroupData = _groupQuadDatas[_currentGrabbingGroupIndex];
+    var newGroupIdx = GenerateUniqueGroupIdx();
+    var newGroupData = new GroupQuadsData
+    {
+      CenterPosition = oldGroupData.CenterPosition,
+      ColorValue = oldGroupData.ColorValue,
+      IsActive = true
+    };
+    _groupQuadDatas.Add(newGroupIdx, newGroupData);
+
+    AssignQuadsToNewGroup(newGroupIdx, _currentGrabbingGroupIndex);
 
     _currentGrabbingGroupIndex = -1;
   }

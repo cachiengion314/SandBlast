@@ -6,12 +6,11 @@ public partial class LevelSystem : MonoBehaviour
   {
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
-      var data = _quadDatas[i];
-      var isActive = data.IsActive;
-      if (!isActive) continue;
+      var quadData = _quadDatas[i];
+      if (!_groupQuadDatas[quadData.GroupIndex].IsActive) continue;
 
-      var pos = data.Position;
-      OrderQuadMeshAt(i, pos, data.ColorValue);
+      var pos = quadData.Position;
+      OrderQuadMeshAt(i, pos, quadData.ColorValue);
     }
   }
 }
