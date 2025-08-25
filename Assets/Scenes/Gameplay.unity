@@ -20632,16 +20632,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4878564222669383056, guid: 027a3f7ea1c654223990d2dede1c07fe,
-        type: 3}
-      propertyPath: ShootingSfx
-      value: 
-      objectReference: {fileID: 8300000, guid: a4c0f056510b341ac84aebd3317d3530, type: 3}
-    - target: {fileID: 4878564222669383056, guid: 027a3f7ea1c654223990d2dede1c07fe,
-        type: 3}
-      propertyPath: destoyColorBlockSfx
-      value: 
-      objectReference: {fileID: 8300000, guid: a4c0f056510b341ac84aebd3317d3530, type: 3}
     - target: {fileID: 5160761483926919081, guid: 027a3f7ea1c654223990d2dede1c07fe,
         type: 3}
       propertyPath: m_LocalPosition.x

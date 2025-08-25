@@ -69,6 +69,7 @@ public partial class LevelSystem : MonoBehaviour
     if (IsSlotEmptyAt(slotIndex)) return;
 
     _currentGrabbingShapeIndex = slotIndex;
+    SoundManager.Instance.PlayDragBlockSfx();
   }
 
   void OnInactive()
@@ -82,6 +83,7 @@ public partial class LevelSystem : MonoBehaviour
       ApplyDrawOrders();
 
       _currentGrabbingShapeIndex = -1;
+      SoundManager.Instance.PlayDropBlockSfx();
       return;
     }
 

@@ -18,6 +18,14 @@ public partial class SoundManager : MonoBehaviour
   [SerializeField] AudioClip CollectCoinSfx;
   [SerializeField] AudioClip ShootingSfx;
   [SerializeField] AudioClip destoyColorBlockSfx;
+  [SerializeField] AudioClip comboX1Sfx;
+  [SerializeField] AudioClip comboX2Sfx;
+  [SerializeField] AudioClip comboX3Sfx;
+  [SerializeField] AudioClip dragBlockSfx;
+  [SerializeField] AudioClip dropBlockSfx;
+  [SerializeField] AudioClip outOfAmmoSfx;
+  [SerializeField] AudioClip fullOfBullets;
+  [SerializeField] AudioClip sandSfx;
 
   [Header("Components")]
   [SerializeField] AudioSource audioSource;
@@ -51,6 +59,39 @@ public partial class SoundManager : MonoBehaviour
     {
       StopMainThemeSfx();
     }
+  }
+
+  public void PlayWinLevelSfx()
+  {
+    if (GameManager.Instance.IsHapticOn)
+    {
+      HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+    }
+    if (!GameManager.Instance.IsSoundOn) return;
+    AudioSource.PlayClipAtPoint(winLevelSfx, Vector3.forward * -5, 1f);
+  }
+
+  public void PlayLoseLevelSfx()
+  {
+    if (GameManager.Instance.IsHapticOn)
+    {
+      HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+    }
+    if (!GameManager.Instance.IsSoundOn) return;
+    AudioSource.PlayClipAtPoint(loseLevelSfx, Vector3.forward * -5, 1f);
+  }
+
+  public void PlayMainThemeSfx()
+  {
+    audioSource.volume = .5f;
+    audioSource.clip = mainTheme;
+    audioSource.loop = true;
+    audioSource.Play();
+  }
+
+  public void StopMainThemeSfx()
+  {
+    audioSource.Stop();
   }
 
   public void PlayPressBtnSfx()
@@ -93,36 +134,83 @@ public partial class SoundManager : MonoBehaviour
     AudioSource.PlayClipAtPoint(CollectCoinSfx, Vector3.forward * -5, 1f);
   }
 
-  public void PlayWinLevelSfx()
+  public void PlayComboX1Sfx()
   {
     if (GameManager.Instance.IsHapticOn)
     {
       HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
     }
     if (!GameManager.Instance.IsSoundOn) return;
-    AudioSource.PlayClipAtPoint(winLevelSfx, Vector3.forward * -5, 1f);
+    AudioSource.PlayClipAtPoint(comboX1Sfx, Vector3.forward * -5, 1f);
   }
 
-  public void PlayLoseLevelSfx()
+  public void PlayComboX2Sfx()
   {
     if (GameManager.Instance.IsHapticOn)
     {
       HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
     }
     if (!GameManager.Instance.IsSoundOn) return;
-    AudioSource.PlayClipAtPoint(loseLevelSfx, Vector3.forward * -5, 1f);
+    AudioSource.PlayClipAtPoint(comboX2Sfx, Vector3.forward * -5, 1f);
   }
 
-  public void PlayMainThemeSfx()
+  public void PlayComboX3Sfx()
   {
-    audioSource.volume = .15f;
-    audioSource.clip = mainTheme;
-    audioSource.loop = true;
-    audioSource.Play();
+    if (GameManager.Instance.IsHapticOn)
+    {
+      HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+    }
+    if (!GameManager.Instance.IsSoundOn) return;
+    AudioSource.PlayClipAtPoint(comboX3Sfx, Vector3.forward * -5, 1f);
   }
 
-  public void StopMainThemeSfx()
+  public void PlayDragBlockSfx()
   {
-    audioSource.Stop();
+    if (GameManager.Instance.IsHapticOn)
+    {
+      HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+    }
+    if (!GameManager.Instance.IsSoundOn) return;
+    AudioSource.PlayClipAtPoint(dragBlockSfx, Vector3.forward * -5, 1f);
+  }
+
+  public void PlayDropBlockSfx()
+  {
+    if (GameManager.Instance.IsHapticOn)
+    {
+      HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+    }
+    if (!GameManager.Instance.IsSoundOn) return;
+    AudioSource.PlayClipAtPoint(dropBlockSfx, Vector3.forward * -5, 1f);
+  }
+
+  public void PlayOutOfAmmoSfx()
+  {
+    if (GameManager.Instance.IsHapticOn)
+    {
+      HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+    }
+    if (!GameManager.Instance.IsSoundOn) return;
+    AudioSource.PlayClipAtPoint(outOfAmmoSfx, Vector3.forward * -5, 1f);
+  }
+
+  public void PlayFullOfBulletSfx()
+  {
+    if (GameManager.Instance.IsHapticOn)
+    {
+      HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+    }
+    if (!GameManager.Instance.IsSoundOn) return;
+    AudioSource.PlayClipAtPoint(fullOfBullets, Vector3.forward * -5, 1f);
+  }
+
+  public void PlaySandSfx()
+  {
+    if (GameManager.Instance.IsHapticOn)
+    {
+      HapticPatterns.PlayPreset(HapticPatterns.PresetType.LightImpact);
+    }
+    if (!GameManager.Instance.IsSoundOn) return;
+    AudioSource.PlayClipAtPoint(sandSfx, Vector3.forward * -5, 1f);
   }
 }

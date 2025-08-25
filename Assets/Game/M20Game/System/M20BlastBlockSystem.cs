@@ -32,6 +32,7 @@ public partial class M20LevelSystem
             (value) => spriteRend.GetBodyRenderer().material.SetFloat("_Saturation", value),
             1f, duration
         ).SetEase(Ease.InOutSine);
+        SoundManager.Instance.PlayFullOfBulletSfx();
     }
 
     int FindIndexEmptyBlast()

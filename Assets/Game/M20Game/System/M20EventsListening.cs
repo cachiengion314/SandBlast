@@ -18,9 +18,9 @@ public partial class M20LevelSystem
             0f, duration
         ).SetEase(Ease.InOutSine);
         blast.transform.DORotate(new Vector3(0, 0, 0), duration)
-             .SetEase(Ease.InOutSine); 
-        if (blast.TryGetComponent(out IColorBlock color))
-            SpawnColorSplashEfxAt(blast.transform.position, color.GetColorValue());
+             .SetEase(Ease.InOutSine);
+        SpawnColorSplashEfxAt(blast.transform.position, colorBlast.GetColorValue());
+        SoundManager.Instance.PlayOutOfAmmoSfx();
     }
     void OnColorBlockDestroyedByBullet(GameObject colorBlock)
     {
