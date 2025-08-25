@@ -7,9 +7,9 @@ public partial class GameplayPanel
     [SerializeField] BoosterCtrl booster1Ctrl;
     [SerializeField] BoosterCtrl booster2Ctrl;
     [SerializeField] BoosterCtrl booster3Ctrl;
-    int levelUnlockBooster1 = 4;
-    int levelUnlockBooster2 = 9;
-    int levelUnlockBooster3 = 14;
+    int levelUnlockBooster1 = 0;
+    int levelUnlockBooster2 = 0;
+    int levelUnlockBooster3 = 0;
     void InitBooster()
     {
         VisualeTriggerBooster1();
@@ -36,7 +36,7 @@ public partial class GameplayPanel
             ToggleBooster1Modal();
         else
         {
-
+            LevelSystem.Instance.OnTriggerBooster1();
         }
     }
 
