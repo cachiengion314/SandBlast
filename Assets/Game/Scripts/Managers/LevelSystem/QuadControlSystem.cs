@@ -134,6 +134,42 @@ public partial class LevelSystem : MonoBehaviour
     return -1;
   }
 
+  void GenerateEmptyShape(
+    int givenShapeIdx,
+    float3 slotPos,
+    int colorValue,
+    ref int startSpawnedQuadIndex,
+    ref int additionAmount
+  )
+  {
+    if (!_blockShapeDatas.ContainsKey(givenShapeIdx))
+      _blockShapeDatas.Add(
+        givenShapeIdx,
+        new BlockShapeData
+        {
+          CenterPosition = slotPos,
+          StartSpawnedQuadIndex = startSpawnedQuadIndex,
+          QuadsAmount = additionAmount,
+          ColorValue = colorValue,
+          IsActive = true
+        }
+      );
+
+    var foundShapeIdx = FindFirstInactivedShapeIdx();
+    if (foundShapeIdx != -1)
+    {
+      startSpawnedQuadIndex = _blockShapeDatas[foundShapeIdx].StartSpawnedQuadIndex;
+      additionAmount = 0;
+
+      var shapeData = _blockShapeDatas[givenShapeIdx];
+      shapeData.StartSpawnedQuadIndex = startSpawnedQuadIndex;
+      shapeData.QuadsAmount = _blockShapeDatas[foundShapeIdx].QuadsAmount;
+      shapeData.IsActive = true;
+      _blockShapeDatas[givenShapeIdx] = shapeData;
+      _blockShapeDatas.Remove(foundShapeIdx);
+    }
+  }
+
   /// <summary>
   /// block position is position from block space with (0,0) at the center of the slot.
   /// One unit block equal to an 8x8 quads size
@@ -151,32 +187,9 @@ public partial class LevelSystem : MonoBehaviour
     var slotPos = GetAndSetSlotGridPositionAt(slotIndex);
 
     var shapeIdx = slotIndex;
-    if (!_blockShapeDatas.ContainsKey(shapeIdx))
-      _blockShapeDatas.Add(
-        shapeIdx,
-        new BlockShapeData
-        {
-          CenterPosition = slotPos,
-          StartSpawnedQuadIndex = startSpawnedQuadIndex,
-          QuadsAmount = additionAmount,
-          ColorValue = colorValue,
-          IsActive = true
-        }
-      );
-
-    var foundShapeIdx = FindFirstInactivedShapeIdx();
-    if (foundShapeIdx != -1)
-    {
-      startSpawnedQuadIndex = _blockShapeDatas[foundShapeIdx].StartSpawnedQuadIndex;
-      additionAmount = 0;
-
-      var shapeData = _blockShapeDatas[shapeIdx];
-      shapeData.StartSpawnedQuadIndex = startSpawnedQuadIndex;
-      shapeData.QuadsAmount = _blockShapeDatas[foundShapeIdx].QuadsAmount;
-      shapeData.IsActive = true;
-      _blockShapeDatas[shapeIdx] = shapeData;
-      _blockShapeDatas.Remove(foundShapeIdx);
-    }
+    GenerateEmptyShape(
+      shapeIdx, slotPos, colorValue, ref startSpawnedQuadIndex, ref additionAmount
+    );
 
     for (int i = 0; i < blockSlotPositions.Length; ++i)
     {

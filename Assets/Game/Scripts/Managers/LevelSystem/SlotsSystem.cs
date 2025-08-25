@@ -85,7 +85,7 @@ public partial class LevelSystem : MonoBehaviour
       return;
     }
 
-    // change current slot's group to the new group that belong to the board space
+    // change current shape of slot to the shkape that belong to the board space
     var oldShapeData = _blockShapeDatas[_currentGrabbingShapeIndex];
     var newShapeIdx = GenerateUniqueShapeIdx();
     var newShapeData = new BlockShapeData
