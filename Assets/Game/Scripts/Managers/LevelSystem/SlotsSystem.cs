@@ -78,13 +78,14 @@ public partial class LevelSystem : MonoBehaviour
     if (IsBlockShapeOutsideAt(_currentGrabbingGroupIndex))
     {
       var slotPos = GetAndSetSlotGridPositionAt(_currentGrabbingGroupIndex);
-      OrderBlockPositionsTo(slotPos, _currentGrabbingGroupIndex);
+      OrderShapePositionsTo(slotPos, _currentGrabbingGroupIndex);
       ApplyDrawOrders();
 
       _currentGrabbingGroupIndex = -1;
       return;
     }
 
+    // change current slot's group to new group that belong to the board space
     var oldGroupData = _groupQuadDatas[_currentGrabbingGroupIndex];
     var newGroupIdx = GenerateUniqueGroupIdx();
     var newGroupData = new GroupQuadsData
