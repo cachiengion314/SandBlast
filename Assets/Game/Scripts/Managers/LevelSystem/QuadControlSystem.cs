@@ -10,7 +10,6 @@ public partial class LevelSystem : MonoBehaviour
 
   void OrderQuadMeshAt(int index, float3 pos, int colorValue)
   {
-    // var uvGridPos = RendererSystem.Instance.GetUVGridPosFrom(colorValue);
     var uvGridPos = quadMeshSystem.ConvertIndexToGridPos(colorValue);
     quadMeshSystem.OrderQuadMeshAt(index, pos, uvGridPos);
   }
@@ -18,6 +17,31 @@ public partial class LevelSystem : MonoBehaviour
   void ApplyDrawOrders()
   {
     quadMeshSystem.ApplyDrawOrders();
+  }
+
+  bool AreDiagonalsEmptyAt(int2 gridPos)
+  {
+    return false;
+  }
+
+  float3 FindUnderEmptyQuadPosAt(float3 quadPos)
+  {
+    var gridPos = FindUnderEmptyQuadGridPosAt(quadPos);
+    if (gridPos.Equals(-1)) return -1;
+    return quadGrid.ConvertGridPosToWorldPos(gridPos);
+  }
+
+  int2 FindUnderEmptyQuadGridPosAt(float3 quadPos)
+  {
+    var gridPos = quadGrid.ConvertWorldPosToGridPos(quadPos);
+    var x = gridPos.x;
+    for (int y = 0; y < gridPos.y; ++y)
+    {
+      var _currGridPos = new int2(x, y);
+      var _currIdx = quadGrid.ConvertGridPosToIndex(_currGridPos);
+      if (_quadIndexesDatas[_currIdx] == -1) return _currGridPos;
+    }
+    return -1;
   }
 
   void AssignQuadsToNewShape(int newShapeIdx, int oldShapeIdx)
@@ -112,6 +136,7 @@ public partial class LevelSystem : MonoBehaviour
         {
           ShapeIndex = shapeIndex,
           Position = slotGrid.ConvertGridPosToWorldPos(gridPos),
+          PlacedIndex = -1,
           ColorValue = newColorIndex,
         };
         _quadDatas[i] = data;
@@ -260,29 +285,31 @@ public partial class LevelSystem : MonoBehaviour
 
   void CalculateGravityForQuadsInUpdate()
   {
-    var uniformVelocity = 8.0f * Time.deltaTime * new float3(0, -1, 0);
-
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
       var quadData = _quadDatas[i];
 
       if (!_blockShapeDatas.ContainsKey(quadData.ShapeIndex)) continue;
       if (!_blockShapeDatas[quadData.ShapeIndex].IsActive) continue;
-      if (IsSlotIndex(quadData.ShapeIndex)) continue;
-
-      var currQuadPos = quadData.Position;
-      var nextQuadPos = currQuadPos + uniformVelocity;
-      if (quadGrid.IsPosOutsideAt(nextQuadPos))
+      if (!IsPlacedShape(quadData.ShapeIndex)) continue;
+      // TODO: heavyly calculations
+      if (quadData.PlacedIndex != -1)
       {
-        var shapeData = _blockShapeDatas[quadData.ShapeIndex];
-        shapeData.IsActive = false;
-        _blockShapeDatas[quadData.ShapeIndex] = shapeData;
+        // 
+
         continue;
       }
+      if (quadGrid.IsPosOutsideAt(quadData.Position)) continue;
+      var currQuadPos = quadData.Position;
+      var underEmptyPos = FindUnderEmptyQuadPosAt(currQuadPos);
+      var underEmptyIdx = quadGrid.ConvertWorldPosToIndex(underEmptyPos);
+      if (underEmptyPos.Equals(-1)) { continue; }
 
-      quadData.Position = nextQuadPos;
+      _quadIndexesDatas[underEmptyIdx] = i;
+      quadData.Position = underEmptyPos;
+      quadData.PlacedIndex = underEmptyIdx;
       _quadDatas[i] = quadData;
-      OrderQuadMeshAt(i, nextQuadPos, quadData.ColorValue);
+      OrderQuadMeshAt(i, underEmptyPos, quadData.ColorValue);
     }
 
     ApplyDrawOrders();

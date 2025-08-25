@@ -12,9 +12,9 @@ public partial class LevelSystem : MonoBehaviour
     return newShapeIdx;
   }
 
-  bool IsSlotIndex(int shapeIdx)
+  bool IsPlacedShape(int shapeIdx)
   {
-    return shapeIdx < slotsParent.childCount;
+    return shapeIdx >= slotsParent.childCount;
   }
 
   float3 GetAndSetSlotGridPositionAt(int slotIndex)
