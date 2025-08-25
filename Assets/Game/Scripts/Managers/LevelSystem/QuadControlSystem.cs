@@ -260,7 +260,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void CalculateGravityForQuadsInUpdate()
   {
-    var uniformVelocity = 4.5f * Time.deltaTime * new float3(0, -1, 0);
+    var uniformVelocity = 8.0f * Time.deltaTime * new float3(0, -1, 0);
 
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
