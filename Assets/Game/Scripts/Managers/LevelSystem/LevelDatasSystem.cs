@@ -33,6 +33,7 @@ public partial class LevelSystem : MonoBehaviour
   NativeArray<float3> _shapeCenterOffsets;
   NativeHashMap<int, BlockShapeData> _blockShapeDatas;
   NativeArray<BlockData> _blockDatas;
+  NativeArray<int2> _diagonalDirections;
 
   void InitDataBuffers(LevelInformation levelInformation)
   {
@@ -43,6 +44,10 @@ public partial class LevelSystem : MonoBehaviour
     _shapeCenterOffsets = new NativeArray<float3>(totalBoardQuadsAmount, Allocator.Persistent);
     _blockShapeDatas = new NativeHashMap<int, BlockShapeData>(blockGrid.GridSize.x * blockGrid.GridSize.y / 4, Allocator.Persistent);
     _blockDatas = new NativeArray<BlockData>(blockGrid.GridSize.x * blockGrid.GridSize.y, Allocator.Persistent);
+
+    _diagonalDirections = new NativeArray<int2>(2, Allocator.Persistent);
+    _diagonalDirections[0] = new(-1, -1);
+    _diagonalDirections[1] = new(1, -1);
   }
 
   void DisposeDataBuffers()
@@ -52,5 +57,6 @@ public partial class LevelSystem : MonoBehaviour
     _shapeCenterOffsets.Dispose();
     _blockShapeDatas.Dispose();
     _blockDatas.Dispose();
+    _diagonalDirections.Dispose();
   }
 }

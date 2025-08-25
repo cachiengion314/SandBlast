@@ -19,9 +19,16 @@ public partial class LevelSystem : MonoBehaviour
     quadMeshSystem.ApplyDrawOrders();
   }
 
-  bool AreDiagonalsEmptyAt(int2 gridPos)
+  int FindEmptyDiagonalIndexAt(int2 gridPos)
   {
-    return false;
+    for (int i = 0; i < _diagonalDirections.Length; ++i)
+    {
+      var _direction = _diagonalDirections[i];
+      var _diagonalGridPos = gridPos + _direction;
+      var _diagonalIdx = quadGrid.ConvertGridPosToIndex(_diagonalGridPos);
+      if (_quadIndexesDatas[_diagonalIdx] == -1) return _diagonalIdx;
+    }
+    return -1;
   }
 
   float3 FindUnderEmptyQuadPosAt(float3 quadPos)
@@ -292,13 +299,9 @@ public partial class LevelSystem : MonoBehaviour
       if (!_blockShapeDatas.ContainsKey(quadData.ShapeIndex)) continue;
       if (!_blockShapeDatas[quadData.ShapeIndex].IsActive) continue;
       if (!IsPlacedShape(quadData.ShapeIndex)) continue;
-      // TODO: heavyly calculations
-      if (quadData.PlacedIndex != -1)
-      {
-        // 
+      if (quadData.PlacedIndex != -1) continue;
 
-        continue;
-      }
+      // TODO: heavyly calculations
       if (quadGrid.IsPosOutsideAt(quadData.Position)) continue;
       var currQuadPos = quadData.Position;
       var underEmptyPos = FindUnderEmptyQuadPosAt(currQuadPos);
@@ -309,7 +312,20 @@ public partial class LevelSystem : MonoBehaviour
       quadData.Position = underEmptyPos;
       quadData.PlacedIndex = underEmptyIdx;
       _quadDatas[i] = quadData;
+
       OrderQuadMeshAt(i, underEmptyPos, quadData.ColorValue);
+    }
+
+    for (int i = 0; i < _currentQuadAmount; ++i)
+    {
+      var quadData = _quadDatas[i];
+
+      if (!_blockShapeDatas.ContainsKey(quadData.ShapeIndex)) continue;
+      if (!_blockShapeDatas[quadData.ShapeIndex].IsActive) continue;
+      if (!IsPlacedShape(quadData.ShapeIndex)) continue;
+      if (quadData.PlacedIndex == -1) continue;
+
+
     }
 
     ApplyDrawOrders();
