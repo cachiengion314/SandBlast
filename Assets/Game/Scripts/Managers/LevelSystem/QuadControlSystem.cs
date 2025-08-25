@@ -19,12 +19,25 @@ public partial class LevelSystem : MonoBehaviour
     quadMeshSystem.ApplyDrawOrders();
   }
 
+  int FindEmptyDownIndexAt(int2 gridPos)
+  {
+    var downGridPDirection = new int2(0, -1);
+    var downGridPos = gridPos + downGridPDirection;
+    if (quadGrid.IsGridPosOutsideAt(downGridPos)) return -1;
+
+    var downIndex = quadGrid.ConvertGridPosToIndex(downGridPos);
+    if (_quadIndexesDatas[downIndex] == -1) return downIndex;
+    return -1;
+  }
+
   int FindEmptyDiagonalIndexAt(int2 gridPos)
   {
     for (int i = 0; i < _diagonalDirections.Length; ++i)
     {
       var _direction = _diagonalDirections[i];
       var _diagonalGridPos = gridPos + _direction;
+      if (quadGrid.IsGridPosOutsideAt(_diagonalGridPos)) continue;
+
       var _diagonalIdx = quadGrid.ConvertGridPosToIndex(_diagonalGridPos);
       if (_quadIndexesDatas[_diagonalIdx] == -1) return _diagonalIdx;
     }
@@ -290,6 +303,49 @@ public partial class LevelSystem : MonoBehaviour
     ApplyDrawOrders();
   }
 
+  void CalculateTransitionForQuadsInUpdate()
+  {
+    for (int x = 0; x < quadGrid.GridSize.x; ++x)
+    {
+      for (int y = 0; y < quadGrid.GridSize.y; ++y)
+      {
+        var currQuadGridPos = new int2(x, y);
+        var currIdxPos = quadGrid.ConvertGridPosToIndex(currQuadGridPos);
+        if (_quadIndexesDatas[currIdxPos] == -1)
+        {
+          // case: there is no quad in this grid so we skip this one
+          continue;
+        }
+        // case: there is a quad in this grid
+        var quadIndex = _quadIndexesDatas[currIdxPos];
+        var quadData = _quadDatas[quadIndex];
+        var downIdx = FindEmptyDownIndexAt(currQuadGridPos);
+        if (downIdx != -1)
+        {
+          // case: there is a empty down here so we priority move the quad to here
+          _quadIndexesDatas[currIdxPos] = -1;
+          var _downQuadPos = quadGrid.ConvertIndexToWorldPos(downIdx);
+          _quadIndexesDatas[downIdx] = quadIndex;
+          quadData.Position = _downQuadPos;
+          quadData.PlacedIndex = downIdx;
+          _quadDatas[quadIndex] = quadData;
+          OrderQuadMeshAt(quadIndex, _downQuadPos, quadData.ColorValue);
+          continue;
+        }
+        var diagonalIdx = FindEmptyDiagonalIndexAt(currQuadGridPos);
+        if (diagonalIdx == -1) continue;
+        // case: there is a empty diagonal here so we move the quad to here
+        _quadIndexesDatas[currIdxPos] = -1;
+        var _diagonalQuadPos = quadGrid.ConvertIndexToWorldPos(diagonalIdx);
+        _quadIndexesDatas[diagonalIdx] = quadIndex;
+        quadData.Position = _diagonalQuadPos;
+        quadData.PlacedIndex = diagonalIdx;
+        _quadDatas[quadIndex] = quadData;
+        OrderQuadMeshAt(quadIndex, _diagonalQuadPos, quadData.ColorValue);
+      }
+    }
+  }
+
   void CalculateGravityForQuadsInUpdate()
   {
     for (int i = 0; i < _currentQuadAmount; ++i)
@@ -313,20 +369,19 @@ public partial class LevelSystem : MonoBehaviour
       quadData.PlacedIndex = underEmptyIdx;
       _quadDatas[i] = quadData;
 
+      var shapeData = _blockShapeDatas[quadData.ShapeIndex];
+      shapeData.QuadsAmount--;
+      _blockShapeDatas[quadData.ShapeIndex] = shapeData;
+
+      if (shapeData.QuadsAmount == 0)
+      {
+        _blockShapeDatas.Remove(quadData.ShapeIndex);
+      }
+
       OrderQuadMeshAt(i, underEmptyPos, quadData.ColorValue);
     }
 
-    for (int i = 0; i < _currentQuadAmount; ++i)
-    {
-      var quadData = _quadDatas[i];
-
-      if (!_blockShapeDatas.ContainsKey(quadData.ShapeIndex)) continue;
-      if (!_blockShapeDatas[quadData.ShapeIndex].IsActive) continue;
-      if (!IsPlacedShape(quadData.ShapeIndex)) continue;
-      if (quadData.PlacedIndex == -1) continue;
-
-
-    }
+    CalculateTransitionForQuadsInUpdate();
 
     ApplyDrawOrders();
   }
