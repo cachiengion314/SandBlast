@@ -142,12 +142,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 568f1949d535347e38197e3237a0f1ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainTheme: {fileID: 8300000, guid: 764160cfa474d44fdaae063c7e3603c2, type: 3}
+  mainTheme: {fileID: 8300000, guid: 583a6c51b6cf1489e86d8f1fb5108b51, type: 3}
   pressBtnSfx: {fileID: 8300000, guid: a4c0f056510b341ac84aebd3317d3530, type: 3}
-  winLevelSfx: {fileID: 8300000, guid: 3046a3645485740cf8660b983e63e7fb, type: 3}
+  winLevelSfx: {fileID: 8300000, guid: 933f4ff06bfc4426c9241f2831ebb6e8, type: 3}
   loseLevelSfx: {fileID: 8300000, guid: b11d6baf0fe714568be5bfd8252d0c83, type: 3}
-  clickHoleSfx: {fileID: 8300000, guid: 4c58778bcd091425c8149ff75fa9019d, type: 3}
-  passengerMoveSfx: {fileID: 8300000, guid: 54ff3820d1f8c4f56b151df504258851, type: 3}
-  busFullSfx: {fileID: 8300000, guid: 2c8148bf9d7f946b7b94894ad031a473, type: 3}
   CollectCoinSfx: {fileID: 8300000, guid: 280f15d7cdfd848d68a68762e2256b64, type: 3}
+  ShootingSfx: {fileID: 8300000, guid: 14037ce9a946848e6874d5196c9beb33, type: 3}
+  destoyColorBlockSfx: {fileID: 8300000, guid: 04bfc3b67ce4d431383c46feb10d4cf7, type: 3}
+  comboX1Sfx: {fileID: 8300000, guid: 700862e696af84228a43b1ef9cfdd6c6, type: 3}
+  comboX2Sfx: {fileID: 8300000, guid: 552d01f0f44fa4990b4187556dcfcdf3, type: 3}
+  comboX3Sfx: {fileID: 8300000, guid: 9afeca5318b2c4b24bf7e1e1dd185dad, type: 3}
+  dragBlockSfx: {fileID: 8300000, guid: d5193fc46a81544d9b41de32d10ffd43, type: 3}
+  dropBlockSfx: {fileID: 8300000, guid: 189dd8a87aee74c4d862aa8b796b99cf, type: 3}
+  outOfAmmoSfx: {fileID: 8300000, guid: 293b0cc81704d470b914b85dfa577167, type: 3}
+  fullOfBullets: {fileID: 8300000, guid: f834174a5ebf548c78fa863f678de497, type: 3}
+  sandSfx: {fileID: 8300000, guid: 7bb777ff25e10459d8fa59987941f9da, type: 3}
   audioSource: {fileID: 6400335707775268905}

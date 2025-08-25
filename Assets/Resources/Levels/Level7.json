@@ -2,7 +2,7 @@
     "Index": 6,
     "TopGridPosition": {
         "x": 0.0,
-        "y": 17.0,
+        "y": 20.5,
         "z": 0.0
     },
     "TopGridSize": {
@@ -1060,6 +1060,32 @@
             "Index": 209,
             "ColorValue": 5,
             "Health": 1
+        }
+    ],
+    "AvailableColorDatas": [
+        {
+            "ColorValue": 7,
+            "ratio": 23.809524536132814
+        },
+        {
+            "ColorValue": 1,
+            "ratio": 14.285714149475098
+        },
+        {
+            "ColorValue": 5,
+            "ratio": 19.047618865966798
+        },
+        {
+            "ColorValue": 0,
+            "ratio": 9.523809432983399
+        },
+        {
+            "ColorValue": 3,
+            "ratio": 14.285714149475098
+        },
+        {
+            "ColorValue": 4,
+            "ratio": 19.047618865966798
         }
     ]
 }

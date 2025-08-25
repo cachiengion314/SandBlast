@@ -2,7 +2,7 @@
     "Index": 1,
     "TopGridPosition": {
         "x": 0.0,
-        "y": 14.0,
+        "y": 17.0,
         "z": 0.0
     },
     "TopGridSize": {
@@ -710,6 +710,20 @@
             "Index": 139,
             "ColorValue": 4,
             "Health": 1
+        }
+    ],
+    "AvailableColorDatas": [
+        {
+            "ColorValue": 4,
+            "ratio": 35.71428680419922
+        },
+        {
+            "ColorValue": 3,
+            "ratio": 28.571428298950197
+        },
+        {
+            "ColorValue": 5,
+            "ratio": 35.71428680419922
         }
     ]
 }

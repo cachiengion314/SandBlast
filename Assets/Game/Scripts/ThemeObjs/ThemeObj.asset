@@ -13,32 +13,32 @@ MonoBehaviour:
   m_Name: ThemeObj
   m_EditorClassIdentifier: 
   colorValues:
-  - {r: 0, g: 0, b: 1, a: 1}
-  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  - {r: 1, g: 0, b: 0, a: 1}
+  - {r: 0, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0.6470588, b: 0, a: 1}
   - {r: 0.5803922, g: 0, b: 0.8274511, a: 1}
   - {r: 1, g: 0, b: 1, a: 1}
-  - {r: 0, g: 1, b: 1, a: 1}
+  - {r: 1, g: 0, b: 0, a: 1}
   - {r: 0, g: 1, b: 0, a: 1}
-  - {r: 1, g: 0.6470588, b: 0, a: 1}
+  - {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  - {r: 0, g: 0, b: 1, a: 1}
   colorBlocks:
-  - {fileID: 21300000, guid: bb4f8cf57565a44ad83df76e9952abb8, type: 3}
-  - {fileID: 21300000, guid: 89cc385d006ea429ba480e125d8d2766, type: 3}
-  - {fileID: 21300000, guid: d3fd49e7e2ae446ecae97718d7ea65c2, type: 3}
+  - {fileID: 21300000, guid: 92b9f97fe99d3448898d717c9b48e160, type: 3}
+  - {fileID: 21300000, guid: ef6313ef1a5c84a08b2b76cd3dde13ad, type: 3}
   - {fileID: 21300000, guid: 841e1be8e8d834d9e8f5a76f3398bdae, type: 3}
   - {fileID: 21300000, guid: 28fb41b45d0ae4b25957f717db716172, type: 3}
-  - {fileID: 21300000, guid: bb4f8cf57565a44ad83df76e9952abb8, type: 3}
+  - {fileID: 21300000, guid: d3fd49e7e2ae446ecae97718d7ea65c2, type: 3}
   - {fileID: 21300000, guid: 61ba1f45fabdc4ee2b871cde0db063b2, type: 3}
-  - {fileID: 21300000, guid: ef6313ef1a5c84a08b2b76cd3dde13ad, type: 3}
+  - {fileID: 21300000, guid: 89cc385d006ea429ba480e125d8d2766, type: 3}
+  - {fileID: 21300000, guid: bb4f8cf57565a44ad83df76e9952abb8, type: 3}
   blastBlockSprites:
-  - {fileID: 21300000, guid: 046fcce4645414d5faeb0ea720cc329e, type: 3}
-  - {fileID: 21300000, guid: ae45f2eac2bbe4341b45eb5e174ed621, type: 3}
-  - {fileID: 21300000, guid: 993ae7bd782b8443cb054d00d3e3f72f, type: 3}
+  - {fileID: 21300000, guid: 7f60dd7238c584cdea56d9f811733660, type: 3}
+  - {fileID: 21300000, guid: 2599e57c933054eadb7c84f3e7f26646, type: 3}
   - {fileID: 21300000, guid: 737bde7e823db4b6db9c8103d78230aa, type: 3}
   - {fileID: 21300000, guid: bf417f6feca9a47419e3fd7a533c60f6, type: 3}
-  - {fileID: 21300000, guid: 046fcce4645414d5faeb0ea720cc329e, type: 3}
+  - {fileID: 21300000, guid: 993ae7bd782b8443cb054d00d3e3f72f, type: 3}
   - {fileID: 21300000, guid: b51648aa45da14e6a8d641c7f3f22759, type: 3}
-  - {fileID: 21300000, guid: 2599e57c933054eadb7c84f3e7f26646, type: 3}
+  - {fileID: 21300000, guid: ae45f2eac2bbe4341b45eb5e174ed621, type: 3}
+  - {fileID: 21300000, guid: 046fcce4645414d5faeb0ea720cc329e, type: 3}
   UVGridPositions: []
   Shapes:
   - blockSlotPositions:
@@ -78,23 +78,23 @@ MonoBehaviour:
     - x: 1
       y: -0.5
   - blockSlotPositions:
-    - x: -0.5
-      y: -1
-    - x: 0.5
-      y: -1
-    - x: -0.5
-      y: 0
-    - x: -0.5
-      y: 1
+    - x: -1
+      y: -0.5
+    - x: -1
+      y: 0.5
+    - x: 0
+      y: -0.5
+    - x: 1
+      y: -0.5
   - blockSlotPositions:
-    - x: 0.5
-      y: -1
-    - x: -0.5
-      y: -1
-    - x: 0.5
-      y: 0
-    - x: 0.5
-      y: 1
+    - x: -1
+      y: -0.5
+    - x: 1
+      y: 0.5
+    - x: 0
+      y: -0.5
+    - x: 1
+      y: -0.5
   - blockSlotPositions:
     - x: 0
       y: 0.5
