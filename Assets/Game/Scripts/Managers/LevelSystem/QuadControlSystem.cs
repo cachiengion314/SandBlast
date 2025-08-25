@@ -43,8 +43,8 @@ public partial class LevelSystem : MonoBehaviour
     for (int i = 0; i < _currentBlockAmount; ++i)
     {
       var data = _blockDatas[i];
-      var _groupIdx = data.ShapeIndex;
-      if (_groupIdx != shapeIdx) continue;
+      var _shapeIdx = data.ShapeIndex;
+      if (_shapeIdx != shapeIdx) continue;
 
       var blockPos = data.Position;
       if (blockGrid.IsPosOutsideAt(blockPos)) return true;
@@ -84,9 +84,9 @@ public partial class LevelSystem : MonoBehaviour
     return slotGridPos;
   }
 
-  void OrderUnitBlockAt(int startIndex, float2 blockSlotPos, int groupIndex, int colorValue)
+  void OrderUnitBlockAt(int startIndex, float2 blockSlotPos, int shapeIndex, int colorValue)
   {
-    var shapeData = _blockShapeDatas[groupIndex];
+    var shapeData = _blockShapeDatas[shapeIndex];
 
     var startSlotGridPos = ConvertBlockPosToSlotGridPos(blockSlotPos);
     var startX = startSlotGridPos.x;
@@ -110,7 +110,7 @@ public partial class LevelSystem : MonoBehaviour
         var gridPos = new int2(x, y);
         var data = new QuadData
         {
-          ShapeIndex = groupIndex,
+          ShapeIndex = shapeIndex,
           Position = slotGrid.ConvertGridPosToWorldPos(gridPos),
           ColorValue = newColorIndex,
         };
