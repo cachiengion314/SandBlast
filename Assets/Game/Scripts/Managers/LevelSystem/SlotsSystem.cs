@@ -5,16 +5,16 @@ public partial class LevelSystem : MonoBehaviour
 {
   [SerializeField] Transform slotsParent;
 
-  int GenerateUniqueGroupIdx()
+  int GenerateUniqueShapeIdx()
   {
-    var newGroupIdx = slotsParent.childCount + _placedShapesAmount;
+    var newShapeIdx = slotsParent.childCount + _placedShapesAmount;
     _placedShapesAmount++;
-    return newGroupIdx;
+    return newShapeIdx;
   }
 
-  bool IsSlotIndex(int groupIdx)
+  bool IsSlotIndex(int shapeIdx)
   {
-    return groupIdx < slotsParent.childCount;
+    return shapeIdx < slotsParent.childCount;
   }
 
   float3 GetAndSetSlotGridPositionAt(int slotIndex)
@@ -52,7 +52,7 @@ public partial class LevelSystem : MonoBehaviour
 
   int GetCurrentGroupIndexInSlot(int slotIndex)
   {
-    if (!_groupQuadDatas.ContainsKey(slotIndex)) return -1;
+    if (!_blockShapeDatas.ContainsKey(slotIndex)) return -1;
     return slotIndex;
   }
 
@@ -68,36 +68,38 @@ public partial class LevelSystem : MonoBehaviour
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
     if (IsSlotEmptyAt(slotIndex)) return;
 
-    _currentGrabbingGroupIndex = slotIndex;
+    _currentGrabbingShapeIndex = slotIndex;
   }
 
   void OnInactive()
   {
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
-    if (!_groupQuadDatas.ContainsKey(_currentGrabbingGroupIndex)) return;
-    if (IsBlockShapeOutsideAt(_currentGrabbingGroupIndex))
+    if (!_blockShapeDatas.ContainsKey(_currentGrabbingShapeIndex)) return;
+    if (IsBlockShapeOutsideAt(_currentGrabbingShapeIndex))
     {
-      var slotPos = GetAndSetSlotGridPositionAt(_currentGrabbingGroupIndex);
-      OrderShapePositionsTo(slotPos, _currentGrabbingGroupIndex);
+      var slotPos = GetAndSetSlotGridPositionAt(_currentGrabbingShapeIndex);
+      OrderShapePositionsTo(slotPos, _currentGrabbingShapeIndex);
       ApplyDrawOrders();
 
-      _currentGrabbingGroupIndex = -1;
+      _currentGrabbingShapeIndex = -1;
       return;
     }
 
-    // change current slot's group to new group that belong to the board space
-    var oldGroupData = _groupQuadDatas[_currentGrabbingGroupIndex];
-    var newGroupIdx = GenerateUniqueGroupIdx();
-    var newGroupData = new GroupQuadsData
+    // change current slot's group to the new group that belong to the board space
+    var oldShapeData = _blockShapeDatas[_currentGrabbingShapeIndex];
+    var newShapeIdx = GenerateUniqueShapeIdx();
+    var newShapeData = new BlockShapeData
     {
-      CenterPosition = oldGroupData.CenterPosition,
-      ColorValue = oldGroupData.ColorValue,
+      CenterPosition = oldShapeData.CenterPosition,
+      StartSpawnedQuadIndex = oldShapeData.StartSpawnedQuadIndex,
+      QuadsAmount = oldShapeData.QuadsAmount,
+      ColorValue = oldShapeData.ColorValue,
       IsActive = true
     };
-    _groupQuadDatas.Add(newGroupIdx, newGroupData);
+    _blockShapeDatas.Add(newShapeIdx, newShapeData);
 
-    AssignQuadsToNewGroup(newGroupIdx, _currentGrabbingGroupIndex);
+    AssignQuadsToNewShape(newShapeIdx, _currentGrabbingShapeIndex);
 
-    _currentGrabbingGroupIndex = -1;
+    _currentGrabbingShapeIndex = -1;
   }
 }

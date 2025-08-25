@@ -111,9 +111,9 @@ public partial class LevelSystem : MonoBehaviour
       using var blockSlotPositions = GetRandomShape();
       OrderBlockShapeAt(i, blockSlotPositions, colorValue);
 
-      if (!_groupQuadDatas.ContainsKey(i)) return;
-      var groupData = _groupQuadDatas[i];
-      _groupQuadDatas[i] = groupData;
+      if (!_blockShapeDatas.ContainsKey(i)) return;
+      var shapeData = _blockShapeDatas[i];
+      _blockShapeDatas[i] = shapeData;
     }
 
     VisualizeActiveQuads();

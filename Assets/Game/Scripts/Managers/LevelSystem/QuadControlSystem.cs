@@ -6,7 +6,7 @@ public partial class LevelSystem : MonoBehaviour
 {
   int _currentQuadAmount;
   int _placedShapesAmount;
-  int _currentGrabbingGroupIndex = -1;
+  int _currentGrabbingShapeIndex = -1;
 
   void OrderQuadMeshAt(int index, float3 pos, int colorValue)
   {
@@ -20,16 +20,16 @@ public partial class LevelSystem : MonoBehaviour
     quadMeshSystem.ApplyDrawOrders();
   }
 
-  void AssignQuadsToNewGroup(int newGroupIdx, int oldGroupIdx)
+  void AssignQuadsToNewShape(int newShapeIdx, int oldShapeIdx)
   {
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
       var quadData = _quadDatas[i];
-      if (quadData.GroupIndex != oldGroupIdx) continue;
-      quadData.GroupIndex = newGroupIdx;
+      if (quadData.ShapeIndex != oldShapeIdx) continue;
+      quadData.ShapeIndex = newShapeIdx;
       _quadDatas[i] = quadData;
     }
-    _groupQuadDatas.Remove(oldGroupIdx);
+    _blockShapeDatas.Remove(oldShapeIdx);
   }
 
   int GetCurrentBlockAmount()
@@ -37,14 +37,14 @@ public partial class LevelSystem : MonoBehaviour
     return _currentQuadAmount / 64;
   }
 
-  bool IsBlockShapeOutsideAt(int groupIdx)
+  bool IsBlockShapeOutsideAt(int shapeIdx)
   {
     var _currentBlockAmount = GetCurrentBlockAmount();
     for (int i = 0; i < _currentBlockAmount; ++i)
     {
       var data = _blockDatas[i];
-      var _groupIdx = data.GroupIndex;
-      if (_groupIdx != groupIdx) continue;
+      var _groupIdx = data.ShapeIndex;
+      if (_groupIdx != shapeIdx) continue;
 
       var blockPos = data.Position;
       if (blockGrid.IsPosOutsideAt(blockPos)) return true;
@@ -86,7 +86,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void OrderUnitBlockAt(int startIndex, float2 blockSlotPos, int groupIndex, int colorValue)
   {
-    var groupData = _groupQuadDatas[groupIndex];
+    var shapeData = _blockShapeDatas[groupIndex];
 
     var startSlotGridPos = ConvertBlockPosToSlotGridPos(blockSlotPos);
     var startX = startSlotGridPos.x;
@@ -110,21 +110,21 @@ public partial class LevelSystem : MonoBehaviour
         var gridPos = new int2(x, y);
         var data = new QuadData
         {
-          GroupIndex = groupIndex,
+          ShapeIndex = groupIndex,
           Position = slotGrid.ConvertGridPosToWorldPos(gridPos),
           ColorValue = newColorIndex,
         };
         _quadDatas[i] = data;
-        _quadCenterOffsets[i] = data.Position - groupData.CenterPosition;
+        _shapeCenterOffsets[i] = data.Position - shapeData.CenterPosition;
         i++;
       }
     }
   }
 
-  int FindFirstInactivedGroupIdx()
+  int FindFirstInactivedShapeIdx()
   {
-    using var kvArray = _groupQuadDatas.GetKeyValueArrays(Allocator.Temp);
-    for (int i = 0; i < kvArray.Length; ++i)
+    using var kvArray = _blockShapeDatas.GetKeyValueArrays(Allocator.Temp);
+    for (int i = slotsParent.childCount; i < kvArray.Length; ++i)
     {
       var key = kvArray.Keys[i];
       var val = kvArray.Values[i];
@@ -150,11 +150,11 @@ public partial class LevelSystem : MonoBehaviour
 
     var slotPos = GetAndSetSlotGridPositionAt(slotIndex);
 
-    var groupIdx = slotIndex;
-    if (!_groupQuadDatas.ContainsKey(groupIdx))
-      _groupQuadDatas.Add(
-        groupIdx,
-        new GroupQuadsData
+    var shapeIdx = slotIndex;
+    if (!_blockShapeDatas.ContainsKey(shapeIdx))
+      _blockShapeDatas.Add(
+        shapeIdx,
+        new BlockShapeData
         {
           CenterPosition = slotPos,
           StartSpawnedQuadIndex = startSpawnedQuadIndex,
@@ -164,26 +164,29 @@ public partial class LevelSystem : MonoBehaviour
         }
       );
 
-    var foundGroupIdx = FindFirstInactivedGroupIdx();
-    if (foundGroupIdx != -1)
+    var foundShapeIdx = FindFirstInactivedShapeIdx();
+    if (foundShapeIdx != -1)
     {
-      startSpawnedQuadIndex = _groupQuadDatas[foundGroupIdx].StartSpawnedQuadIndex;
-      var groupData = _groupQuadDatas[groupIdx];
-      groupData.StartSpawnedQuadIndex = startSpawnedQuadIndex;
-      groupData.QuadsAmount = _groupQuadDatas[foundGroupIdx].QuadsAmount;
-      _groupQuadDatas[groupIdx] = groupData;
-      _groupQuadDatas.Remove(foundGroupIdx);
+      startSpawnedQuadIndex = _blockShapeDatas[foundShapeIdx].StartSpawnedQuadIndex;
+      additionAmount = 0;
+
+      var shapeData = _blockShapeDatas[shapeIdx];
+      shapeData.StartSpawnedQuadIndex = startSpawnedQuadIndex;
+      shapeData.QuadsAmount = _blockShapeDatas[foundShapeIdx].QuadsAmount;
+      shapeData.IsActive = true;
+      _blockShapeDatas[shapeIdx] = shapeData;
+      _blockShapeDatas.Remove(foundShapeIdx);
     }
 
     for (int i = 0; i < blockSlotPositions.Length; ++i)
     {
       var blockSlotPos = blockSlotPositions[i];
-      OrderUnitBlockAt(startSpawnedQuadIndex + i * 64, blockSlotPos, groupIdx, colorValue);
+      OrderUnitBlockAt(startSpawnedQuadIndex + i * 64, blockSlotPos, shapeIdx, colorValue);
 
       var blockPos = ConvertSlotPosToWorldPos(blockSlotPos);
       var blockData = new BlockData
       {
-        GroupIndex = groupIdx,
+        ShapeIndex = shapeIdx,
         Position = blockPos,
         CenterOffset = blockPos - slotPos,
       };
@@ -194,20 +197,20 @@ public partial class LevelSystem : MonoBehaviour
     _currentQuadAmount = availableAmount;
   }
 
-  void OrderShapePositionsTo(float3 targetPos, int groupIdx)
+  void OrderShapePositionsTo(float3 targetPos, int shapeIdx)
   {
-    var groupData = _groupQuadDatas[groupIdx];
-    groupData.CenterPosition = targetPos;
-    _groupQuadDatas[groupIdx] = groupData;
+    var shapeData = _blockShapeDatas[shapeIdx];
+    shapeData.CenterPosition = targetPos;
+    _blockShapeDatas[shapeIdx] = shapeData;
 
     var _currentBlockAmount = GetCurrentBlockAmount();
     for (int i = 0; i < _currentBlockAmount; ++i)
     {
       var blockData = _blockDatas[i];
-      if (blockData.GroupIndex != groupIdx) continue;
+      if (blockData.ShapeIndex != shapeIdx) continue;
 
       var offset = blockData.CenterOffset;
-      var nextBlockPos = groupData.CenterPosition + offset;
+      var nextBlockPos = shapeData.CenterPosition + offset;
       blockData.Position = nextBlockPos;
 
       _blockDatas[i] = blockData;
@@ -216,10 +219,10 @@ public partial class LevelSystem : MonoBehaviour
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
       var quadData = _quadDatas[i];
-      if (quadData.GroupIndex != groupIdx) continue;
+      if (quadData.ShapeIndex != shapeIdx) continue;
 
-      var offset = _quadCenterOffsets[i];
-      var nextQuadPos = groupData.CenterPosition + offset;
+      var offset = _shapeCenterOffsets[i];
+      var nextQuadPos = shapeData.CenterPosition + offset;
       quadData.Position = nextQuadPos;
 
       _quadDatas[i] = quadData;
@@ -229,16 +232,16 @@ public partial class LevelSystem : MonoBehaviour
 
   void GrabbingBlockControlInUpdate()
   {
-    if (_currentGrabbingGroupIndex == -1) return;
+    if (_currentGrabbingShapeIndex == -1) return;
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
     if (!_isUserScreenTouching) return;
-    if (!_groupQuadDatas.ContainsKey(_currentGrabbingGroupIndex)) return;
+    if (!_blockShapeDatas.ContainsKey(_currentGrabbingShapeIndex)) return;
 
     var _userTouchScreenPos = new float3(
       userTouchScreenPosition.x, userTouchScreenPosition.y, 0
     );
     var targetPos = _userTouchScreenPos + touchOffset;
-    OrderShapePositionsTo(targetPos, _currentGrabbingGroupIndex);
+    OrderShapePositionsTo(targetPos, _currentGrabbingShapeIndex);
     ApplyDrawOrders();
   }
 
@@ -250,17 +253,17 @@ public partial class LevelSystem : MonoBehaviour
     {
       var quadData = _quadDatas[i];
 
-      if (!_groupQuadDatas.ContainsKey(quadData.GroupIndex)) continue;
-      if (!_groupQuadDatas[quadData.GroupIndex].IsActive) continue;
-      if (IsSlotIndex(quadData.GroupIndex)) continue;
+      if (!_blockShapeDatas.ContainsKey(quadData.ShapeIndex)) continue;
+      if (!_blockShapeDatas[quadData.ShapeIndex].IsActive) continue;
+      if (IsSlotIndex(quadData.ShapeIndex)) continue;
 
       var currQuadPos = quadData.Position;
       var nextQuadPos = currQuadPos + uniformVelocity;
       if (quadGrid.IsPosOutsideAt(nextQuadPos))
       {
-        var groupData = _groupQuadDatas[quadData.GroupIndex];
-        groupData.IsActive = false;
-        _groupQuadDatas[quadData.GroupIndex] = groupData;
+        var shapeData = _blockShapeDatas[quadData.ShapeIndex];
+        shapeData.IsActive = false;
+        _blockShapeDatas[quadData.ShapeIndex] = shapeData;
         continue;
       }
 
