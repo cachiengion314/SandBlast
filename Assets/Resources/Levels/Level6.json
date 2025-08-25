@@ -2,7 +2,7 @@
     "Index": 5,
     "TopGridPosition": {
         "x": 0.0,
-        "y": 19.0,
+        "y": 22.0,
         "z": 0.0
     },
     "TopGridSize": {
@@ -1211,5 +1211,6 @@
             "ColorValue": 5,
             "Health": 1
         }
-    ]
+    ],
+    "AvailableColorDatas": []
 }

@@ -40,7 +40,7 @@ public class LevelEditor : MonoBehaviour
   [NaughtyAttributes.Button]
   void GenerateLevelData()
   {
-    float limitY = 7;
+    float limitY = 10;
     int y = GetGridY();
     gridWord.GridScale = new float2(1, 1);
     gridWord.GridSize = new int2(10, y);
