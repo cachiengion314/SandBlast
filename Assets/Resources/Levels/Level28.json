@@ -2362,5 +2362,38 @@
             "Health": 1
         }
     ],
-    "AvailableColorDatas": []
+    "AvailableColorDatas": [
+        {
+            "ColorValue": 1,
+            "ratio": 14.893616676330567
+        },
+        {
+            "ColorValue": 4,
+            "ratio": 10.638298034667969
+        },
+        {
+            "ColorValue": 7,
+            "ratio": 12.765957832336426
+        },
+        {
+            "ColorValue": 2,
+            "ratio": 10.638298034667969
+        },
+        {
+            "ColorValue": 5,
+            "ratio": 10.638298034667969
+        },
+        {
+            "ColorValue": 0,
+            "ratio": 12.765957832336426
+        },
+        {
+            "ColorValue": 3,
+            "ratio": 14.893616676330567
+        },
+        {
+            "ColorValue": 6,
+            "ratio": 12.765957832336426
+        }
+    ]
 }

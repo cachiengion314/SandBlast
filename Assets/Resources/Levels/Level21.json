@@ -1062,5 +1062,30 @@
             "Health": 1
         }
     ],
-    "AvailableColorDatas": []
+    "AvailableColorDatas": [
+        {
+            "ColorValue": 1,
+            "ratio": 19.047618865966798
+        },
+        {
+            "ColorValue": 5,
+            "ratio": 19.047618865966798
+        },
+        {
+            "ColorValue": 3,
+            "ratio": 19.047618865966798
+        },
+        {
+            "ColorValue": 0,
+            "ratio": 14.285714149475098
+        },
+        {
+            "ColorValue": 2,
+            "ratio": 14.285714149475098
+        },
+        {
+            "ColorValue": 4,
+            "ratio": 14.285714149475098
+        }
+    ]
 }

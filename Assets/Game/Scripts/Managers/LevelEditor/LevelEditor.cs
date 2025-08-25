@@ -184,4 +184,27 @@ public class LevelEditor : MonoBehaviour
     }
     levelInformation.ColorBlockPartitionDatas = InitColorBlockPartitionDatas.ToArray();
   }
+
+  void FindColor()
+  {
+    var dic = new Dictionary<int, int>();
+    for (int i = 0; i < gridWord.GridSize.y; i++)
+    {
+      var cell = gridEditorInstance[i];
+      if (!dic.ContainsKey(cell.data.ColorValue))
+        dic.Add(cell.data.ColorValue, 0);
+      dic[cell.data.ColorValue]++;
+    }
+    List<AvailableColorData> data = new();
+    foreach (var key in dic.Keys)
+    {
+      var ratio = 100 * (float)dic[key] / gridWord.GridSize.y;
+      data.Add(new AvailableColorData
+      {
+        ColorValue = key,
+        ratio = ratio
+      });
+    }
+    levelInformation.AvailableColorDatas = data.ToArray();
+  }
 }
