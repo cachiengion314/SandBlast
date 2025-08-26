@@ -23,7 +23,7 @@ public partial class LevelSystem : MonoBehaviour
       _blockDatas[i] = blockData;
     }
 
-    for (int i = 0; i < _currentQuadAmount; ++i)
+    for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
       if (quadData.GroupIndex != shapeIdx) continue;
@@ -49,7 +49,6 @@ public partial class LevelSystem : MonoBehaviour
     );
     var targetPos = _userTouchScreenPos + touchOffset;
     OrderShapePositionsTo(targetPos, _currentGrabbingShapeIndex);
-    ApplyDrawOrders();
   }
 
   void CalculateQuadTransitionsInUpdate()
@@ -99,12 +98,12 @@ public partial class LevelSystem : MonoBehaviour
   {
     if (_blockShapeDatas.Count == 0) return;
 
-    for (int i = 0; i < _currentQuadAmount; ++i)
+    for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
 
+      if (!quadData.IsActive) continue;
       if (!_blockShapeDatas.ContainsKey(quadData.GroupIndex)) continue;
-      if (!_blockShapeDatas[quadData.GroupIndex].IsActive) continue;
       if (!IsPlacedShape(quadData.GroupIndex)) continue;
       if (quadData.PlacedIndex != -1) continue;
 
@@ -130,6 +129,17 @@ public partial class LevelSystem : MonoBehaviour
       }
 
       OrderQuadMeshAt(i, underEmptyPos, quadData.ColorValue);
+    }
+
+    for (int i = 0; i < _quadDatas.Length; ++i)
+    {
+      var quadData = _quadDatas[i];
+
+      if (!_blockShapeDatas.ContainsKey(quadData.GroupIndex))
+      {
+        quadData.IsActive = false;
+        _quadDatas[i] = quadData;
+      }
     }
   }
 }

@@ -74,7 +74,7 @@ public partial class LevelSystem : MonoBehaviour
 
     GrabbingBlockControlInUpdate();
     CalculateQuadFallingsInUpdate();
-    CalculateQuadTransitionsInUpdate();
+    // CalculateQuadTransitionsInUpdate();
     ApplyDrawOrders();
   }
 

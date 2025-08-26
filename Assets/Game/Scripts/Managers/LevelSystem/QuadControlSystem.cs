@@ -66,7 +66,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void AssignQuadsToNewShape(int newShapeIdx, int oldShapeIdx)
   {
-    for (int i = 0; i < _currentQuadAmount; ++i)
+    for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
       if (quadData.GroupIndex != oldShapeIdx) continue;
@@ -128,38 +128,37 @@ public partial class LevelSystem : MonoBehaviour
     return slotGridPos;
   }
 
+  int FindInactiveBlockIdxForShape()
+  {
+    for (int i = 0; i < _blockDatas.Length; ++i)
+    {
+      var blockData = _blockDatas[i];
+      if (blockData.ShapeIndex != -1) continue;
+      return blockData.Index;
+    }
+    return -1;
+  }
+
   NativeList<QuadData> FindInactiveQuadsForShape()
   {
     var list = new NativeList<QuadData>(64 * 4, Allocator.Temp); ;
     for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
-      if (quadData.Index != -1) continue;
+      if (quadData.IsActive) continue;
       list.Add(quadData);
+      if (list.Length == list.Capacity) break;
     }
-
+    if (list.Length < list.Capacity) return new NativeList<QuadData>(0, Allocator.Temp);
     return list;
-  }
-
-  int FindFirstInactivedShapeIdx()
-  {
-    using var kvArray = _blockShapeDatas.GetKeyValueArrays(Allocator.Temp);
-    for (int i = slotsParent.childCount; i < kvArray.Length; ++i)
-    {
-      var key = kvArray.Keys[i];
-      var val = kvArray.Values[i];
-      if (val.IsActive) continue;
-      return key;
-    }
-    return -1;
   }
 
   void OrderUnitBlockAt(
     int startIndex,
     float2 blockSlotPos,
     int shapeIndex,
-    int colorValue
-  // NativeList<QuadData> inactiveQuads
+    int colorValue,
+    NativeList<QuadData> inactiveQuads
   )
   {
     var shapeData = _blockShapeDatas[shapeIndex];
@@ -184,54 +183,20 @@ public partial class LevelSystem : MonoBehaviour
         }
 
         var gridPos = new int2(x, y);
-        var data = new QuadData
-        {
-          GroupIndex = shapeIndex,
-          Index = i,
-          Position = slotGrid.ConvertGridPosToWorldPos(gridPos),
-          PlacedIndex = -1,
-          ColorValue = newColorIndex,
-        };
-        _quadDatas[i] = data;
-        _shapeCenterOffsets[i] = data.Position - shapeData.CenterPosition;
+        var pos = slotGrid.ConvertGridPosToWorldPos(gridPos);
+
+        var quadData = inactiveQuads[i];
+        quadData.GroupIndex = shapeIndex;
+        quadData.Position = pos;
+        quadData.PlacedIndex = -1;
+        quadData.ColorValue = newColorIndex;
+        quadData.IsActive = true;
+        var _i = quadData.Index;
+
+        _quadDatas[_i] = quadData;
+        _shapeCenterOffsets[_i] = quadData.Position - shapeData.CenterPosition;
         i++;
       }
-    }
-  }
-
-  void GenerateEmptyShape(
-    int givenShapeIdx,
-    float3 slotPos,
-    int colorValue,
-    ref int startSpawnedQuadIndex,
-    ref int additionAmount
-  )
-  {
-    if (!_blockShapeDatas.ContainsKey(givenShapeIdx))
-      _blockShapeDatas.Add(
-        givenShapeIdx,
-        new BlockShapeData
-        {
-          CenterPosition = slotPos,
-          StartSpawnedQuadIndex = startSpawnedQuadIndex,
-          QuadsAmount = additionAmount,
-          ColorValue = colorValue,
-          IsActive = true
-        }
-      );
-
-    var foundShapeIdx = FindFirstInactivedShapeIdx();
-    if (foundShapeIdx != -1)
-    {
-      startSpawnedQuadIndex = _blockShapeDatas[foundShapeIdx].StartSpawnedQuadIndex;
-      additionAmount = 0;
-
-      var shapeData = _blockShapeDatas[givenShapeIdx];
-      shapeData.StartSpawnedQuadIndex = startSpawnedQuadIndex;
-      shapeData.QuadsAmount = _blockShapeDatas[foundShapeIdx].QuadsAmount;
-      shapeData.IsActive = true;
-      _blockShapeDatas[givenShapeIdx] = shapeData;
-      _blockShapeDatas.Remove(foundShapeIdx);
     }
   }
 
@@ -245,33 +210,60 @@ public partial class LevelSystem : MonoBehaviour
     int colorValue
   )
   {
-    var _currentBlockAmount = GetCurrentBlockAmount();
-    var additionAmount = blockSlotPositions.Length * 64;
-    var startSpawnedQuadIndex = _currentQuadAmount;
+    var shapeIdx = slotIndex;
+    if (_blockShapeDatas.ContainsKey(shapeIdx))
+    {
+      print("Shape ID still exist, there is something wrong!");
+      return;
+    }
 
     var slotPos = GetAndSetSlotGridPositionAt(slotIndex);
 
-    var shapeIdx = slotIndex;
-    GenerateEmptyShape(
-      shapeIdx, slotPos, colorValue, ref startSpawnedQuadIndex, ref additionAmount
+    using var inactiveQuads = FindInactiveQuadsForShape();
+    if (inactiveQuads.Length == 0)
+    {
+      print("Cannot find any spare quads");
+      return;
+    }
+
+    var additionAmount = 4 * 64;
+    var startSpawnedQuadIndex = 0;
+
+    _blockShapeDatas.Add(
+      shapeIdx,
+      new ShapeQuadData
+      {
+        CenterPosition = slotPos,
+        QuadsAmount = additionAmount,
+        ColorValue = colorValue,
+      }
     );
 
     for (int i = 0; i < blockSlotPositions.Length; ++i)
     {
       var blockSlotPos = blockSlotPositions[i];
-      OrderUnitBlockAt(startSpawnedQuadIndex + i * 64, blockSlotPos, shapeIdx, colorValue);
+      OrderUnitBlockAt(
+        startSpawnedQuadIndex + i * 64,
+        blockSlotPos,
+        shapeIdx,
+        colorValue,
+        inactiveQuads
+      );
 
       var blockPos = ConvertSlotPosToWorldPos(blockSlotPos);
-      var blockData = new BlockData
+      var blockIdx = FindInactiveBlockIdxForShape();
+      if (blockIdx == -1)
       {
-        ShapeIndex = shapeIdx,
-        Position = blockPos,
-        CenterOffset = blockPos - slotPos,
-      };
-      _blockDatas[_currentBlockAmount + i] = blockData;
-    }
+        print("Cannot find any blockIdx ");
+        return;
+      }
+      print("blockIdx " + blockIdx);
+      var blockData = _blockDatas[blockIdx];
+      blockData.ShapeIndex = shapeIdx;
+      blockData.Position = blockPos;
+      blockData.CenterOffset = blockPos - slotPos;
 
-    var availableAmount = GetAvailableQuadAmount(additionAmount);
-    _currentQuadAmount = availableAmount;
+      _blockDatas[blockIdx] = blockData;
+    }
   }
 }
