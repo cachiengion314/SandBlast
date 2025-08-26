@@ -7,8 +7,8 @@ public partial class LevelSystem : MonoBehaviour
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
       var quadData = _quadDatas[i];
-      if (!_blockShapeDatas.ContainsKey(quadData.ShapeIndex)) continue;
-      if (!_blockShapeDatas[quadData.ShapeIndex].IsActive) continue;
+      if (!_blockShapeDatas.ContainsKey(quadData.GroupIndex)) continue;
+      if (!_blockShapeDatas[quadData.GroupIndex].IsActive) continue;
 
       var pos = quadData.Position;
       OrderQuadMeshAt(i, pos, quadData.ColorValue);

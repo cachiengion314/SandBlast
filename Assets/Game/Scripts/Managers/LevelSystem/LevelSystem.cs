@@ -7,6 +7,8 @@ using Unity.Collections;
 
 public partial class LevelSystem : MonoBehaviour
 {
+  private static WaitForSeconds _waitForSeconds0_1 = new(0.1f);
+
   public static LevelSystem Instance { get; private set; }
   [SerializeField] GridWorld quadGrid;
   [SerializeField] GridWorld blockGrid;
@@ -37,7 +39,7 @@ public partial class LevelSystem : MonoBehaviour
 
     SubscribeTouchEvent();
     m20LevelSystem.InitPool();
-    yield return new WaitForSeconds(0.1f);
+    yield return _waitForSeconds0_1;
 
     m20LevelSystem.SetupCurrentLevel(_levelInformation);
     SetupCurrentLevel(_levelInformation);
@@ -71,7 +73,9 @@ public partial class LevelSystem : MonoBehaviour
     }
 
     GrabbingBlockControlInUpdate();
-    CalculateGravityForQuadsInUpdate();
+    CalculateQuadFallingsInUpdate();
+    CalculateQuadTransitionsInUpdate();
+    ApplyDrawOrders();
   }
 
   void SetupCurrentLevel(LevelInformation levelInformation)
@@ -79,7 +83,6 @@ public partial class LevelSystem : MonoBehaviour
     BakingGrids(levelInformation);
     InitDataBuffers(levelInformation);
     SpawnAndBakingEntityDatas(levelInformation);
-    SetSizeCamera();
   }
 
   void BakingGrids(LevelInformation levelInformation)
@@ -156,10 +159,5 @@ public partial class LevelSystem : MonoBehaviour
     if (levelInfo == null) { print("This level is not existed!"); return; }
     _levelInformation = levelInfo;
     print("Load level " + level + " successfully ");
-  }
-
-  void SetSizeCamera()
-  {
-
   }
 }

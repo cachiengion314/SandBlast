@@ -69,8 +69,8 @@ public partial class LevelSystem : MonoBehaviour
     for (int i = 0; i < _currentQuadAmount; ++i)
     {
       var quadData = _quadDatas[i];
-      if (quadData.ShapeIndex != oldShapeIdx) continue;
-      quadData.ShapeIndex = newShapeIdx;
+      if (quadData.GroupIndex != oldShapeIdx) continue;
+      quadData.GroupIndex = newShapeIdx;
       _quadDatas[i] = quadData;
     }
     _blockShapeDatas.Remove(oldShapeIdx);
@@ -128,7 +128,39 @@ public partial class LevelSystem : MonoBehaviour
     return slotGridPos;
   }
 
-  void OrderUnitBlockAt(int startIndex, float2 blockSlotPos, int shapeIndex, int colorValue)
+  NativeList<QuadData> FindInactiveQuadsForShape()
+  {
+    var list = new NativeList<QuadData>(64 * 4, Allocator.Temp); ;
+    for (int i = 0; i < _quadDatas.Length; ++i)
+    {
+      var quadData = _quadDatas[i];
+      if (quadData.Index != -1) continue;
+      list.Add(quadData);
+    }
+
+    return list;
+  }
+
+  int FindFirstInactivedShapeIdx()
+  {
+    using var kvArray = _blockShapeDatas.GetKeyValueArrays(Allocator.Temp);
+    for (int i = slotsParent.childCount; i < kvArray.Length; ++i)
+    {
+      var key = kvArray.Keys[i];
+      var val = kvArray.Values[i];
+      if (val.IsActive) continue;
+      return key;
+    }
+    return -1;
+  }
+
+  void OrderUnitBlockAt(
+    int startIndex,
+    float2 blockSlotPos,
+    int shapeIndex,
+    int colorValue
+  // NativeList<QuadData> inactiveQuads
+  )
   {
     var shapeData = _blockShapeDatas[shapeIndex];
 
@@ -154,7 +186,8 @@ public partial class LevelSystem : MonoBehaviour
         var gridPos = new int2(x, y);
         var data = new QuadData
         {
-          ShapeIndex = shapeIndex,
+          GroupIndex = shapeIndex,
+          Index = i,
           Position = slotGrid.ConvertGridPosToWorldPos(gridPos),
           PlacedIndex = -1,
           ColorValue = newColorIndex,
@@ -164,19 +197,6 @@ public partial class LevelSystem : MonoBehaviour
         i++;
       }
     }
-  }
-
-  int FindFirstInactivedShapeIdx()
-  {
-    using var kvArray = _blockShapeDatas.GetKeyValueArrays(Allocator.Temp);
-    for (int i = slotsParent.childCount; i < kvArray.Length; ++i)
-    {
-      var key = kvArray.Keys[i];
-      var val = kvArray.Values[i];
-      if (val.IsActive) continue;
-      return key;
-    }
-    return -1;
   }
 
   void GenerateEmptyShape(
@@ -253,136 +273,5 @@ public partial class LevelSystem : MonoBehaviour
 
     var availableAmount = GetAvailableQuadAmount(additionAmount);
     _currentQuadAmount = availableAmount;
-  }
-
-  void OrderShapePositionsTo(float3 targetPos, int shapeIdx)
-  {
-    var shapeData = _blockShapeDatas[shapeIdx];
-    shapeData.CenterPosition = targetPos;
-    _blockShapeDatas[shapeIdx] = shapeData;
-
-    var _currentBlockAmount = GetCurrentBlockAmount();
-    for (int i = 0; i < _currentBlockAmount; ++i)
-    {
-      var blockData = _blockDatas[i];
-      if (blockData.ShapeIndex != shapeIdx) continue;
-
-      var offset = blockData.CenterOffset;
-      var nextBlockPos = shapeData.CenterPosition + offset;
-      blockData.Position = nextBlockPos;
-
-      _blockDatas[i] = blockData;
-    }
-
-    for (int i = 0; i < _currentQuadAmount; ++i)
-    {
-      var quadData = _quadDatas[i];
-      if (quadData.ShapeIndex != shapeIdx) continue;
-
-      var offset = _shapeCenterOffsets[i];
-      var nextQuadPos = shapeData.CenterPosition + offset;
-      quadData.Position = nextQuadPos;
-
-      _quadDatas[i] = quadData;
-      OrderQuadMeshAt(i, nextQuadPos, quadData.ColorValue);
-    }
-  }
-
-  void GrabbingBlockControlInUpdate()
-  {
-    if (_currentGrabbingShapeIndex == -1) return;
-    if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
-    if (!_isUserScreenTouching) return;
-    if (!_blockShapeDatas.ContainsKey(_currentGrabbingShapeIndex)) return;
-
-    var _userTouchScreenPos = new float3(
-      userTouchScreenPosition.x, userTouchScreenPosition.y, 0
-    );
-    var targetPos = _userTouchScreenPos + touchOffset;
-    OrderShapePositionsTo(targetPos, _currentGrabbingShapeIndex);
-    ApplyDrawOrders();
-  }
-
-  void CalculateTransitionForQuadsInUpdate()
-  {
-    for (int x = 0; x < quadGrid.GridSize.x; ++x)
-    {
-      for (int y = 0; y < quadGrid.GridSize.y; ++y)
-      {
-        var currQuadGridPos = new int2(x, y);
-        var currIdxPos = quadGrid.ConvertGridPosToIndex(currQuadGridPos);
-        if (_quadIndexesDatas[currIdxPos] == -1)
-        {
-          // case: there is no quad in this grid so we skip this one
-          continue;
-        }
-        // case: there is a quad in this grid
-        var quadIndex = _quadIndexesDatas[currIdxPos];
-        var quadData = _quadDatas[quadIndex];
-        var downIdx = FindEmptyDownIndexAt(currQuadGridPos);
-        if (downIdx != -1)
-        {
-          // case: there is a empty down here so we priority move the quad to here
-          _quadIndexesDatas[currIdxPos] = -1;
-          var _downQuadPos = quadGrid.ConvertIndexToWorldPos(downIdx);
-          _quadIndexesDatas[downIdx] = quadIndex;
-          quadData.Position = _downQuadPos;
-          quadData.PlacedIndex = downIdx;
-          _quadDatas[quadIndex] = quadData;
-          OrderQuadMeshAt(quadIndex, _downQuadPos, quadData.ColorValue);
-          continue;
-        }
-        var diagonalIdx = FindEmptyDiagonalIndexAt(currQuadGridPos);
-        if (diagonalIdx == -1) continue;
-        // case: there is a empty diagonal here so we move the quad to here
-        _quadIndexesDatas[currIdxPos] = -1;
-        var _diagonalQuadPos = quadGrid.ConvertIndexToWorldPos(diagonalIdx);
-        _quadIndexesDatas[diagonalIdx] = quadIndex;
-        quadData.Position = _diagonalQuadPos;
-        quadData.PlacedIndex = diagonalIdx;
-        _quadDatas[quadIndex] = quadData;
-        OrderQuadMeshAt(quadIndex, _diagonalQuadPos, quadData.ColorValue);
-      }
-    }
-  }
-
-  void CalculateGravityForQuadsInUpdate()
-  {
-    for (int i = 0; i < _currentQuadAmount; ++i)
-    {
-      var quadData = _quadDatas[i];
-
-      if (!_blockShapeDatas.ContainsKey(quadData.ShapeIndex)) continue;
-      if (!_blockShapeDatas[quadData.ShapeIndex].IsActive) continue;
-      if (!IsPlacedShape(quadData.ShapeIndex)) continue;
-      if (quadData.PlacedIndex != -1) continue;
-
-      // TODO: heavyly calculations
-      if (quadGrid.IsPosOutsideAt(quadData.Position)) continue;
-      var currQuadPos = quadData.Position;
-      var underEmptyPos = FindUnderEmptyQuadPosAt(currQuadPos);
-      var underEmptyIdx = quadGrid.ConvertWorldPosToIndex(underEmptyPos);
-      if (underEmptyPos.Equals(-1)) { continue; }
-
-      _quadIndexesDatas[underEmptyIdx] = i;
-      quadData.Position = underEmptyPos;
-      quadData.PlacedIndex = underEmptyIdx;
-      _quadDatas[i] = quadData;
-
-      var shapeData = _blockShapeDatas[quadData.ShapeIndex];
-      shapeData.QuadsAmount--;
-      _blockShapeDatas[quadData.ShapeIndex] = shapeData;
-
-      if (shapeData.QuadsAmount == 0)
-      {
-        _blockShapeDatas.Remove(quadData.ShapeIndex);
-      }
-
-      OrderQuadMeshAt(i, underEmptyPos, quadData.ColorValue);
-    }
-
-    CalculateTransitionForQuadsInUpdate();
-
-    ApplyDrawOrders();
   }
 }

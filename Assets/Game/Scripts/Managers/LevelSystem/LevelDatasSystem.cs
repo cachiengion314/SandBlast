@@ -11,7 +11,8 @@ public struct BlockData
 
 public struct QuadData
 {
-  public int ShapeIndex;
+  public int Index;
+  public int GroupIndex;
   public float3 Position;
   public int PlacedIndex;
   public int ColorValue;
@@ -26,12 +27,19 @@ public struct BlockShapeData
   public bool IsActive;
 }
 
+public struct GroupQuadData
+{
+  public int ColorValue;
+  public bool IsActive;
+}
+
 public partial class LevelSystem : MonoBehaviour
 {
   NativeArray<QuadData> _quadDatas;
   NativeArray<int> _quadIndexesDatas; // index is position, value is the index in _quadDatas array
   NativeArray<float3> _shapeCenterOffsets;
   NativeHashMap<int, BlockShapeData> _blockShapeDatas;
+  NativeHashMap<int, GroupQuadData> _groupQuadDatas;
   NativeArray<BlockData> _blockDatas;
   NativeArray<int2> _diagonalDirections;
 
@@ -43,6 +51,7 @@ public partial class LevelSystem : MonoBehaviour
     for (int i = 0; i < _quadIndexesDatas.Length; ++i) _quadIndexesDatas[i] = -1;
     _shapeCenterOffsets = new NativeArray<float3>(totalBoardQuadsAmount, Allocator.Persistent);
     _blockShapeDatas = new NativeHashMap<int, BlockShapeData>(blockGrid.GridSize.x * blockGrid.GridSize.y / 4, Allocator.Persistent);
+    _groupQuadDatas = new NativeHashMap<int, GroupQuadData>(16, Allocator.Persistent);
     _blockDatas = new NativeArray<BlockData>(blockGrid.GridSize.x * blockGrid.GridSize.y, Allocator.Persistent);
 
     _diagonalDirections = new NativeArray<int2>(2, Allocator.Persistent);
@@ -56,6 +65,7 @@ public partial class LevelSystem : MonoBehaviour
     _quadIndexesDatas.Dispose();
     _shapeCenterOffsets.Dispose();
     _blockShapeDatas.Dispose();
+    _groupQuadDatas.Dispose();
     _blockDatas.Dispose();
     _diagonalDirections.Dispose();
   }
