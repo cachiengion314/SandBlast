@@ -28,24 +28,25 @@ public partial class M20LevelSystem : MonoBehaviour
     [SerializeField] Transform spawnedParent;
     public Transform SpawnedParent => spawnedParent;
     [Header("Grids")]
-    [SerializeField] GridWorld topGrid;
+    int2 GridSize;
+    float2 GridScale;
+    float3 GridPos;
     int _amountColorBlock = 0;
     public void SetupCurrentLevel(LevelInformation levelInformation)
     {
-        topGrid.transform.position = levelInformation.TopGridPosition;
-        topGrid.GridSize = levelInformation.TopGridSize;
-        topGrid.InitConvertedComponents();
+        GridSize = levelInformation.TopGridSize;
+        GridScale = new int2(1, 1);
+        GridPos = levelInformation.TopGridPosition;
 
         var colorBlockPartitionDatas = levelInformation.ColorBlockPartitionDatas;
-
-        var length = topGrid.GridSize.x * topGrid.GridSize.y;
+        var length = GridSize.x * GridSize.y;
         _colorBlocks = new ColorBlockControl[length];
 
         for (int i = 0; i < colorBlockPartitionDatas.Length; ++i)
         {
             var partition = colorBlockPartitionDatas[i];
             var index = partition.Index;
-            var gridPos = topGrid.ConvertIndexToGridPos(index);
+            var gridPos = GridSystem.ConvertIndexToGridPos(index, GridSize);
             var colorBlock = SpawnColorBlockAt(index, spawnedParent);
             colorBlock.SetIndex(index);
             colorBlock.SetColorValue(partition.ColorValue);
@@ -89,8 +90,8 @@ public partial class M20LevelSystem : MonoBehaviour
         {
             var block = _colorBlocks[i];
             if (block == null) continue;
-            var blockPos = topGrid.ConvertIndexToWorldPos(i);
-            var blockGrid = topGrid.ConvertIndexToGridPos(i);
+            var blockPos = GridSystem.ConvertIndexToWorldPos(i, GridSize, GridScale, GridPos);
+            var blockGrid = GridSystem.ConvertIndexToGridPos(i, GridSize);
 
             block.transform.position = blockPos + new float3(0f, 7f, 0f);
 
