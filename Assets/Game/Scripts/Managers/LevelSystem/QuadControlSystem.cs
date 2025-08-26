@@ -105,7 +105,7 @@ public partial class LevelSystem : MonoBehaviour
 
   float3 ConvertSlotPosToWorldPos(float2 blockSlotPos)
   {
-    var slotPos = (float3)slotGrid.transform.position;
+    var slotPos = slotGridPos;
     var blockPos = slotPos + new float3(
       blockSlotPos.x * quadGridScale.x * 8,
       blockSlotPos.y * quadGridScale.y * 8,
@@ -117,8 +117,8 @@ public partial class LevelSystem : MonoBehaviour
   int2 ConvertBlockPosToSlotGridPos(float2 blockSlotPos)
   {
     var centerSlot = new int2(
-      (int)math.floor(slotGrid.GridSize.x / 2f),
-      (int)math.floor(slotGrid.GridSize.y / 2f)
+      (int)math.floor(slotGridSize.x / 2f),
+      (int)math.floor(slotGridSize.y / 2f)
     );
     var r = new int2(
       (int)math.floor(centerSlot.x + blockSlotPos.x * 8),
@@ -155,7 +155,7 @@ public partial class LevelSystem : MonoBehaviour
         var data = new QuadData
         {
           ShapeIndex = shapeIndex,
-          Position = slotGrid.ConvertGridPosToWorldPos(gridPos),
+          Position = GridSystem.ConvertGridPosToWorldPos(gridPos, slotGridSize, slotGridScale, slotGridPos),
           PlacedIndex = -1,
           ColorValue = newColorIndex,
         };

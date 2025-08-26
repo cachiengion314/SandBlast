@@ -101,9 +101,9 @@ public partial class LevelSystem : MonoBehaviour
     // quadGrid.GridSize = new int2(blockGrid.GridSize.x * 8, blockGrid.GridSize.y * 8);
     // quadGrid.InitConvertedComponents();
 
-    slotGrid.GridScale = quadScale;
-    slotGrid.GridSize = new int2(22, 22);
-    slotGrid.InitConvertedComponents();
+    // slotGrid.GridScale = quadScale;
+    // slotGrid.GridSize = new int2(22, 22);
+    // slotGrid.InitConvertedComponents();
 
     blockGridSize = new int2(10, 12);
     blockGridScale = quadScale * 8;
@@ -113,9 +113,9 @@ public partial class LevelSystem : MonoBehaviour
     quadGridScale = quadScale;
     quadGridPos = float3.zero;
 
-    // slotGridSize = new int2(22, 22);
-    // slotGridScale = quadScale;
-    // slotGridPos = float3.zero;
+    slotGridSize = new int2(22, 22);
+    slotGridScale = quadScale;
+    slotGridPos = float3.zero;
 
     quadMeshSystem.QuadScale = quadGridScale;
     quadMeshSystem.QuadCapacity = quadGridSize.x * quadGridSize.y;

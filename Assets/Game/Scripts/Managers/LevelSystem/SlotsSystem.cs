@@ -20,7 +20,7 @@ public partial class LevelSystem : MonoBehaviour
   float3 GetAndSetSlotGridPositionAt(int slotIndex)
   {
     var slotPos = GetSlotPositionAt(slotIndex);
-    slotGrid.transform.position = slotPos;
+    slotGridPos = slotPos;
     return slotPos;
   }
 
