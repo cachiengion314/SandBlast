@@ -58,7 +58,7 @@ public partial class M20LevelSystem : MonoBehaviour
             _colorBlocks[index] = colorBlock;
             _amountColorBlock++;
         }
-        VisualizeStartColorBlock();
+        // VisualizeStartColorBlock();
 
         var slots = FindQueueSlotsPosParent(levelInformation.AmountSlot);
         for (int i = 0; i < slots.childCount; i++)

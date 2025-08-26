@@ -36,6 +36,7 @@ public partial class GameplayPanel
             ToggleBooster1Modal();
         else
         {
+            LevelSystem.Instance.StartTutorial2b();
             LevelSystem.Instance.OnTriggerBooster1();
         }
     }
@@ -48,7 +49,7 @@ public partial class GameplayPanel
             ToggleBooster2Modal();
         else
         {
-
+            LevelSystem.Instance.StartTutorial3b();
         }
     }
 
@@ -60,7 +61,7 @@ public partial class GameplayPanel
             ToggleBooster3Modal();
         else
         {
-
+            LevelSystem.Instance.StartTutorial4b();
         }
     }
 

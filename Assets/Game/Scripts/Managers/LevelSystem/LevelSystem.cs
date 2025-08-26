@@ -46,6 +46,11 @@ public partial class LevelSystem : MonoBehaviour
 
     isLoadedLevel = true;
     GameManager.Instance.SetGameState(GameState.Gameplay);
+
+    // StartTutorial1();
+    // StartTutorial2a();
+    // StartTutorial3a();
+    // StartTutorial4a();
   }
 
   void OnDestroy()
