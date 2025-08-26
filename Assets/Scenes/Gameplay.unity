@@ -796,7 +796,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 157.83333, y: -43}
+  m_AnchoredPosition: {x: 157.83331, y: -43}
   m_SizeDelta: {x: 226, y: 178}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &74468656
@@ -946,8 +946,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 102
+  m_SortingLayerID: 1070419775
+  m_SortingOrder: 30
   m_TargetDisplay: 0
 --- !u!1 &78210501
 GameObject:
@@ -2373,6 +2373,13 @@ MonoBehaviour:
   slotsParent: {fileID: 201795461}
   spawnedParent: {fileID: 137796742}
   holeEfx: {fileID: 466072, guid: e053c479a3add9649af9d847a748547d, type: 3}
+  tutorial: {fileID: 849830799}
+  booster1Sprite: {fileID: 21300000, guid: 594fd9ac964634877ac10d9b465c10d0, type: 3}
+  booster2Sprite: {fileID: 21300000, guid: 2ea7dbc1271cf4360b5333fe59f1e314, type: 3}
+  booster3Sprite: {fileID: 21300000, guid: 0c9a170cfb5e04813af2fbd9bb6cb463, type: 3}
+  canvasBooster1: {fileID: 74468661}
+  canvasBooster2: {fileID: 783623880}
+  canvasBooster3: {fileID: 1439786217}
 --- !u!4 &229877049
 Transform:
   m_ObjectHideFlags: 0
@@ -3383,7 +3390,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 9.921998}
+  m_AnchoredPosition: {x: 0, y: 9.921997}
   m_SizeDelta: {x: 0, y: -19.844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &348772697
@@ -8307,8 +8314,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 0
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 102
+  m_SortingLayerID: 1070419775
+  m_SortingOrder: 30
   m_TargetDisplay: 0
 --- !u!1 &784038125
 GameObject:
@@ -8364,7 +8371,7 @@ Canvas:
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
-  m_OverrideSorting: 1
+  m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_VertexColorAlwaysGammaSpace: 0
@@ -9277,6 +9284,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 849702036}
   m_CullTransparentMesh: 1
+--- !u!114 &849830799 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7491965881438095419, guid: 5cbf1dfda58344462866de36353bae92,
+    type: 3}
+  m_PrefabInstance: {fileID: 621088261181612775}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a77f78260820c403c853913f490664d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &853704088
 GameObject:
   m_ObjectHideFlags: 0
@@ -11886,7 +11905,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 9.921998}
+  m_AnchoredPosition: {x: 0, y: 9.921997}
   m_SizeDelta: {x: 0, y: -19.844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1070862538
@@ -16321,8 +16340,8 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
-  m_SortingOrder: 102
+  m_SortingLayerID: 1070419775
+  m_SortingOrder: 30
   m_TargetDisplay: 0
 --- !u!1 &1440334818
 GameObject:
@@ -17257,7 +17276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 9.921998}
+  m_AnchoredPosition: {x: 0, y: 9.921997}
   m_SizeDelta: {x: 0, y: -19.844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1518222148
@@ -18303,7 +18322,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: -34.8, y: -32.5}
+  m_AnchoredPosition: {x: -34.800003, y: -32.5}
   m_SizeDelta: {x: 60, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1597435735
@@ -19077,7 +19096,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 9.921998}
+  m_AnchoredPosition: {x: 0, y: 9.921997}
   m_SizeDelta: {x: 0, y: -19.844}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1692777187
@@ -23036,6 +23055,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 582268083}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2141465385 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6516460639178506420, guid: 5cbf1dfda58344462866de36353bae92,
+    type: 3}
+  m_PrefabInstance: {fileID: 621088261181612775}
+  m_PrefabAsset: {fileID: 0}
+--- !u!223 &2141465389
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2141465385}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 0
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 1070419775
+  m_SortingOrder: 20
+  m_TargetDisplay: 0
 --- !u!114 &21059416749841757
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23189,15 +23237,15 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1569264327042924615, guid: 5cbf1dfda58344462866de36353bae92,
+    - target: {fileID: 2172405937194760350, guid: 5cbf1dfda58344462866de36353bae92,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.06559588
-      objectReference: {fileID: 0}
-    - target: {fileID: 1569264327042924615, guid: 5cbf1dfda58344462866de36353bae92,
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 3197226358536982054}
+    - target: {fileID: 2172405937194760350, guid: 5cbf1dfda58344462866de36353bae92,
         type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.000411
+      propertyPath: m_SortingOrder
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2778016082517791428, guid: 5cbf1dfda58344462866de36353bae92,
         type: 3}
@@ -23314,30 +23362,14 @@ PrefabInstance:
       propertyPath: lightPanel
       value: 
       objectReference: {fileID: 1572805350}
-    - target: {fileID: 9165705807336819167, guid: 5cbf1dfda58344462866de36353bae92,
-        type: 3}
-      propertyPath: m_SizeDelta.x
-      value: -40
-      objectReference: {fileID: 0}
-    - target: {fileID: 9165705807336819167, guid: 5cbf1dfda58344462866de36353bae92,
-        type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -40
-      objectReference: {fileID: 0}
-    - target: {fileID: 9165705807336819167, guid: 5cbf1dfda58344462866de36353bae92,
-        type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9165705807336819167, guid: 5cbf1dfda58344462866de36353bae92,
-        type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6516460639178506420, guid: 5cbf1dfda58344462866de36353bae92,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2141465389}
   m_SourcePrefab: {fileID: 100100000, guid: 5cbf1dfda58344462866de36353bae92, type: 3}
 --- !u!1 &626052907802584344
 GameObject:
@@ -23719,7 +23751,7 @@ Canvas:
   m_GameObject: {fileID: 23345419668683897}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 3197226358536982054}
   m_PlaneDistance: 10
   m_PixelPerfect: 0
@@ -23731,7 +23763,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 1070419775
-  m_SortingOrder: 100
+  m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!1 &3724687645286270431
 GameObject:
