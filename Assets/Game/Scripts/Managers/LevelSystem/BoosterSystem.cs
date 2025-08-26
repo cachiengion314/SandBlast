@@ -9,9 +9,9 @@ public partial class LevelSystem
         for (int i = 0; i < slotsParent.childCount; i++)
         {
             if (IsSlotEmptyAt(i)) continue;
-            var data = _blockShapeDatas[i];
-            _currentQuadAmount = data.StartSpawnedQuadIndex;
-            _blockShapeDatas.Remove(i);
+            var data = _shapeQuadDatas[i];
+            // _currentQuadAmount = data.StartSpawnedQuadIndex;
+            _shapeQuadDatas.Remove(i);
             var colorValue = GetRamdomColor();
             using var blockSlotPositions = GetRandomShape();
             OrderBlockShapeAt(i, blockSlotPositions, colorValue);

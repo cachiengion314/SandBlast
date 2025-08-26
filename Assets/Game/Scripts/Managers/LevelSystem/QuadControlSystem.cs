@@ -73,7 +73,7 @@ public partial class LevelSystem : MonoBehaviour
       quadData.GroupIndex = newShapeIdx;
       _quadDatas[i] = quadData;
     }
-    _blockShapeDatas.Remove(oldShapeIdx);
+    _shapeQuadDatas.Remove(oldShapeIdx);
   }
 
   int GetCurrentBlockAmount()
@@ -161,7 +161,7 @@ public partial class LevelSystem : MonoBehaviour
     NativeList<QuadData> inactiveQuads
   )
   {
-    var shapeData = _blockShapeDatas[shapeIndex];
+    var shapeData = _shapeQuadDatas[shapeIndex];
 
     var startSlotGridPos = ConvertBlockPosToSlotGridPos(blockSlotPos);
     var startX = startSlotGridPos.x;
@@ -211,7 +211,7 @@ public partial class LevelSystem : MonoBehaviour
   )
   {
     var shapeIdx = slotIndex;
-    if (_blockShapeDatas.ContainsKey(shapeIdx))
+    if (_shapeQuadDatas.ContainsKey(shapeIdx))
     {
       print("Shape ID still exist, there is something wrong!");
       return;
@@ -229,7 +229,7 @@ public partial class LevelSystem : MonoBehaviour
     var additionAmount = 4 * 64;
     var startSpawnedQuadIndex = 0;
 
-    _blockShapeDatas.Add(
+    _shapeQuadDatas.Add(
       shapeIdx,
       new ShapeQuadData
       {

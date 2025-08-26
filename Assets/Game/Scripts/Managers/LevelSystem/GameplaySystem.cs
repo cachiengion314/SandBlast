@@ -6,9 +6,9 @@ public partial class LevelSystem : MonoBehaviour
 {
   void OrderShapePositionsTo(float3 targetPos, int shapeIdx)
   {
-    var shapeData = _blockShapeDatas[shapeIdx];
+    var shapeData = _shapeQuadDatas[shapeIdx];
     shapeData.CenterPosition = targetPos;
-    _blockShapeDatas[shapeIdx] = shapeData;
+    _shapeQuadDatas[shapeIdx] = shapeData;
 
     var _currentBlockAmount = GetCurrentBlockAmount();
     for (int i = 0; i < _currentBlockAmount; ++i)
@@ -42,7 +42,7 @@ public partial class LevelSystem : MonoBehaviour
     if (_currentGrabbingShapeIndex == -1) return;
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
     if (!_isUserScreenTouching) return;
-    if (!_blockShapeDatas.ContainsKey(_currentGrabbingShapeIndex)) return;
+    if (!_shapeQuadDatas.ContainsKey(_currentGrabbingShapeIndex)) return;
 
     var _userTouchScreenPos = new float3(
       userTouchScreenPosition.x, userTouchScreenPosition.y, 0
@@ -96,14 +96,14 @@ public partial class LevelSystem : MonoBehaviour
 
   void CalculateQuadFallingsInUpdate()
   {
-    if (_blockShapeDatas.Count == 0) return;
+    if (_shapeQuadDatas.Count == 0) return;
 
     for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
 
       if (!quadData.IsActive) continue;
-      if (!_blockShapeDatas.ContainsKey(quadData.GroupIndex)) continue;
+      if (!_shapeQuadDatas.ContainsKey(quadData.GroupIndex)) continue;
       if (!IsPlacedShape(quadData.GroupIndex)) continue;
       if (quadData.PlacedIndex != -1) continue;
 
@@ -119,13 +119,13 @@ public partial class LevelSystem : MonoBehaviour
       quadData.PlacedIndex = underEmptyIdx;
       _quadDatas[i] = quadData;
 
-      var shapeData = _blockShapeDatas[quadData.GroupIndex];
+      var shapeData = _shapeQuadDatas[quadData.GroupIndex];
       shapeData.QuadsAmount--;
-      _blockShapeDatas[quadData.GroupIndex] = shapeData;
+      _shapeQuadDatas[quadData.GroupIndex] = shapeData;
 
       if (shapeData.QuadsAmount == 0)
       {
-        _blockShapeDatas.Remove(quadData.GroupIndex);
+        _shapeQuadDatas.Remove(quadData.GroupIndex);
       }
 
       OrderQuadMeshAt(i, underEmptyPos, quadData.ColorValue);
@@ -135,7 +135,7 @@ public partial class LevelSystem : MonoBehaviour
     {
       var quadData = _quadDatas[i];
 
-      if (!_blockShapeDatas.ContainsKey(quadData.GroupIndex))
+      if (!_shapeQuadDatas.ContainsKey(quadData.GroupIndex))
       {
         quadData.IsActive = false;
         _quadDatas[i] = quadData;
