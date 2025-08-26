@@ -55,7 +55,5 @@ public partial class LevelSystem : MonoBehaviour
     _isUserScreenTouching = false;
 
     OnInactive();
-    if (!IsSlotsEmpty()) return;
-    SpawnAndBakingEntityDatas(_levelInformation);
   }
 }

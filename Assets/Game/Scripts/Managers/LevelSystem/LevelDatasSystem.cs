@@ -51,6 +51,7 @@ public partial class LevelSystem : MonoBehaviour
     {
       var quadData = _quadDatas[i];
       quadData.Index = i;
+      quadData.GroupIndex = -1;
       _quadDatas[i] = quadData;
     }
 

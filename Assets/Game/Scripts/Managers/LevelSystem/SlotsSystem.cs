@@ -76,6 +76,7 @@ public partial class LevelSystem : MonoBehaviour
   {
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
     if (!_shapeQuadDatas.ContainsKey(_currentGrabbingShapeIndex)) return;
+
     if (IsBlockShapeOutsideAt(_currentGrabbingShapeIndex))
     {
       var slotPos = GetAndSetSlotGridPositionAt(_currentGrabbingShapeIndex);

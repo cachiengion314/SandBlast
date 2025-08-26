@@ -1,4 +1,3 @@
-using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -10,8 +9,7 @@ public partial class LevelSystem : MonoBehaviour
     shapeData.CenterPosition = targetPos;
     _shapeQuadDatas[shapeIdx] = shapeData;
 
-    var _currentBlockAmount = GetCurrentBlockAmount();
-    for (int i = 0; i < _currentBlockAmount; ++i)
+    for (int i = 0; i < _blockDatas.Length; ++i)
     {
       var blockData = _blockDatas[i];
       if (blockData.ShapeIndex != shapeIdx) continue;
@@ -70,7 +68,7 @@ public partial class LevelSystem : MonoBehaviour
         var downIdx = FindEmptyDownIndexAt(currQuadGridPos);
         if (downIdx != -1)
         {
-          // case: there is a empty down here so we priority move the quad to here
+          // case: there is an empty down here so we priority move the quad to here
           _quadIndexesDatas[currIdxPos] = -1;
           var _downQuadPos = quadGrid.ConvertIndexToWorldPos(downIdx);
           _quadIndexesDatas[downIdx] = quadIndex;
@@ -82,7 +80,7 @@ public partial class LevelSystem : MonoBehaviour
         }
         var diagonalIdx = FindEmptyDiagonalIndexAt(currQuadGridPos);
         if (diagonalIdx == -1) continue;
-        // case: there is a empty diagonal here so we move the quad to here
+        // case: there is an empty diagonal here so we move the quad to here
         _quadIndexesDatas[currIdxPos] = -1;
         var _diagonalQuadPos = quadGrid.ConvertIndexToWorldPos(diagonalIdx);
         _quadIndexesDatas[diagonalIdx] = quadIndex;
@@ -96,8 +94,6 @@ public partial class LevelSystem : MonoBehaviour
 
   void CalculateQuadFallingsInUpdate()
   {
-    if (_shapeQuadDatas.Count == 0) return;
-
     for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
@@ -130,7 +126,7 @@ public partial class LevelSystem : MonoBehaviour
 
       OrderQuadMeshAt(i, underEmptyPos, quadData.ColorValue);
     }
-
+    
     for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
@@ -141,5 +137,8 @@ public partial class LevelSystem : MonoBehaviour
         _quadDatas[i] = quadData;
       }
     }
+
+    if (Input.GetKeyDown(KeyCode.V))
+      SpawnAndBakingEntityDatas(_levelInformation);
   }
 }

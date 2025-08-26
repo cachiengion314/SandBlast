@@ -83,14 +83,13 @@ public partial class LevelSystem : MonoBehaviour
 
   bool IsBlockShapeOutsideAt(int shapeIdx)
   {
-    var _currentBlockAmount = GetCurrentBlockAmount();
-    for (int i = 0; i < _currentBlockAmount; ++i)
+    for (int i = 0; i < _blockDatas.Length; ++i)
     {
-      var data = _blockDatas[i];
-      var _shapeIdx = data.ShapeIndex;
+      var blockData = _blockDatas[i];
+      var _shapeIdx = blockData.ShapeIndex;
       if (_shapeIdx != shapeIdx) continue;
 
-      var blockPos = data.Position;
+      var blockPos = blockData.Position;
       if (blockGrid.IsPosOutsideAt(blockPos)) return true;
     }
     return false;
@@ -191,10 +190,10 @@ public partial class LevelSystem : MonoBehaviour
         quadData.PlacedIndex = -1;
         quadData.ColorValue = newColorIndex;
         quadData.IsActive = true;
-        var _i = quadData.Index;
+        var index = quadData.Index;
 
-        _quadDatas[_i] = quadData;
-        _shapeCenterOffsets[_i] = quadData.Position - shapeData.CenterPosition;
+        _quadDatas[index] = quadData;
+        _shapeCenterOffsets[index] = quadData.Position - shapeData.CenterPosition;
         i++;
       }
     }
@@ -257,7 +256,7 @@ public partial class LevelSystem : MonoBehaviour
         print("Cannot find any blockIdx ");
         return;
       }
-      print("blockIdx " + blockIdx);
+      
       var blockData = _blockDatas[blockIdx];
       blockData.ShapeIndex = shapeIdx;
       blockData.Position = blockPos;
