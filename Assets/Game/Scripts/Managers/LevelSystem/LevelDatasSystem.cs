@@ -42,8 +42,8 @@ public partial class LevelSystem : MonoBehaviour
     _quadIndexesDatas = new NativeArray<int>(totalBoardQuadsAmount, Allocator.Persistent);
     for (int i = 0; i < _quadIndexesDatas.Length; ++i) _quadIndexesDatas[i] = -1;
     _shapeCenterOffsets = new NativeArray<float3>(totalBoardQuadsAmount, Allocator.Persistent);
-    _blockShapeDatas = new NativeHashMap<int, BlockShapeData>(blockGrid.GridSize.x * blockGrid.GridSize.y / 4, Allocator.Persistent);
-    _blockDatas = new NativeArray<BlockData>(blockGrid.GridSize.x * blockGrid.GridSize.y, Allocator.Persistent);
+    _blockShapeDatas = new NativeHashMap<int, BlockShapeData>(blockGridSize.x * blockGridSize.y / 4, Allocator.Persistent);
+    _blockDatas = new NativeArray<BlockData>(blockGridSize.x * blockGridSize.y, Allocator.Persistent);
 
     _diagonalDirections = new NativeArray<int2>(2, Allocator.Persistent);
     _diagonalDirections[0] = new(-1, -1);

@@ -91,7 +91,7 @@ public partial class LevelSystem : MonoBehaviour
       if (_shapeIdx != shapeIdx) continue;
 
       var blockPos = data.Position;
-      if (blockGrid.IsPosOutsideAt(blockPos)) return true;
+      if (GridSystem.IsPosOutsideAt(blockPos, blockGridSize, blockGridScale, blockGridPos)) return true;
     }
     return false;
   }

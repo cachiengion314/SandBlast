@@ -8,7 +8,6 @@ using Unity.Collections;
 public partial class LevelSystem : MonoBehaviour
 {
   public static LevelSystem Instance { get; private set; }
-  [SerializeField] GridWorld blockGrid;
   [SerializeField] GridWorld slotGrid;
   int2 quadGridSize;
   float2 quadGridScale;
@@ -94,9 +93,9 @@ public partial class LevelSystem : MonoBehaviour
   {
     var quadScale = new float2(.11f, .11f);
 
-    blockGrid.GridScale = quadScale * 8;
-    blockGrid.GridSize = new int2(10, 12);
-    blockGrid.InitConvertedComponents();
+    // blockGrid.GridScale = quadScale * 8;
+    // blockGrid.GridSize = new int2(10, 12);
+    // blockGrid.InitConvertedComponents();
 
     // quadGrid.GridScale = quadScale;
     // quadGrid.GridSize = new int2(blockGrid.GridSize.x * 8, blockGrid.GridSize.y * 8);
@@ -106,11 +105,11 @@ public partial class LevelSystem : MonoBehaviour
     slotGrid.GridSize = new int2(22, 22);
     slotGrid.InitConvertedComponents();
 
-    // blockGridSize = new int2(10, 12);
-    // blockGridScale = quadScale * 8;
-    // blockGridPos = float3.zero;
+    blockGridSize = new int2(10, 12);
+    blockGridScale = quadScale * 8;
+    blockGridPos = float3.zero;
 
-    quadGridSize = new int2(blockGrid.GridSize.x * 8, blockGrid.GridSize.y * 8);
+    quadGridSize = new int2(blockGridSize.x * 8, blockGridSize.y * 8);
     quadGridScale = quadScale;
     quadGridPos = float3.zero;
 
