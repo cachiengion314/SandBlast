@@ -23,9 +23,9 @@ public partial class LevelSystem : MonoBehaviour
   {
     var downGridPDirection = new int2(0, -1);
     var downGridPos = gridPos + downGridPDirection;
-    if (quadGrid.IsGridPosOutsideAt(downGridPos)) return -1;
+    if (GridSystem.IsGridPosOutsideAt(downGridPos, quadGridSize)) return -1;
 
-    var downIndex = quadGrid.ConvertGridPosToIndex(downGridPos);
+    var downIndex = GridSystem.ConvertGridPosToIndex(downGridPos, quadGridSize);
     if (_quadIndexesDatas[downIndex] == -1) return downIndex;
     return -1;
   }
@@ -36,9 +36,9 @@ public partial class LevelSystem : MonoBehaviour
     {
       var _direction = _diagonalDirections[i];
       var _diagonalGridPos = gridPos + _direction;
-      if (quadGrid.IsGridPosOutsideAt(_diagonalGridPos)) continue;
+      if (GridSystem.IsGridPosOutsideAt(_diagonalGridPos, quadGridSize)) continue;
 
-      var _diagonalIdx = quadGrid.ConvertGridPosToIndex(_diagonalGridPos);
+      var _diagonalIdx = GridSystem.ConvertGridPosToIndex(_diagonalGridPos, quadGridSize);
       if (_quadIndexesDatas[_diagonalIdx] == -1) return _diagonalIdx;
     }
     return -1;
@@ -48,17 +48,17 @@ public partial class LevelSystem : MonoBehaviour
   {
     var gridPos = FindUnderEmptyQuadGridPosAt(quadPos);
     if (gridPos.Equals(-1)) return -1;
-    return quadGrid.ConvertGridPosToWorldPos(gridPos);
+    return GridSystem.ConvertGridPosToWorldPos(gridPos, quadGridSize, quadGridScale, quadGridPos);
   }
 
   int2 FindUnderEmptyQuadGridPosAt(float3 quadPos)
   {
-    var gridPos = quadGrid.ConvertWorldPosToGridPos(quadPos);
+    var gridPos = GridSystem.ConvertWorldPosToGridPos(quadPos, quadGridSize, quadGridScale, quadGridPos);
     var x = gridPos.x;
     for (int y = 0; y < gridPos.y; ++y)
     {
       var _currGridPos = new int2(x, y);
-      var _currIdx = quadGrid.ConvertGridPosToIndex(_currGridPos);
+      var _currIdx = GridSystem.ConvertGridPosToIndex(_currGridPos, quadGridSize);
       if (_quadIndexesDatas[_currIdx] == -1) return _currGridPos;
     }
     return -1;
@@ -107,8 +107,8 @@ public partial class LevelSystem : MonoBehaviour
   {
     var slotPos = (float3)slotGrid.transform.position;
     var blockPos = slotPos + new float3(
-      blockSlotPos.x * quadGrid.GridScale.x * 8,
-      blockSlotPos.y * quadGrid.GridScale.y * 8,
+      blockSlotPos.x * quadGridScale.x * 8,
+      blockSlotPos.y * quadGridScale.y * 8,
       0
     );
     return blockPos;
@@ -305,12 +305,12 @@ public partial class LevelSystem : MonoBehaviour
 
   void CalculateTransitionForQuadsInUpdate()
   {
-    for (int x = 0; x < quadGrid.GridSize.x; ++x)
+    for (int x = 0; x < quadGridSize.x; ++x)
     {
-      for (int y = 0; y < quadGrid.GridSize.y; ++y)
+      for (int y = 0; y < quadGridSize.y; ++y)
       {
         var currQuadGridPos = new int2(x, y);
-        var currIdxPos = quadGrid.ConvertGridPosToIndex(currQuadGridPos);
+        var currIdxPos = GridSystem.ConvertGridPosToIndex(currQuadGridPos, quadGridSize);
         if (_quadIndexesDatas[currIdxPos] == -1)
         {
           // case: there is no quad in this grid so we skip this one
@@ -324,7 +324,7 @@ public partial class LevelSystem : MonoBehaviour
         {
           // case: there is a empty down here so we priority move the quad to here
           _quadIndexesDatas[currIdxPos] = -1;
-          var _downQuadPos = quadGrid.ConvertIndexToWorldPos(downIdx);
+          var _downQuadPos = GridSystem.ConvertIndexToWorldPos(downIdx, quadGridSize, quadGridScale, quadGridPos);
           _quadIndexesDatas[downIdx] = quadIndex;
           quadData.Position = _downQuadPos;
           quadData.PlacedIndex = downIdx;
@@ -336,7 +336,7 @@ public partial class LevelSystem : MonoBehaviour
         if (diagonalIdx == -1) continue;
         // case: there is a empty diagonal here so we move the quad to here
         _quadIndexesDatas[currIdxPos] = -1;
-        var _diagonalQuadPos = quadGrid.ConvertIndexToWorldPos(diagonalIdx);
+        var _diagonalQuadPos = GridSystem.ConvertIndexToWorldPos(diagonalIdx, quadGridSize, quadGridScale, quadGridPos);
         _quadIndexesDatas[diagonalIdx] = quadIndex;
         quadData.Position = _diagonalQuadPos;
         quadData.PlacedIndex = diagonalIdx;
@@ -358,10 +358,10 @@ public partial class LevelSystem : MonoBehaviour
       if (quadData.PlacedIndex != -1) continue;
 
       // TODO: heavyly calculations
-      if (quadGrid.IsPosOutsideAt(quadData.Position)) continue;
+      if (GridSystem.IsPosOutsideAt(quadData.Position, quadGridSize, quadGridScale, quadGridPos)) continue;
       var currQuadPos = quadData.Position;
       var underEmptyPos = FindUnderEmptyQuadPosAt(currQuadPos);
-      var underEmptyIdx = quadGrid.ConvertWorldPosToIndex(underEmptyPos);
+      var underEmptyIdx = GridSystem.ConvertWorldPosToIndex(underEmptyPos, quadGridSize, quadGridScale, quadGridPos);
       if (underEmptyPos.Equals(-1)) { continue; }
 
       _quadIndexesDatas[underEmptyIdx] = i;

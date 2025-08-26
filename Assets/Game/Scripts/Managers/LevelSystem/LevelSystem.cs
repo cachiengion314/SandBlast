@@ -8,9 +8,17 @@ using Unity.Collections;
 public partial class LevelSystem : MonoBehaviour
 {
   public static LevelSystem Instance { get; private set; }
-  [SerializeField] GridWorld quadGrid;
   [SerializeField] GridWorld blockGrid;
   [SerializeField] GridWorld slotGrid;
+  int2 quadGridSize;
+  float2 quadGridScale;
+  float3 quadGridPos;
+  int2 blockGridSize;
+  float2 blockGridScale;
+  float3 blockGridPos;
+  int2 slotGridSize;
+  float2 slotGridScale;
+  float3 slotGridPos;
   [SerializeField] QuadMeshSystem quadMeshSystem;
   [SerializeField] M20LevelSystem m20LevelSystem;
   [SerializeField] CinemachineCamera cinemachineCamera;
@@ -90,16 +98,28 @@ public partial class LevelSystem : MonoBehaviour
     blockGrid.GridSize = new int2(10, 12);
     blockGrid.InitConvertedComponents();
 
-    quadGrid.GridScale = quadScale;
-    quadGrid.GridSize = new int2(blockGrid.GridSize.x * 8, blockGrid.GridSize.y * 8);
-    quadGrid.InitConvertedComponents();
+    // quadGrid.GridScale = quadScale;
+    // quadGrid.GridSize = new int2(blockGrid.GridSize.x * 8, blockGrid.GridSize.y * 8);
+    // quadGrid.InitConvertedComponents();
 
     slotGrid.GridScale = quadScale;
     slotGrid.GridSize = new int2(22, 22);
     slotGrid.InitConvertedComponents();
 
-    quadMeshSystem.QuadScale = quadGrid.GridScale;
-    quadMeshSystem.QuadCapacity = quadGrid.GridSize.x * quadGrid.GridSize.y;
+    // blockGridSize = new int2(10, 12);
+    // blockGridScale = quadScale * 8;
+    // blockGridPos = float3.zero;
+
+    quadGridSize = new int2(blockGrid.GridSize.x * 8, blockGrid.GridSize.y * 8);
+    quadGridScale = quadScale;
+    quadGridPos = float3.zero;
+
+    // slotGridSize = new int2(22, 22);
+    // slotGridScale = quadScale;
+    // slotGridPos = float3.zero;
+
+    quadMeshSystem.QuadScale = quadGridScale;
+    quadMeshSystem.QuadCapacity = quadGridSize.x * quadGridSize.y;
     quadMeshSystem.InitComponents();
   }
 

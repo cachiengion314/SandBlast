@@ -37,7 +37,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void InitDataBuffers(LevelInformation levelInformation)
   {
-    var totalBoardQuadsAmount = quadGrid.GridSize.x * quadGrid.GridSize.y;
+    var totalBoardQuadsAmount = quadGridSize.x * quadGridSize.y;
     _quadDatas = new NativeArray<QuadData>(totalBoardQuadsAmount, Allocator.Persistent);
     _quadIndexesDatas = new NativeArray<int>(totalBoardQuadsAmount, Allocator.Persistent);
     for (int i = 0; i < _quadIndexesDatas.Length; ++i) _quadIndexesDatas[i] = -1;
