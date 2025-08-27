@@ -7,7 +7,7 @@ public partial class LevelSystem
     {
         for (int i = 0; i < slotsParent.childCount; i++)
         {
-            RemoveBlockAt(i);
+            if(!IsSlotEmptyAt(i)) RemoveBlockAt(i);
             var colorValue = GetRamdomColor();
             using var blockSlotPositions = GetRandomShape();
             OrderBlockShapeAt(i, blockSlotPositions, colorValue);
@@ -31,6 +31,7 @@ public partial class LevelSystem
         for (int i = 0; i < _blockDatas.Length; i++)
         {
             var blockData = _blockDatas[i];
+            if (blockData.ShapeIndex != shapeIdx) continue;
             blockData.ShapeIndex = -1;
             _blockDatas[i] = blockData;
         }
