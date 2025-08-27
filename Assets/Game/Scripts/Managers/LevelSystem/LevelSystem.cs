@@ -80,10 +80,14 @@ public partial class LevelSystem : MonoBehaviour
     GrabbingBlockControlInUpdate();
 
     if (Input.GetKeyDown(KeyCode.V))
-      SpawnAndBakingEntityDatas(_levelInformation);
+    {
+      OrderShapesForSlots();
+      VisualizeActiveQuads();
+    }
     if (Input.GetKeyDown(KeyCode.B))
     {
-
+      var firstIdx = _groupQuadDatas.GetKeyValueArrays(Allocator.Temp).Keys[0];
+      RemoveGroupAt(firstIdx);
     }
   }
 
@@ -127,26 +131,10 @@ public partial class LevelSystem : MonoBehaviour
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)
   {
-    for (int i = 0; i < slotsParent.childCount; i++)
-    {
-      var colorValue = GetRamdomColor();
-      using var blockSlotPositions = GetRandomShape();
-      OrderBlockShapeAt(i, blockSlotPositions, colorValue);
-
-      if (!_shapeQuadDatas.ContainsKey(i)) return;
-      var shapeData = _shapeQuadDatas[i];
-      _shapeQuadDatas[i] = shapeData;
-    }
+    OrderShapesForSlots();
 
     VisualizeActiveQuads();
     ApplyDrawOrders();
-  }
-
-  bool IsSlotsEmpty()
-  {
-    for (int i = 0; i < slotsParent.childCount; i++)
-      if (!IsSlotEmptyAt(i)) return false;
-    return true;
   }
 
   int GetRamdomColor()

@@ -19,6 +19,23 @@ public partial class LevelSystem : MonoBehaviour
     quadMeshSystem.ApplyDrawOrders();
   }
 
+  void RemoveGroupAt(int groupIdx)
+  {
+    for (int i = 0; i < _quadDatas.Length; ++i)
+    {
+      var quadData = _quadDatas[i];
+      if (!quadData.IsActive) continue;
+      if (quadData.GroupIndex != groupIdx) continue;
+
+      quadData.IsActive = false;
+      _quadIndexesDatas[quadData.PlacedIndex] = -1;
+      _quadDatas[i] = quadData;
+
+      OrderQuadMeshAt(i, -11, quadData.ColorValue);
+    }
+    _groupQuadDatas.Remove(groupIdx);
+  }
+
   int FindEmptyDownIndexAt(int2 gridPos)
   {
     var downGridPDirection = new int2(0, -1);
@@ -109,13 +126,6 @@ public partial class LevelSystem : MonoBehaviour
       if (blockGrid.IsPosOutsideAt(blockPos)) return true;
     }
     return false;
-  }
-
-  int GetAvailableQuadAmount(int _additionAmount = 0)
-  {
-    var availableAmount
-      = math.min(_currentQuadAmount + _additionAmount, quadMeshSystem.QuadCapacity);
-    return availableAmount;
   }
 
   float3 ConvertSlotPosToWorldPos(float2 blockSlotPos)

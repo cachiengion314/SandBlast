@@ -12,6 +12,27 @@ public partial class LevelSystem : MonoBehaviour
     return newShapeIdx;
   }
 
+  bool IsSlotsEmpty()
+  {
+    for (int i = 0; i < slotsParent.childCount; i++)
+      if (!IsSlotEmptyAt(i)) return false;
+    return true;
+  }
+
+  void OrderShapesForSlots()
+  {
+    for (int i = 0; i < slotsParent.childCount; i++)
+    {
+      var colorValue = GetRamdomColor();
+      using var blockSlotPositions = GetRandomShape();
+      OrderBlockShapeAt(i, blockSlotPositions, colorValue);
+
+      if (!_shapeQuadDatas.ContainsKey(i)) return;
+      var shapeData = _shapeQuadDatas[i];
+      _shapeQuadDatas[i] = shapeData;
+    }
+  }
+
   bool IsPlacedShape(int shapeIdx)
   {
     return shapeIdx >= slotsParent.childCount;
