@@ -37,7 +37,7 @@ public partial class M20LevelSystem
              Destroy(colorBlock);
          });
 
-        var neighbors = GridSystem.FindNeighborsAt(colorBlock.transform.position, GridSize, GridScale, GridPos);
+        using var neighbors = GridSystem.FindNeighborsAt(colorBlock.transform.position, GridSize, GridScale, GridPos);
         for (int i = 0; i < neighbors.Length; ++i)
         {
             var neighborPos = neighbors[i];
