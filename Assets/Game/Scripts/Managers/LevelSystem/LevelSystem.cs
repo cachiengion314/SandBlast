@@ -25,7 +25,7 @@ public partial class LevelSystem : MonoBehaviour
   {
     if (Instance == null)
     {
-      DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(100, 50);
+      DOTween.Init(true, true, LogBehaviour.Verbose).SetCapacity(500, 50);
       Instance = this;
     }
     else Destroy(gameObject);

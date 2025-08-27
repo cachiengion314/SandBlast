@@ -10,7 +10,7 @@ public partial class M20LevelSystem
     [SerializeField] BlastBlockControl blastBlockPref;
     public ColorBlockControl SpawnColorBlockAt(int index, Transform parent)
     {
-        var pos = topGrid.ConvertIndexToWorldPos(index);
+        var pos = GridSystem.ConvertIndexToWorldPos(index, GridSize, GridScale, GridPos);
         var obj = Instantiate(colorBlockPref, parent);
         obj.transform.position = pos;
         return obj;
