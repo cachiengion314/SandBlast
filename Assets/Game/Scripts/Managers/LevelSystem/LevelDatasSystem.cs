@@ -29,6 +29,7 @@ public struct ShapeQuadData
 
 public struct GroupQuadData
 {
+  public int QuadsAmount;
   public int ColorValue;
   public bool IsActive;
 }

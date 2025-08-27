@@ -12,6 +12,27 @@ public partial class LevelSystem : MonoBehaviour
     return newShapeIdx;
   }
 
+  bool IsSlotsEmpty()
+  {
+    for (int i = 0; i < slotsParent.childCount; i++)
+      if (!IsSlotEmptyAt(i)) return false;
+    return true;
+  }
+
+  void OrderShapesForSlots()
+  {
+    for (int i = 0; i < slotsParent.childCount; i++)
+    {
+      var colorValue = GetRamdomColor();
+      using var blockSlotPositions = GetRandomShape();
+      OrderBlockShapeAt(i, blockSlotPositions, colorValue);
+
+      if (!_shapeQuadDatas.ContainsKey(i)) return;
+      var shapeData = _shapeQuadDatas[i];
+      _shapeQuadDatas[i] = shapeData;
+    }
+  }
+
   bool IsPlacedShape(int shapeIdx)
   {
     return shapeIdx >= slotsParent.childCount;
@@ -88,26 +109,8 @@ public partial class LevelSystem : MonoBehaviour
       return;
     }
 
-    // change current shape of slot space to the shape that belong to the board space
-    var oldShapeData = _shapeQuadDatas[_currentGrabbingShapeIndex];
-    var newShapeIdx = GenerateUniqueShapeIdx();
-    var newShapeData = new ShapeQuadData
-    {
-      CenterPosition = oldShapeData.CenterPosition,
-      QuadsAmount = oldShapeData.QuadsAmount,
-      ColorValue = oldShapeData.ColorValue,
-    };
-    _shapeQuadDatas.Add(newShapeIdx, newShapeData);
-    // remove block from shape since we don't need to read block_position anymore
-    for (int i = 0; i < _blockDatas.Length; ++i)
-    {
-      var blockData = _blockDatas[i];
-      if (blockData.ShapeIndex != _currentGrabbingShapeIndex) continue;
-      blockData.ShapeIndex = -1;
-      _blockDatas[i] = blockData;
-    }
-
-    AssignQuadsToNewShape(newShapeIdx, _currentGrabbingShapeIndex);
+    var newGroupIdx = GenerateUniqueShapeIdx();
+    AssignQuadsToNewGroup(newGroupIdx, _currentGrabbingShapeIndex);
 
     _currentGrabbingShapeIndex = -1;
   }
