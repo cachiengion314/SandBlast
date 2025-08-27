@@ -64,21 +64,37 @@ public partial class LevelSystem : MonoBehaviour
     return -1;
   }
 
-  void AssignQuadsToNewShape(int newShapeIdx, int oldShapeIdx)
+  void AssignQuadsToNewGroup(int newGroupIdx, int oldShapeIdx)
   {
+    // change current shape of slot space to the group that belong to the board space
+    var oldShapeData = _shapeQuadDatas[oldShapeIdx];
+
+    var newGroupData = new GroupQuadData
+    {
+      QuadsAmount = oldShapeData.QuadsAmount,
+      ColorValue = oldShapeData.ColorValue,
+      IsActive = true,
+    };
+    _groupQuadDatas.Add(newGroupIdx, newGroupData);
+
+    // remove blocks from shape since we don't need to read block_positions anymore
+    for (int i = 0; i < _blockDatas.Length; ++i)
+    {
+      var blockData = _blockDatas[i];
+      if (blockData.ShapeIndex != _currentGrabbingShapeIndex) continue;
+      blockData.ShapeIndex = -1;
+      _blockDatas[i] = blockData;
+    }
+
     for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
       if (quadData.GroupIndex != oldShapeIdx) continue;
-      quadData.GroupIndex = newShapeIdx;
+      quadData.GroupIndex = newGroupIdx;
       _quadDatas[i] = quadData;
     }
-    _shapeQuadDatas.Remove(oldShapeIdx);
-  }
 
-  int GetCurrentBlockAmount()
-  {
-    return _currentQuadAmount / 64;
+    _shapeQuadDatas.Remove(oldShapeIdx);
   }
 
   bool IsBlockShapeOutsideAt(int shapeIdx)
@@ -256,7 +272,7 @@ public partial class LevelSystem : MonoBehaviour
         print("Cannot find any blockIdx ");
         return;
       }
-      
+
       var blockData = _blockDatas[blockIdx];
       blockData.ShapeIndex = shapeIdx;
       blockData.Position = blockPos;

@@ -78,8 +78,22 @@ public partial class LevelSystem : MonoBehaviour
     }
 
     GrabbingBlockControlInUpdate();
-    CalculateQuadFallingsInUpdate();
-    // CalculateQuadTransitionsInUpdate();
+
+    if (Input.GetKeyDown(KeyCode.V))
+      SpawnAndBakingEntityDatas(_levelInformation);
+    if (Input.GetKeyDown(KeyCode.B))
+    {
+
+    }
+  }
+
+  void FixedUpdate()
+  {
+    if (!isLoadedLevel) return;
+    if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
+
+    SnapQuadToGridInUpdate();
+    CalculateQuadFallingInUpdate();
     ApplyDrawOrders();
   }
 

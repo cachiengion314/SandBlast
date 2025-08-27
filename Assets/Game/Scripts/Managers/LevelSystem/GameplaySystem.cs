@@ -49,7 +49,28 @@ public partial class LevelSystem : MonoBehaviour
     OrderShapePositionsTo(targetPos, _currentGrabbingShapeIndex);
   }
 
-  void CalculateQuadTransitionsInUpdate()
+  void SnapQuadToGridInUpdate()
+  {
+    for (int i = 0; i < _quadDatas.Length; ++i)
+    {
+      var quadData = _quadDatas[i];
+      if (!quadData.IsActive) continue;
+      if (!_groupQuadDatas.ContainsKey(quadData.GroupIndex)) continue;
+      if (quadData.PlacedIndex != -1) continue;
+
+      if (quadGrid.IsPosOutsideAt(quadData.Position)) continue;
+      var currQuadPos = quadData.Position;
+      var currIdx = quadGrid.ConvertWorldPosToIndex(currQuadPos);
+
+      _quadIndexesDatas[currIdx] = i;
+      quadData.PlacedIndex = currIdx;
+      _quadDatas[i] = quadData;
+
+      OrderQuadMeshAt(i, currQuadPos, quadData.ColorValue);
+    }
+  }
+
+  void CalculateQuadFallingInUpdate()
   {
     for (int x = 0; x < quadGrid.GridSize.x; ++x)
     {
@@ -90,55 +111,5 @@ public partial class LevelSystem : MonoBehaviour
         OrderQuadMeshAt(quadIndex, _diagonalQuadPos, quadData.ColorValue);
       }
     }
-  }
-
-  void CalculateQuadFallingsInUpdate()
-  {
-    for (int i = 0; i < _quadDatas.Length; ++i)
-    {
-      var quadData = _quadDatas[i];
-
-      if (!quadData.IsActive) continue;
-      if (!_shapeQuadDatas.ContainsKey(quadData.GroupIndex)) continue;
-      if (!IsPlacedShape(quadData.GroupIndex)) continue;
-      if (quadData.PlacedIndex != -1) continue;
-
-      // TODO: heavyly calculations
-      if (quadGrid.IsPosOutsideAt(quadData.Position)) continue;
-      var currQuadPos = quadData.Position;
-      var underEmptyPos = FindUnderEmptyQuadPosAt(currQuadPos);
-      var underEmptyIdx = quadGrid.ConvertWorldPosToIndex(underEmptyPos);
-      if (underEmptyPos.Equals(-1)) { continue; }
-
-      _quadIndexesDatas[underEmptyIdx] = i;
-      quadData.Position = underEmptyPos;
-      quadData.PlacedIndex = underEmptyIdx;
-      _quadDatas[i] = quadData;
-
-      var shapeData = _shapeQuadDatas[quadData.GroupIndex];
-      shapeData.QuadsAmount--;
-      _shapeQuadDatas[quadData.GroupIndex] = shapeData;
-
-      if (shapeData.QuadsAmount == 0)
-      {
-        _shapeQuadDatas.Remove(quadData.GroupIndex);
-      }
-
-      OrderQuadMeshAt(i, underEmptyPos, quadData.ColorValue);
-    }
-    
-    for (int i = 0; i < _quadDatas.Length; ++i)
-    {
-      var quadData = _quadDatas[i];
-
-      if (!_shapeQuadDatas.ContainsKey(quadData.GroupIndex))
-      {
-        quadData.IsActive = false;
-        _quadDatas[i] = quadData;
-      }
-    }
-
-    if (Input.GetKeyDown(KeyCode.V))
-      SpawnAndBakingEntityDatas(_levelInformation);
   }
 }
