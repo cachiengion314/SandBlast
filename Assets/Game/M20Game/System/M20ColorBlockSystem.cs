@@ -31,32 +31,32 @@ public partial class M20LevelSystem
         return true;
     }
 
-    ColorBlockControl FindFirstBlockMatchedFor(GameObject blastBlock)
-    {
-        for (int x = 0; x < topGrid.GridSize.x; ++x)
-        {
-            var idx = topGrid.ConvertGridPosToIndex(new int2(x, 0));
-            var obj = _colorBlocks[idx];
-            if (obj == null) continue;
-            if (!ShouldAdd(obj.gameObject, blastBlock)) continue;
-            return obj;
-        }
-        return null;
-    }
+    // ColorBlockControl FindFirstBlockMatchedFor(GameObject blastBlock)
+    // {
+    //     for (int x = 0; x < topGrid.GridSize.x; ++x)
+    //     {
+    //         var idx = topGrid.ConvertGridPosToIndex(new int2(x, 0));
+    //         var obj = _colorBlocks[idx];
+    //         if (obj == null) continue;
+    //         if (!ShouldAdd(obj.gameObject, blastBlock)) continue;
+    //         return obj;
+    //     }
+    //     return null;
+    // }
 
-    int[] FindColorMatchedFor()
-    {
-        HashSet<int> availableColor = new();
-        for (int x = 0; x < topGrid.GridSize.x; ++x)
-        {
-            var idx = topGrid.ConvertGridPosToIndex(new int2(x, 0));
-            var obj = _colorBlocks[idx];
-            if (obj == null) continue;
-            if (!obj.TryGetComponent(out IColorBlock colorBlock)) continue;
-            availableColor.Add(colorBlock.GetColorValue());
-        }
-        return availableColor.ToArray();
-    }
+    // int[] FindColorMatchedFor()
+    // {
+    //     HashSet<int> availableColor = new();
+    //     for (int x = 0; x < topGrid.GridSize.x; ++x)
+    //     {
+    //         var idx = topGrid.ConvertGridPosToIndex(new int2(x, 0));
+    //         var obj = _colorBlocks[idx];
+    //         if (obj == null) continue;
+    //         if (!obj.TryGetComponent(out IColorBlock colorBlock)) continue;
+    //         availableColor.Add(colorBlock.GetColorValue());
+    //     }
+    //     return availableColor.ToArray();
+    // }
 
     List<GameObject> FindColorBlocksMatchedFor(GameObject blastBlock)
     {
@@ -72,11 +72,11 @@ public partial class M20LevelSystem
           && firstHit.collider.TryGetComponent<IColorBlock>(out var color)
           && color.GetIndex() != -1
         )
-            startX = topGrid.ConvertIndexToGridPos(color.GetIndex()).x;
+            startX = GridSystem.ConvertIndexToGridPos(color.GetIndex(), GridSize).x;
 
-        for (int x = startX; x < topGrid.GridSize.x; ++x)
+        for (int x = startX; x < GridSize.x; ++x)
         {
-            var idx = topGrid.ConvertGridPosToIndex(new int2(x, 0));
+            var idx = GridSystem.ConvertGridPosToIndex(new int2(x, 0), GridSize);
             var obj = _colorBlocks[idx];
             if (obj == null) continue;
             if (!ShouldAdd(obj.gameObject, blastBlock)) continue;
@@ -88,7 +88,7 @@ public partial class M20LevelSystem
         {
             for (int x = startX - 1; x >= 0; --x)
             {
-                var idx = topGrid.ConvertGridPosToIndex(new int2(x, 0));
+                var idx = GridSystem.ConvertGridPosToIndex(new int2(x, 0), GridSize);
                 var obj = _colorBlocks[idx];
                 if (obj == null) continue;
                 if (!ShouldAdd(obj.gameObject, blastBlock)) continue;
@@ -108,10 +108,10 @@ public partial class M20LevelSystem
 
     bool IsCollmunEmptyAt(int x)
     {
-        for (int y = 0; y < topGrid.GridSize.y; ++y)
+        for (int y = 0; y < GridSize.y; ++y)
         {
             var grid = new int2(x, y);
-            var idx = topGrid.ConvertGridPosToIndex(grid);
+            var idx = GridSystem.ConvertGridPosToIndex(grid, GridSize);
             var obj = _colorBlocks[idx];
             if (obj != null) return false;
         }
@@ -123,11 +123,11 @@ public partial class M20LevelSystem
         var list = new List<int>();
         for (int y = 0; y < 1; ++y)
         {
-            for (int x = 0; x < topGrid.GridSize.x; ++x)
+            for (int x = 0; x < GridSize.x; ++x)
             {
                 if (IsCollmunEmptyAt(x)) continue;
                 var grid = new int2(x, y);
-                var index = topGrid.ConvertGridPosToIndex(grid);
+                var index = GridSystem.ConvertGridPosToIndex(grid, GridSize);
                 var obj = _colorBlocks[index];
                 if (obj != null) continue;
 
@@ -151,7 +151,7 @@ public partial class M20LevelSystem
                 if (!obj.TryGetComponent<IColorBlock>(out var colorBlock)) continue;
                 if (!obj.TryGetComponent<IMoveable>(out var colorMoveable)) continue;
 
-                var targetGridPos = topGrid.ConvertWorldPosToGridPos(colorMoveable.GetLockedPosition());
+                var targetGridPos = GridSystem.ConvertWorldPosToGridPos(colorMoveable.GetLockedPosition(), GridSize, GridScale, GridPos);
                 var y = targetGridPos.y;
                 HoangNam.Utility.InterpolateMoveUpdate(
                   obj.transform.position,
@@ -168,7 +168,7 @@ public partial class M20LevelSystem
                 obj.transform.position = nextPos;
                 if (t < 1) continue;
 
-                var targetIndex = topGrid.ConvertWorldPosToIndex(colorMoveable.GetLockedPosition());
+                var targetIndex = GridSystem.ConvertWorldPosToIndex(colorMoveable.GetLockedPosition(), GridSize, GridScale, GridPos);
                 _colorBlocks[targetIndex] = obj.GetComponent<ColorBlockControl>();
                 colorBlock.SetIndex(targetIndex);
 
@@ -194,19 +194,19 @@ public partial class M20LevelSystem
             if (_needMovingColorBlocks.ContainsKey(needArrangeCollumn)) continue;
 
             _needMovingColorBlocks.Add(needArrangeCollumn, new List<GameObject>());
-            for (int y = 0; y < topGrid.GridSize.y; ++y)
+            for (int y = 0; y < GridSize.y; ++y)
             {
                 var gridPos = new int2(needArrangeCollumn, y);
 
-                var currentIndex = topGrid.ConvertGridPosToIndex(gridPos);
+                var currentIndex = GridSystem.ConvertGridPosToIndex(gridPos, GridSize);
                 var colorBlock = _colorBlocks[currentIndex];
                 if (colorBlock == null) continue;
                 if (!colorBlock.TryGetComponent<IMoveable>(out var moveable)) continue;
 
-                var startPos = topGrid.ConvertGridPosToWorldPos(gridPos);
+                var startPos = GridSystem.ConvertGridPosToWorldPos(gridPos, GridSize, GridScale, GridPos);
                 var downGrid = gridPos + new int2(0, -1);
-                var targetIndex = topGrid.ConvertGridPosToIndex(downGrid);
-                var targetPos = topGrid.ConvertIndexToWorldPos(targetIndex);
+                var targetIndex = GridSystem.ConvertGridPosToIndex(downGrid,GridSize);
+                var targetPos = GridSystem.ConvertIndexToWorldPos(targetIndex, GridSize, GridScale, GridPos);
 
                 moveable.SetInitPostion(startPos);
                 moveable.SetLockedPosition(targetPos);
@@ -218,10 +218,10 @@ public partial class M20LevelSystem
 
     bool IsThereAtLeastOneBlockOfTheSameColor(int colorValue)
     {
-        for (int x = 0; x < topGrid.GridSize.x; ++x)
+        for (int x = 0; x < GridSize.x; ++x)
         {
             var grid = new int2(x, 0);
-            var idx = topGrid.ConvertGridPosToIndex(grid);
+            var idx = GridSystem.ConvertGridPosToIndex(grid, GridSize);
             var obj = _colorBlocks[idx];
             if (obj == null) continue;
             if (!obj.TryGetComponent(out IColorBlock colorBlock)) continue;

@@ -37,12 +37,12 @@ public partial class M20LevelSystem
              Destroy(colorBlock);
          });
 
-        var neighbors = topGrid.FindNeighborsAt(colorBlock.transform.position);
+        var neighbors = GridSystem.FindNeighborsAt(colorBlock.transform.position, GridSize, GridScale, GridPos);
         for (int i = 0; i < neighbors.Length; ++i)
         {
             var neighborPos = neighbors[i];
             if (neighborPos.Equals(new float3(-1, -1, -1))) continue;
-            var idx = topGrid.ConvertWorldPosToIndex(neighborPos);
+            var idx = GridSystem.ConvertWorldPosToIndex(neighborPos, GridSize, GridScale, GridPos);
             var obj = _colorBlocks[idx];
             if (obj == null) continue;
             if (!obj.TryGetComponent<ISpriteRend>(out var rend)) continue;
