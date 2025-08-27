@@ -15,7 +15,7 @@ public struct QuadData
   public int Index;
   public int GroupIndex;
   public float3 Position;
-  public int PlacedIndex;
+  public int IndexPosition;
   public int ColorValue;
   public bool IsActive;
 }
@@ -37,12 +37,12 @@ public struct GroupQuadData
 public partial class LevelSystem : MonoBehaviour
 {
   NativeArray<QuadData> _quadDatas;
-  NativeArray<int> _quadIndexesDatas; // index is position, value is the index in _quadDatas array
+  NativeArray<int> _quadIndexPositionDatas; // index is position, value is the index in _quadDatas array
   NativeArray<float3> _shapeCenterOffsets;
   NativeHashMap<int, ShapeQuadData> _shapeQuadDatas;
   NativeHashMap<int, GroupQuadData> _groupQuadDatas;
   NativeArray<BlockData> _blockDatas;
-  NativeArray<int2> _diagonalDirections;
+  NativeArray<int2> _fullDirections;
 
   void InitDataBuffers(LevelInformation levelInformation)
   {
@@ -56,11 +56,12 @@ public partial class LevelSystem : MonoBehaviour
       _quadDatas[i] = quadData;
     }
 
-    _quadIndexesDatas = new NativeArray<int>(totalBoardQuadsAmount, Allocator.Persistent);
-    for (int i = 0; i < _quadIndexesDatas.Length; ++i) _quadIndexesDatas[i] = -1;
+    _quadIndexPositionDatas = new NativeArray<int>(totalBoardQuadsAmount, Allocator.Persistent);
+    for (int i = 0; i < _quadIndexPositionDatas.Length; ++i) _quadIndexPositionDatas[i] = -1;
     _shapeCenterOffsets = new NativeArray<float3>(totalBoardQuadsAmount, Allocator.Persistent);
     _shapeQuadDatas = new NativeHashMap<int, ShapeQuadData>(blockGrid.GridSize.x * blockGrid.GridSize.y / 4, Allocator.Persistent);
-    _groupQuadDatas = new NativeHashMap<int, GroupQuadData>(16, Allocator.Persistent);
+    var totalShapeAmount = blockGrid.GridSize.x * blockGrid.GridSize.y / 4;
+    _groupQuadDatas = new NativeHashMap<int, GroupQuadData>(totalShapeAmount, Allocator.Persistent);
     _blockDatas = new NativeArray<BlockData>(blockGrid.GridSize.x * blockGrid.GridSize.y, Allocator.Persistent);
     for (int i = 0; i < _blockDatas.Length; ++i)
     {
@@ -70,19 +71,25 @@ public partial class LevelSystem : MonoBehaviour
       _blockDatas[i] = blockData;
     }
 
-    _diagonalDirections = new NativeArray<int2>(2, Allocator.Persistent);
-    _diagonalDirections[0] = new(-1, -1);
-    _diagonalDirections[1] = new(1, -1);
+    _fullDirections = new NativeArray<int2>(8, Allocator.Persistent);
+    _fullDirections[0] = new(-1, -1);
+    _fullDirections[1] = new(1, -1);
+    _fullDirections[2] = new(0, -1);
+    _fullDirections[3] = new(-1, 0);
+    _fullDirections[4] = new(-1, 1);
+    _fullDirections[5] = new(0, 1);
+    _fullDirections[6] = new(1, 1);
+    _fullDirections[7] = new(1, 0);
   }
 
   void DisposeDataBuffers()
   {
     _quadDatas.Dispose();
-    _quadIndexesDatas.Dispose();
+    _quadIndexPositionDatas.Dispose();
     _shapeCenterOffsets.Dispose();
     _shapeQuadDatas.Dispose();
     _groupQuadDatas.Dispose();
     _blockDatas.Dispose();
-    _diagonalDirections.Dispose();
+    _fullDirections.Dispose();
   }
 }

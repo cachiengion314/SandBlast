@@ -31,6 +31,16 @@ public partial class LevelSystem : MonoBehaviour
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
 
     userTouchScreenPosition = Camera.main.ScreenToWorldPoint(finger.ScreenPosition);
+
+    if (Input.GetKey(KeyCode.B))
+    {
+      var pos = new float3(userTouchScreenPosition.x, userTouchScreenPosition.y, 0);
+      var idxPos = quadGrid.ConvertWorldPosToIndex(pos);
+      using var quadsMap = CollectLinkedQuadsAt(idxPos);
+      if (quadsMap.Count > 0)
+        RemoveQuadsFrom(quadsMap);
+    }
+
     Collider2D[] colliders = Physics2D.OverlapPointAll(
       new float2(userTouchScreenPosition.x, userTouchScreenPosition.y)
     );

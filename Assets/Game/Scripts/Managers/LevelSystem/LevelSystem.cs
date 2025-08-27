@@ -84,10 +84,25 @@ public partial class LevelSystem : MonoBehaviour
       OrderShapesForSlots();
       VisualizeActiveQuads();
     }
-    if (Input.GetKeyDown(KeyCode.B))
+    if (Input.GetKeyDown(KeyCode.Alpha0))
     {
-      var firstIdx = _groupQuadDatas.GetKeyValueArrays(Allocator.Temp).Keys[0];
-      RemoveGroupAt(firstIdx);
+      using var quadsMap = CollectLinkedQuadsMatch(0);
+      RemoveQuadsFrom(quadsMap);
+    }
+    if (Input.GetKeyDown(KeyCode.Alpha1))
+    {
+      using var quadsMap = CollectLinkedQuadsMatch(1);
+      RemoveQuadsFrom(quadsMap);
+    }
+    if (Input.GetKeyDown(KeyCode.Alpha2))
+    {
+      using var quadsMap = CollectLinkedQuadsMatch(2);
+      RemoveQuadsFrom(quadsMap);
+    }
+    if (Input.GetKeyDown(KeyCode.Alpha3))
+    {
+      using var quadsMap = CollectLinkedQuadsMatch(3);
+      RemoveQuadsFrom(quadsMap);
     }
   }
 

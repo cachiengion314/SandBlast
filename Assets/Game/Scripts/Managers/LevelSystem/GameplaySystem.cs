@@ -3,6 +3,9 @@ using UnityEngine;
 
 public partial class LevelSystem : MonoBehaviour
 {
+  [Range(1, 16)]
+  [SerializeField] int searchingDeepAmount = 1;
+
   void OrderShapePositionsTo(float3 targetPos, int shapeIdx)
   {
     var shapeData = _shapeQuadDatas[shapeIdx];
@@ -56,14 +59,14 @@ public partial class LevelSystem : MonoBehaviour
       var quadData = _quadDatas[i];
       if (!quadData.IsActive) continue;
       if (!_groupQuadDatas.ContainsKey(quadData.GroupIndex)) continue;
-      if (quadData.PlacedIndex != -1) continue;
+      if (quadData.IndexPosition != -1) continue;
 
       if (quadGrid.IsPosOutsideAt(quadData.Position)) continue;
       var currQuadPos = quadData.Position;
-      var currIdx = quadGrid.ConvertWorldPosToIndex(currQuadPos);
+      var currIdxPos = quadGrid.ConvertWorldPosToIndex(currQuadPos);
 
-      _quadIndexesDatas[currIdx] = i;
-      quadData.PlacedIndex = currIdx;
+      _quadIndexPositionDatas[currIdxPos] = i;
+      quadData.IndexPosition = currIdxPos;
       _quadDatas[i] = quadData;
 
       OrderQuadMeshAt(i, currQuadPos, quadData.ColorValue);
@@ -78,35 +81,35 @@ public partial class LevelSystem : MonoBehaviour
       {
         var currQuadGridPos = new int2(x, y);
         var currIdxPos = quadGrid.ConvertGridPosToIndex(currQuadGridPos);
-        if (_quadIndexesDatas[currIdxPos] == -1)
+        if (_quadIndexPositionDatas[currIdxPos] == -1)
         {
           // case: there is no quad in this grid so we skip this one
           continue;
         }
         // case: there is a quad in this grid
-        var quadIndex = _quadIndexesDatas[currIdxPos];
+        var quadIndex = _quadIndexPositionDatas[currIdxPos];
         var quadData = _quadDatas[quadIndex];
-        var downIdx = FindEmptyDownIndexAt(currQuadGridPos);
-        if (downIdx != -1)
+        var downIdxPos = FindEmptyDownIndexAt(currQuadGridPos);
+        if (downIdxPos != -1)
         {
-          // case: there is an empty down here so we priority move the quad to here
-          _quadIndexesDatas[currIdxPos] = -1;
-          var _downQuadPos = quadGrid.ConvertIndexToWorldPos(downIdx);
-          _quadIndexesDatas[downIdx] = quadIndex;
+          // case: there is an empty down there so we priority move the quad to there
+          _quadIndexPositionDatas[currIdxPos] = -1;
+          var _downQuadPos = quadGrid.ConvertIndexToWorldPos(downIdxPos);
+          _quadIndexPositionDatas[downIdxPos] = quadIndex;
           quadData.Position = _downQuadPos;
-          quadData.PlacedIndex = downIdx;
+          quadData.IndexPosition = downIdxPos;
           _quadDatas[quadIndex] = quadData;
           OrderQuadMeshAt(quadIndex, _downQuadPos, quadData.ColorValue);
           continue;
         }
-        var diagonalIdx = FindEmptyDiagonalIndexAt(currQuadGridPos);
-        if (diagonalIdx == -1) continue;
-        // case: there is an empty diagonal here so we move the quad to here
-        _quadIndexesDatas[currIdxPos] = -1;
-        var _diagonalQuadPos = quadGrid.ConvertIndexToWorldPos(diagonalIdx);
-        _quadIndexesDatas[diagonalIdx] = quadIndex;
+        var diagonalIdxPos = FindEmptyDiagonalIndexAt(currQuadGridPos);
+        if (diagonalIdxPos == -1) continue;
+        // case: there is an empty diagonal there so we move the quad to there
+        _quadIndexPositionDatas[currIdxPos] = -1;
+        var _diagonalQuadPos = quadGrid.ConvertIndexToWorldPos(diagonalIdxPos);
+        _quadIndexPositionDatas[diagonalIdxPos] = quadIndex;
         quadData.Position = _diagonalQuadPos;
-        quadData.PlacedIndex = diagonalIdx;
+        quadData.IndexPosition = diagonalIdxPos;
         _quadDatas[quadIndex] = quadData;
         OrderQuadMeshAt(quadIndex, _diagonalQuadPos, quadData.ColorValue);
       }
