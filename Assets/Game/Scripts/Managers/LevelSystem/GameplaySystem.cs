@@ -125,24 +125,23 @@ public partial class LevelSystem : MonoBehaviour
 
   void AutoClearLinkedQuadsInUpdate()
   {
-    if (isQuadFalling) return;
+    // if (isQuadFalling) return;
 
-    using var linkedQuads = CollectLeftAndRightLinkedQuads();
-    if (linkedQuads.Count == 0) return;
-    RemoveQuadsFrom(linkedQuads);
+    // using var linkedQuads = CollectLeftAndRightLinkedQuads();
+    // if (linkedQuads.Count == 0) return;
+    // RemoveQuadsFrom(linkedQuads);
   }
 
   void CheckLoseInUpdate()
   {
+    if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
     if (isQuadFalling) return;
-
     for (int i = 0; i < quadGrid.GridSize.x; i++)
     {
       var idx = quadGrid.ConvertGridPosToIndex(new int2(i, redLineRow));
       if (_quadIndexPositionDatas[idx] == -1) continue;
-
       GameplayPanel.Instance.ToggleLevelFailedModal();
-      GameManager.Instance.SetGameState(GameState.GamepPause);
+      GameManager.Instance.SetGameState(GameState.Gameover);
       break;
     }
   }

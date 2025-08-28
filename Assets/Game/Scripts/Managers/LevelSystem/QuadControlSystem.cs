@@ -385,7 +385,6 @@ public partial class LevelSystem : MonoBehaviour
     var startY = startSlotGridPos.y;
 
     var i = startIndex;
-    var colorGird = quadMeshSystem.ConvertIndexToGridPos(colorValue);
     for (int x = startX; x < startX + 8; ++x)
     {
       for (int y = startY; y < startY + 8; ++y)
@@ -395,7 +394,7 @@ public partial class LevelSystem : MonoBehaviour
         if (ratio > 80f)
         {
           var xColor = UnityEngine.Random.Range(0, quadMeshSystem.GridResolution.x - 1);
-          var newColorGrid = new int2(xColor, colorGird.y);
+          var newColorGrid = new int2(xColor, colorValue);
           newColorIndex = quadMeshSystem.ConvertGirdPosToIndex(newColorGrid);
         }
 
