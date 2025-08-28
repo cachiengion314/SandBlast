@@ -88,9 +88,25 @@ public partial class LevelSystem : MonoBehaviour
     }
     if (Input.GetKeyDown(KeyCode.C))
     {
-      var list = CollectDistinguishQuadIdxesAt(0);
-      print("listLength " + list.Length);
-      foreach (var quadIdx in list) print("IndexPosition " + _quadDatas[quadIdx].IndexPosition);
+      using var distinguishColors = CreateDistinguishColorsMap();
+      var leftX = 0;
+      var rightX = quadGrid.GridSize.x - 1;
+      for (int y = 0; y < quadGrid.GridSize.y; ++y)
+      {
+        var currGridPos = new int2(leftX, y);
+        var currQuadIdx = GetQuadIdxFrom(currGridPos);
+        if (currQuadIdx == -1) continue;
+        var currIdxPos = _quadDatas[currQuadIdx].IndexPosition;
+        print("left " + distinguishColors[currIdxPos]);
+      }
+      for (int y = 0; y < quadGrid.GridSize.y; ++y)
+      {
+        var currGridPos = new int2(rightX, y);
+        var currQuadIdx = GetQuadIdxFrom(currGridPos);
+        if (currQuadIdx == -1) continue;
+        var currIdxPos = _quadDatas[currQuadIdx].IndexPosition;
+        print("right " + distinguishColors[currIdxPos]);
+      }
     }
     if (Input.GetKeyDown(KeyCode.V))
     {

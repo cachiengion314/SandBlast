@@ -40,6 +40,51 @@ public partial class LevelSystem : MonoBehaviour
     return false;
   }
 
+  NativeArray<int> CreateDistinguishColorsMap()
+  {
+    var distinguishColors = new NativeArray<int>(_quadIndexPositionDatas.Length, Allocator.Temp);
+    var directions = new NativeArray<int2>(3, Allocator.Temp);
+    directions[0] = new(0, 1);
+    directions[1] = new(1, 1);
+    directions[2] = new(1, 0);
+
+    distinguishColors[0] = 1;
+    for (int x = 0; x < quadGrid.GridSize.x; ++x)
+    {
+      for (int y = 0; y < quadGrid.GridSize.y; ++y)
+      {
+        var currGridPos = new int2(x, y);
+        var currQuadIdx = GetQuadIdxFrom(currGridPos);
+        if (currQuadIdx == -1) break;
+
+        var currQuadData = _quadDatas[currQuadIdx];
+        var currIdxPos = currQuadData.IndexPosition;
+        var currColorValue = GetQuadGroupColorFrom(currQuadData);
+
+        for (int i = 0; i < directions.Length; ++i)
+        {
+          var nextGridPos = currGridPos + directions[i];
+          if (quadGrid.IsGridPosOutsideAt(nextGridPos)) continue;
+
+          var nextQuadIdx = GetQuadIdxFrom(nextGridPos);
+          if (nextQuadIdx == -1) continue;
+
+          var nextQuadData = _quadDatas[nextQuadIdx];
+          var nextIdxPos = nextQuadData.IndexPosition;
+          var nextColorValue = GetQuadGroupColorFrom(nextQuadData);
+          if (currColorValue == nextColorValue)
+          {
+            distinguishColors[nextIdxPos] = distinguishColors[currIdxPos];
+            continue;
+          }
+          distinguishColors[nextIdxPos] = distinguishColors[currIdxPos] + 1;
+        }
+      }
+    }
+    directions.Dispose();
+    return distinguishColors;
+  }
+
   /// <summary>
   /// Return a list that contain delegate quad's datas that have separated 
   /// by colors at column x
