@@ -125,11 +125,11 @@ public partial class LevelSystem : MonoBehaviour
 
   void AutoClearLinkedQuadsInUpdate()
   {
-    if (isQuadFalling) return;
+    // if (isQuadFalling) return;
 
-    using var linkedQuads = CollectLeftAndRightLinkedQuads();
-    if (linkedQuads.Count == 0) return;
-    RemoveQuadsFrom(linkedQuads);
+    // using var linkedQuads = CollectLeftAndRightLinkedQuads();
+    // if (linkedQuads.Count == 0) return;
+    // RemoveQuadsFrom(linkedQuads);
   }
 
   void CheckLoseInUpdate()
