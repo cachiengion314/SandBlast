@@ -114,6 +114,16 @@ public partial class LevelSystem : MonoBehaviour
     SnapQuadToGridInUpdate();
     CalculateQuadFallingInUpdate();
     ApplyDrawOrders();
+    if (!isQuadFalling)
+    {
+      for (int i = 0; i < quadGrid.GridSize.x; i++)
+      {
+        var idx = quadGrid.ConvertGridPosToIndex(new int2(i, redLineRow));
+        if (_quadIndexPositionDatas[idx] == -1) continue;
+        GameplayPanel.Instance.ToggleLevelFailedModal();
+        break;
+      }
+    }
   }
 
   void SetupCurrentLevel(LevelInformation levelInformation)
@@ -121,6 +131,7 @@ public partial class LevelSystem : MonoBehaviour
     BakingGrids(levelInformation);
     InitDataBuffers(levelInformation);
     SpawnAndBakingEntityDatas(levelInformation);
+    SpawnRedLine();
   }
 
   void BakingGrids(LevelInformation levelInformation)
@@ -142,6 +153,16 @@ public partial class LevelSystem : MonoBehaviour
     quadMeshSystem.QuadScale = quadGrid.GridScale;
     quadMeshSystem.QuadCapacity = quadGrid.GridSize.x * quadGrid.GridSize.y;
     quadMeshSystem.InitComponents();
+  }
+
+  void SpawnRedLine()
+  {
+    var pos = quadGrid.ConvertGridPosToWorldPos(new int2(0, redLineRow));
+    pos.x = 0;
+    float3 scale = float3.zero;
+    scale.x = quadGrid.GridScale.x * quadGrid.GridSize.x;
+    scale.y = quadGrid.GridScale.x;
+    SpawnRedLine(pos, scale, spawnedParent);
   }
 
   void SpawnAndBakingEntityDatas(LevelInformation levelInformation)

@@ -5,6 +5,8 @@ public partial class LevelSystem : MonoBehaviour
 {
   [Range(1, 16)]
   [SerializeField] int searchingDeepAmount = 1;
+  [SerializeField] int redLineRow = 79;
+  bool isQuadFalling = false;
 
   void OrderShapePositionsTo(float3 targetPos, int shapeIdx)
   {
@@ -75,6 +77,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void CalculateQuadFallingInUpdate()
   {
+    isQuadFalling = false;
     for (int x = 0; x < quadGrid.GridSize.x; ++x)
     {
       for (int y = 0; y < quadGrid.GridSize.y; ++y)
@@ -100,6 +103,7 @@ public partial class LevelSystem : MonoBehaviour
           quadData.IndexPosition = downIdxPos;
           _quadDatas[quadIndex] = quadData;
           OrderQuadMeshAt(quadIndex, _downQuadPos, quadData.ColorValue);
+          isQuadFalling = true;
           continue;
         }
         var diagonalIdxPos = FindEmptyDiagonalIndexAt(currQuadGridPos);
