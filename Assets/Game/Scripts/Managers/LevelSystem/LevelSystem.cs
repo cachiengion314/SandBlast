@@ -132,18 +132,9 @@ public partial class LevelSystem : MonoBehaviour
 
     SnapQuadToGridInUpdate();
     CalculateQuadFallingInUpdate();
-    
+
     ApplyDrawOrders();
-    if (!isQuadFalling)
-    {
-      for (int i = 0; i < quadGrid.GridSize.x; i++)
-      {
-        var idx = quadGrid.ConvertGridPosToIndex(new int2(i, redLineRow));
-        if (_quadIndexPositionDatas[idx] == -1) continue;
-        GameplayPanel.Instance.ToggleLevelFailedModal();
-        break;
-      }
-    }
+    CheckLose();
   }
 
   void SetupCurrentLevel(LevelInformation levelInformation)
@@ -212,6 +203,19 @@ public partial class LevelSystem : MonoBehaviour
   {
     var randomIndex = UnityEngine.Random.Range(0, 8);
     return RendererSystem.Instance.GetShapeAt(randomIndex);
+  }
+
+  void CheckLose()
+  {
+    if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
+    if (isQuadFalling) return;
+    for (int i = 0; i < quadGrid.GridSize.x; i++)
+    {
+      var idx = quadGrid.ConvertGridPosToIndex(new int2(i, redLineRow));
+      if (_quadIndexPositionDatas[idx] == -1) continue;
+      GameplayPanel.Instance.ToggleLevelFailedModal();
+      break;
+    }
   }
 
   public void LoadLevelFrom(int level)
