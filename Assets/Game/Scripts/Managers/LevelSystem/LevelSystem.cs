@@ -79,6 +79,25 @@ public partial class LevelSystem : MonoBehaviour
 
     GrabbingBlockControlInUpdate();
 
+    if (Input.GetKeyDown(KeyCode.R))
+    {
+      using var pair = FindMatchingPairQuads();
+      print("pair.Length " + pair.Length);
+      if (pair.Length > 0)
+      {
+        var leftGridPos = pair[0];
+        var leftIdxPos = quadGrid.ConvertGridPosToIndex(leftGridPos);
+        using var quadsMap = CollectLinkedQuadsAt(leftIdxPos);
+
+        var rightGridPos = pair[1];
+        var rightQuadIdx = GetQuadIdxFrom(rightGridPos);
+        print("leftGridPos " + leftGridPos);
+        print("rightGridPos " + rightGridPos);
+        if (quadsMap.ContainsKey(rightQuadIdx))
+          RemoveQuadsFrom(quadsMap);
+      }
+    }
+
     if (Input.GetKeyDown(KeyCode.V))
     {
       OrderShapesForSlots();
@@ -113,6 +132,7 @@ public partial class LevelSystem : MonoBehaviour
 
     SnapQuadToGridInUpdate();
     CalculateQuadFallingInUpdate();
+    
     ApplyDrawOrders();
     if (!isQuadFalling)
     {

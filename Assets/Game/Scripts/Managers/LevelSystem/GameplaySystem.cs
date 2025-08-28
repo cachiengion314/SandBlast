@@ -119,4 +119,9 @@ public partial class LevelSystem : MonoBehaviour
       }
     }
   }
+
+  void AutoClearMatchingQuadsInUpdate()
+  {
+
+  }
 }

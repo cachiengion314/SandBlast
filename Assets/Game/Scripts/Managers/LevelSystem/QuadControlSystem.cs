@@ -19,6 +19,75 @@ public partial class LevelSystem : MonoBehaviour
     quadMeshSystem.ApplyDrawOrders();
   }
 
+  int GetQuadGroupColorFrom(QuadData quadData)
+  {
+    return _groupQuadDatas[quadData.GroupIndex].ColorValue;
+  }
+
+  int GetQuadIdxFrom(int2 gridPos)
+  {
+    var idxPos = quadGrid.ConvertGridPosToIndex(gridPos);
+    return _quadIndexPositionDatas[idxPos];
+  }
+
+  bool IsPairQuadLinked(
+    int2 leftGridPos,
+    int2 rightGridPos,
+    out NativeHashMap<int, bool> linkedQuads)
+  {
+    var leftIdxPos = quadGrid.ConvertGridPosToIndex(leftGridPos);
+    linkedQuads = CollectLinkedQuadsAt(leftIdxPos);
+
+    var rightQuadIdx = GetQuadIdxFrom(rightGridPos);
+    if (linkedQuads.ContainsKey(rightQuadIdx)) return true;
+    return false;
+  }
+
+  /// <summary>
+  /// Return a map that contain delegate quad's datas that have separated by colors at x
+  /// </summary>
+  /// <param name="column"></param>
+  NativeHashMap<int, QuadData> CollectDistinguishQuadDataAt(int column)
+  {
+    var map = new NativeHashMap<int, QuadData>(32, Allocator.Temp);
+
+    var x = column;
+    for (int y = 1; y < quadGrid.GridSize.y; ++y)
+    {
+      var currGridPos = new int2(x, y);
+      var currQuadIdx = GetQuadIdxFrom(currGridPos);
+      var preGridPos = new int2(x, y - 1);
+      var preQuadIdx = GetQuadIdxFrom(preGridPos);
+
+      if (currQuadIdx == -1) break;
+      if (preQuadIdx == -1) continue;
+
+      // var preColorValue = GetCO
+      var currQuadData = _quadDatas[currQuadIdx];
+      var currIdxPos = quadGrid.ConvertGridPosToIndex(currGridPos);
+      var currColorValue = GetQuadGroupColorFrom(currQuadData);
+
+
+    }
+
+    return map;
+  }
+
+  NativeArray<int2> FindMatchingPairQuads()
+  {
+    var xLeft = 0;
+    var xRight = quadGrid.GridSize.x - 1;
+
+    var arr = new NativeArray<int2>(2, Allocator.Temp);
+
+
+
+
+
+
+    return new NativeArray<int2>(0, Allocator.Temp);
+  }
+
   NativeList<int> FindNeighborQuadIdxesAround(QuadData quadData)
   {
     var list = new NativeList<int>(8, Allocator.Temp);
@@ -330,7 +399,7 @@ public partial class LevelSystem : MonoBehaviour
     var shapeIdx = slotIndex;
     if (_shapeQuadDatas.ContainsKey(shapeIdx))
     {
-      print("Shape ID still exist, there is something wrong!");
+      print("The shape with this ID still exist! Cannot create shape with this ID");
       return;
     }
 
