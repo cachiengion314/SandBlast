@@ -4,12 +4,13 @@ using UnityEngine;
 public partial class LevelSystem : MonoBehaviour
 {
   [SerializeField] Transform spawnedParent;
-  [SerializeField] Transform holeEfx;
+  [SerializeField] Transform redLine;
 
-  Transform SpawnHoleEfx(float3 pos, Transform parent)
+  Transform SpawnRedLine(float3 pos, float3 scale, Transform parent)
   {
-    var obj = Instantiate(holeEfx, parent);
+    var obj = Instantiate(redLine, parent);
     obj.position = pos;
+    obj.localScale = scale;
     return obj;
   }
 }
