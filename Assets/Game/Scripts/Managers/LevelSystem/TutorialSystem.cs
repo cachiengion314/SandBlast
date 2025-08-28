@@ -1,3 +1,4 @@
+using Unity.Entities.UniversalDelegates;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -73,7 +74,7 @@ public partial class LevelSystem
             && PlayerPrefs.GetInt(KeyString.KEY_TUTORIAL_3, 0) == 0)
         {
             GameManager.Instance.SetGameState(GameState.GamepPause);
-            SpawnQuadBlockRowAt(20);
+            SpawnQuadBlockAt();
             ApplyDrawOrders();
             tutorial.ShowTapPanelAt(KeyString.KEY_TUTORIAL_3);
             tutorial.ShowReceivePanelAt(
@@ -108,6 +109,8 @@ public partial class LevelSystem
             && PlayerPrefs.GetInt(KeyString.KEY_TUTORIAL_4, 0) == 0)
         {
             GameManager.Instance.SetGameState(GameState.GamepPause);
+            SpawnQuadBlockAt();
+            ApplyDrawOrders();
             tutorial.ShowTapPanelAt(KeyString.KEY_TUTORIAL_4);
             tutorial.ShowReceivePanelAt(
                 KeyString.KEY_TUTORIAL_4,
@@ -131,42 +134,56 @@ public partial class LevelSystem
         tutorial.HideObject();
         canvasBooster3.overrideSorting = false;
         GameManager.Instance.SetGameState(GameState.Gameplay);
-        PlayerPrefs.SetInt(KeyString.KEY_TUTORIAL_4, 1);
+        // PlayerPrefs.SetInt(KeyString.KEY_TUTORIAL_4, 1);
         tutorial.StopTutorial();
     }
 
-    void SpawnQuadBlockRowAt(int amount)
+    void SpawnQuadBlockAt()
     {
-        var quadsAmount = 8 * 10 * amount;
+        for (int y = 0; y < 3; y++)
+        {
+            var fromY = y * 8;
+            var toY = fromY + 8;
+            for (int x = 0; x < blockGrid.GridSize.x; x++)
+            {
+                var fromX = x * 8;
+                var toX = fromX + 8;
+                SpawnQuadBlockAt(fromY, toY, fromX, toX);
+            }
+        }
+    }
+
+    void SpawnQuadBlockAt(int fromY, int toY, int fromX, int toX)
+    {
+        var quadsAmount = (toX - fromX) * (toY - fromY);
         using var inactiveQuads = FindInactiveQuadsForShape(quadsAmount);
         if (inactiveQuads.Length == 0)
         {
             print("Cannot find any spare quads");
             return;
         }
+        var colorValue = GetRamdomColor();
         int shapeIdx = GenerateUniqueShapeIdx();
         var newGroupData = new GroupQuadData
         {
             QuadsAmount = quadsAmount,
-            ColorValue = 0,
+            ColorValue = colorValue,
             IsActive = true,
         };
         _groupQuadDatas.Add(shapeIdx, newGroupData);
 
         int i = 0;
-        for (int y = 0; y < amount; y++)
+        for (int y = fromY; y < toY; y++)
         {
-            for (int x = 0; x < quadGrid.GridSize.x; x++)
+            for (int x = fromX; x < toX; x++)
             {
-                var colorValue = 0;
-                if (x > quadGrid.GridSize.x / 2) colorValue = 1;
+                var newColorValue = colorValue;
                 var ratio = UnityEngine.Random.Range(0f, 100f);
                 if (ratio > 80f)
                 {
                     var xColor = UnityEngine.Random.Range(0, quadMeshSystem.GridResolution.x - 1);
-                     var colorGird = quadMeshSystem.ConvertIndexToGridPos(colorValue);
-                    var newColorGrid = new int2(xColor, colorGird.y);
-                    colorValue = quadMeshSystem.ConvertGirdPosToIndex(newColorGrid);
+                    var newColorGrid = new int2(xColor, colorValue);
+                    newColorValue = quadMeshSystem.ConvertGirdPosToIndex(newColorGrid);
                 }
                 var gridPos = new int2(x, y);
                 var idx = quadGrid.ConvertGridPosToIndex(gridPos);
@@ -175,12 +192,12 @@ public partial class LevelSystem
                 quadData.GroupIndex = shapeIdx;
                 quadData.Position = pos;
                 quadData.IndexPosition = idx;
-                quadData.ColorValue = 0;
+                quadData.ColorValue = newColorValue;
                 quadData.IsActive = true;
                 var index = quadData.Index;
                 _quadDatas[index] = quadData;
                 _quadIndexPositionDatas[idx] = index;
-                OrderQuadMeshAt(index, pos, 0);
+                OrderQuadMeshAt(index, pos, newColorValue);
             }
         }
     }

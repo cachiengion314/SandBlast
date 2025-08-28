@@ -14,9 +14,7 @@ public partial class LevelSystem
             using var blockSlotPositions = GetRandomShape();
             OrderBlockShapeAt(i, blockSlotPositions, colorValue);
         }
-
         VisualizeActiveQuads();
-        ApplyDrawOrders();
     }
 
     void RemoveBlockAt(int shapeIdx)
@@ -53,7 +51,7 @@ public partial class LevelSystem
         var startQuadIdx = _quadIndexPositionDatas[idxPos];
         if (startQuadIdx == -1) return;
         var quadData = _quadDatas[startQuadIdx];
-        var colorValue = quadData.ColorValue;
+        var colorValue = _groupQuadDatas[quadData.GroupIndex].ColorValue;
         using var quadsMap = CollectLinkedQuadsMatch(colorValue);
         RemoveQuadsFrom(quadsMap);
         GameplayPanel.Instance.ToggleBooster3();
