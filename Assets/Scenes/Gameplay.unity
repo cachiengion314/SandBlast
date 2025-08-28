@@ -2364,7 +2364,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchingDeepAmount: 1
-  redLineRow: 30
+  redLineRow: 79
   quadGrid: {fileID: 963933630}
   blockGrid: {fileID: 1083012360}
   slotGrid: {fileID: 243784473}
