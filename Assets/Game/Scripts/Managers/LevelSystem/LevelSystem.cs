@@ -123,6 +123,11 @@ public partial class LevelSystem : MonoBehaviour
       using var quadsMap = CollectLinkedQuadsMatch(3);
       RemoveQuadsFrom(quadsMap);
     }
+    if (Input.GetKeyDown(KeyCode.Z))
+    {
+      using var quadsMap = CollectLinkedQuadsRowAt(0, 16);
+      RemoveQuadsFrom(quadsMap);
+    }
   }
 
   void FixedUpdate()

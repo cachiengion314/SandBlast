@@ -175,6 +175,27 @@ public partial class LevelSystem : MonoBehaviour
     return quadHashMap;
   }
 
+  NativeHashMap<int, bool> CollectLinkedQuadsRowAt(int from, int to)
+  {
+    var quadHashMap = new NativeHashMap<int, bool>(
+      quadMeshSystem.QuadCapacity, Allocator.Temp
+    );
+    for (int x = 0; x < quadGrid.GridSize.x; ++x)
+    {
+      for (int y = from; y < to; ++y)
+      {
+        var currGridPos = new int2(x, y);
+        var currIdxPos = quadGrid.ConvertGridPosToIndex(currGridPos);
+        var currQuadIdx = _quadIndexPositionDatas[currIdxPos];
+        if (currQuadIdx == -1) continue;
+        
+        if (quadHashMap.ContainsKey(currQuadIdx)) continue;
+        quadHashMap.Add(currQuadIdx, true);
+      }
+    }
+    return quadHashMap;
+  }
+
   void RemoveQuadsFrom(NativeHashMap<int, bool> quadsMap)
   {
     using var quadsMapArray = quadsMap.GetKeyValueArrays(Allocator.Temp);
