@@ -102,8 +102,9 @@ public partial class LevelSystem : MonoBehaviour
           quadData.Position = _downQuadPos;
           quadData.IndexPosition = downIdxPos;
           _quadDatas[quadIndex] = quadData;
-          OrderQuadMeshAt(quadIndex, _downQuadPos, quadData.ColorValue);
           isQuadFalling = true;
+
+          OrderQuadMeshAt(quadIndex, _downQuadPos, quadData.ColorValue);
           continue;
         }
         var diagonalIdxPos = FindEmptyDiagonalIndexAt(currQuadGridPos);
@@ -115,13 +116,34 @@ public partial class LevelSystem : MonoBehaviour
         quadData.Position = _diagonalQuadPos;
         quadData.IndexPosition = diagonalIdxPos;
         _quadDatas[quadIndex] = quadData;
+        isQuadFalling = true;
+
         OrderQuadMeshAt(quadIndex, _diagonalQuadPos, quadData.ColorValue);
       }
     }
   }
 
-  void AutoClearMatchingQuadsInUpdate()
+  void AutoClearLinkedQuadsInUpdate()
   {
+    if (isQuadFalling) return;
 
+    using var linkedQuads = CollectLeftAndRightLinkedQuads();
+    if (linkedQuads.Count == 0) return;
+    RemoveQuadsFrom(linkedQuads);
+  }
+
+  void CheckLoseInUpdate()
+  {
+    if (isQuadFalling) return;
+
+    for (int i = 0; i < quadGrid.GridSize.x; i++)
+    {
+      var idx = quadGrid.ConvertGridPosToIndex(new int2(i, redLineRow));
+      if (_quadIndexPositionDatas[idx] == -1) continue;
+
+      GameplayPanel.Instance.ToggleLevelFailedModal();
+      GameManager.Instance.SetGameState(GameState.GamepPause);
+      break;
+    }
   }
 }

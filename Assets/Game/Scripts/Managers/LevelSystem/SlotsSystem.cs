@@ -33,11 +33,6 @@ public partial class LevelSystem : MonoBehaviour
     }
   }
 
-  bool IsPlacedShape(int shapeIdx)
-  {
-    return shapeIdx >= slotsParent.childCount;
-  }
-
   float3 GetAndSetSlotGridPositionAt(int slotIndex)
   {
     var slotPos = GetSlotPositionAt(slotIndex);
@@ -98,11 +93,10 @@ public partial class LevelSystem : MonoBehaviour
     if (GameManager.Instance.GetGameState() != GameState.Gameplay) return;
     if (!_shapeQuadDatas.ContainsKey(_currentGrabbingShapeIndex)) return;
 
-    if (IsGroudQuadOutsizeAt(_currentGrabbingShapeIndex))
+    if (IsQuadsInplaceableAt(_currentGrabbingShapeIndex))
     {
       var slotPos = GetAndSetSlotGridPositionAt(_currentGrabbingShapeIndex);
       OrderShapePositionsTo(slotPos, _currentGrabbingShapeIndex);
-      ApplyDrawOrders();
 
       _currentGrabbingShapeIndex = -1;
       SoundManager.Instance.PlayDropBlockSfx();
@@ -111,6 +105,12 @@ public partial class LevelSystem : MonoBehaviour
 
     var newGroupIdx = GenerateUniqueShapeIdx();
     AssignQuadsToNewGroup(newGroupIdx, _currentGrabbingShapeIndex);
+
+    if (IsSlotsEmpty())
+    {
+      OrderShapesForSlots();
+      VisualizeActiveQuads();
+    }
 
     _currentGrabbingShapeIndex = -1;
   }

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public partial class LevelSystem : MonoBehaviour
 {
-  int _currentQuadAmount;
   int _placedShapesAmount;
   int _currentGrabbingShapeIndex = -1;
 
@@ -31,61 +30,86 @@ public partial class LevelSystem : MonoBehaviour
   }
 
   bool IsPairQuadLinked(
-    int2 leftGridPos,
-    int2 rightGridPos,
+    int leftIdxPos,
+    int rightIdxPos,
     out NativeHashMap<int, bool> linkedQuads)
   {
-    var leftIdxPos = quadGrid.ConvertGridPosToIndex(leftGridPos);
     linkedQuads = CollectLinkedQuadsAt(leftIdxPos);
-
-    var rightQuadIdx = GetQuadIdxFrom(rightGridPos);
+    var rightQuadIdx = _quadIndexPositionDatas[rightIdxPos];
     if (linkedQuads.ContainsKey(rightQuadIdx)) return true;
     return false;
   }
 
   /// <summary>
-  /// Return a map that contain delegate quad's datas that have separated by colors at x
+  /// Return a list that contain delegate quad's datas that have separated 
+  /// by colors at column x
   /// </summary>
   /// <param name="column"></param>
-  NativeHashMap<int, QuadData> CollectDistinguishQuadDataAt(int column)
+  NativeList<int> CollectDistinguishQuadIdxesAt(int column)
   {
-    var map = new NativeHashMap<int, QuadData>(32, Allocator.Temp);
-
+    var list = new NativeList<int>(32, Allocator.Temp);
     var x = column;
-    for (int y = 1; y < quadGrid.GridSize.y; ++y)
+
+    for (int y = 0; y < quadGrid.GridSize.y; ++y)
     {
       var currGridPos = new int2(x, y);
       var currQuadIdx = GetQuadIdxFrom(currGridPos);
-      var preGridPos = new int2(x, y - 1);
-      var preQuadIdx = GetQuadIdxFrom(preGridPos);
-
       if (currQuadIdx == -1) break;
-      if (preQuadIdx == -1) continue;
 
-      // var preColorValue = GetCO
+      var nextGridPos = new int2(x, y + 1);
+      var nextQuadIdx = GetQuadIdxFrom(nextGridPos);
+      if (nextQuadIdx == -1)
+      {
+        list.Add(currQuadIdx);
+        break;
+      }
+
       var currQuadData = _quadDatas[currQuadIdx];
-      var currIdxPos = quadGrid.ConvertGridPosToIndex(currGridPos);
       var currColorValue = GetQuadGroupColorFrom(currQuadData);
-
-
+      var nextQuadData = _quadDatas[nextQuadIdx];
+      var nexxtColorValue = GetQuadGroupColorFrom(nextQuadData);
+      if (currColorValue != nexxtColorValue)
+      {
+        list.Add(currQuadIdx);
+      }
     }
-
-    return map;
+    return list;
   }
 
-  NativeArray<int2> FindMatchingPairQuads()
+  NativeHashMap<int, bool> CollectLeftAndRightLinkedQuads()
   {
     var xLeft = 0;
     var xRight = quadGrid.GridSize.x - 1;
+    var leftList = CollectDistinguishQuadIdxesAt(xLeft);
+    var rightList = CollectDistinguishQuadIdxesAt(xRight);
+    if (leftList.Length == 0 || rightList.Length == 0)
+      return new NativeHashMap<int, bool>(0, Allocator.Temp);
 
-    var arr = new NativeArray<int2>(2, Allocator.Temp);
+    for (int i = 0; i < leftList.Length; ++i)
+    {
+      var leftQuadIdx = leftList[i];
+      var leftQuadData = _quadDatas[leftQuadIdx];
+      var leftColorValue = GetQuadGroupColorFrom(leftQuadData);
+      for (int j = 0; j < rightList.Length; ++j)
+      {
+        var rightQuadIdx = rightList[j];
+        var rightQuadData = _quadDatas[rightQuadIdx];
+        var rightColorValue = GetQuadGroupColorFrom(rightQuadData);
+        if (leftColorValue != rightColorValue) continue;
 
-
-
-
-
-
-    return new NativeArray<int2>(0, Allocator.Temp);
+        if (
+          !IsPairQuadLinked(
+            leftQuadData.IndexPosition, rightQuadData.IndexPosition, out var linkedQuads
+          )
+        )
+        {
+          linkedQuads.Dispose();
+          continue;
+        }
+        return linkedQuads;
+      }
+    }
+    return new NativeHashMap<int, bool>(0, Allocator.Temp);
   }
 
   NativeList<int> FindNeighborQuadIdxesAround(QuadData quadData)
@@ -262,21 +286,7 @@ public partial class LevelSystem : MonoBehaviour
     _shapeQuadDatas.Remove(oldShapeIdx);
   }
 
-  bool IsBlockShapeOutsideAt(int shapeIdx)
-  {
-    for (int i = 0; i < _blockDatas.Length; ++i)
-    {
-      var blockData = _blockDatas[i];
-      var _shapeIdx = blockData.ShapeIndex;
-      if (_shapeIdx != shapeIdx) continue;
-
-      var blockPos = blockData.Position;
-      if (blockGrid.IsPosOutsideAt(blockPos)) return true;
-    }
-    return false;
-  }
-
-  bool IsGroudQuadOutsizeAt(int shapeIdx)
+  bool IsQuadsInplaceableAt(int shapeIdx)
   {
     for (int i = 0; i < _quadDatas.Length; i++)
     {
