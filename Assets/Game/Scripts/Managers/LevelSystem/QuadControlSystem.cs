@@ -19,6 +19,62 @@ public partial class LevelSystem : MonoBehaviour
     quadMeshSystem.ApplyDrawOrders();
   }
 
+  int GetQuadGroupColorFrom(QuadData quadData)
+  {
+    return _groupQuadDatas[quadData.GroupIndex].ColorValue;
+  }
+
+  int GetQuadIdxFrom(int2 gridPos)
+  {
+    var idxPos = quadGrid.ConvertGridPosToIndex(gridPos);
+    return _quadIndexPositionDatas[idxPos];
+  }
+
+  bool IsPairQuadLinked(
+    int2 leftGridPos,
+    int2 rightGridPos,
+    out NativeHashMap<int, bool> linkedQuads)
+  {
+    var leftIdxPos = quadGrid.ConvertGridPosToIndex(leftGridPos);
+    linkedQuads = CollectLinkedQuadsAt(leftIdxPos);
+
+    var rightQuadIdx = GetQuadIdxFrom(rightGridPos);
+    if (linkedQuads.ContainsKey(rightQuadIdx)) return true;
+    return false;
+  }
+
+  NativeArray<int2> FindMatchingPairQuads()
+  {
+    var xLeft = 0;
+    var xRight = quadGrid.GridSize.x - 1;
+
+    var arr = new NativeArray<int2>(2, Allocator.Temp);
+
+    for (int yL = 0; yL < quadGrid.GridSize.y; ++yL)
+    {
+      var leftGridPos = new int2(xLeft, yL);
+      var leftQuadIdx = GetQuadIdxFrom(leftGridPos);
+      if (leftQuadIdx == -1) continue;
+
+      var leftQuadData = _quadDatas[leftQuadIdx];
+
+      for (int yR = 0; yR < quadGrid.GridSize.y; ++yR)
+      {
+        var rightGridPos = new int2(xRight, yR);
+        var rightQuadIdx = GetQuadIdxFrom(rightGridPos);
+        if (rightQuadIdx == -1) continue;
+        var rightQuadData = _quadDatas[rightQuadIdx];
+
+        if (GetQuadGroupColorFrom(leftQuadData) != GetQuadGroupColorFrom(rightQuadData))
+          continue;
+        arr[0] = leftGridPos;
+        arr[1] = rightGridPos;
+        return arr;
+      }
+    }
+    return new NativeArray<int2>(0, Allocator.Temp);
+  }
+
   NativeList<int> FindNeighborQuadIdxesAround(QuadData quadData)
   {
     var list = new NativeList<int>(8, Allocator.Temp);
