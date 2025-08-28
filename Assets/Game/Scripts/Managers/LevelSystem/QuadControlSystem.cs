@@ -19,64 +19,142 @@ public partial class LevelSystem : MonoBehaviour
     quadMeshSystem.ApplyDrawOrders();
   }
 
-  void RemoveGroupAt(int groupIdx)
+  NativeList<int> FindNeighborQuadIdxesAround(QuadData quadData)
   {
-    for (int i = 0; i < _quadDatas.Length; ++i)
+    var list = new NativeList<int>(8, Allocator.Temp);
+    var currColorValue = _groupQuadDatas[quadData.GroupIndex].ColorValue;
+    var currGridPos = quadGrid.ConvertIndexToGridPos(quadData.IndexPosition);
+    for (int j = 0; j < _fullDirections.Length; ++j)
     {
-      var quadData = _quadDatas[i];
-      if (!quadData.IsActive) continue;
-      if (quadData.GroupIndex != groupIdx) continue;
+      var direction = _fullDirections[j];
+      var nextGridPos = currGridPos + direction;
+      if (quadGrid.IsGridPosOutsideAt(nextGridPos)) continue;
+
+      var nextIndexPos = quadGrid.ConvertGridPosToIndex(nextGridPos);
+      var nextQuadIdx = _quadIndexPositionDatas[nextIndexPos];
+      if (nextQuadIdx == -1) continue; // nextGridPos is an empty grid position so we skip this
+
+      var nextQuadData = _quadDatas[nextQuadIdx];
+      var nextColorValue = _groupQuadDatas[nextQuadData.GroupIndex].ColorValue;
+      if (nextColorValue != currColorValue) continue;
+      list.Add(nextQuadIdx);
+    }
+    return list;
+  }
+
+  NativeHashMap<int, bool> CollectLinkedQuadsAt(int startIdxPos)
+  {
+    var visitedQuads = new NativeHashMap<int, bool>(
+      quadMeshSystem.QuadCapacity, Allocator.Temp
+    );
+    var availableQuads = new NativeHashMap<int, bool>(
+      quadMeshSystem.QuadCapacity, Allocator.Temp
+    );
+
+    var startQuadIdx = _quadIndexPositionDatas[startIdxPos];
+    availableQuads.Add(startQuadIdx, true);
+
+    while (availableQuads.Count > 0)
+    {
+      using var availableQuadsArray = availableQuads.GetKeyValueArrays(Allocator.Temp);
+      var currentQuadIdx = availableQuadsArray.Keys[^1];
+      var currentQuadData = _quadDatas[currentQuadIdx];
+
+      availableQuads.Remove(currentQuadIdx);
+      visitedQuads.Add(currentQuadIdx, true);
+
+      using var neighbors = FindNeighborQuadIdxesAround(currentQuadData);
+      for (int j = 0; j < neighbors.Length; ++j)
+      {
+        var neighborQuadIdx = neighbors[j];
+        if (availableQuads.ContainsKey(neighborQuadIdx)) continue;
+        if (visitedQuads.ContainsKey(neighborQuadIdx)) continue;
+        availableQuads.Add(neighborQuadIdx, true);
+      }
+    }
+    return visitedQuads;
+  }
+
+  NativeHashMap<int, bool> CollectLinkedQuadsMatch(int colorValue)
+  {
+    var quadHashMap = new NativeHashMap<int, bool>(
+      quadMeshSystem.QuadCapacity, Allocator.Temp
+    );
+    for (int x = 0; x < quadGrid.GridSize.x; ++x)
+    {
+      for (int y = 0; y < quadGrid.GridSize.y; ++y)
+      {
+        var currGridPos = new int2(x, y);
+        var currIdxPos = quadGrid.ConvertGridPosToIndex(currGridPos);
+        var currQuadIdx = _quadIndexPositionDatas[currIdxPos];
+        if (currQuadIdx == -1) continue;
+
+        var quadData = _quadDatas[currQuadIdx];
+        if (_groupQuadDatas[quadData.GroupIndex].ColorValue != colorValue) continue;
+        if (quadHashMap.ContainsKey(currQuadIdx)) continue;
+
+        quadHashMap.Add(currQuadIdx, true);
+        using var list = FindNeighborQuadIdxesAround(quadData);
+        for (int j = 0; j < list.Length; ++j)
+        {
+          var _quadIdx = list[j];
+          if (quadHashMap.ContainsKey(_quadIdx)) continue;
+          quadHashMap.Add(_quadIdx, true);
+        }
+      }
+    }
+    return quadHashMap;
+  }
+
+  void RemoveQuadsFrom(NativeHashMap<int, bool> quadsMap)
+  {
+    using var quadsMapArray = quadsMap.GetKeyValueArrays(Allocator.Temp);
+    for (int i = 0; i < quadsMapArray.Length; ++i)
+    {
+      var quadIdx = quadsMapArray.Keys[i];
+      var quadData = _quadDatas[quadIdx];
 
       quadData.IsActive = false;
-      _quadIndexesDatas[quadData.PlacedIndex] = -1;
-      _quadDatas[i] = quadData;
+      _quadIndexPositionDatas[quadData.IndexPosition] = -1;
+      _quadDatas[quadIdx] = quadData;
 
-      OrderQuadMeshAt(i, -11, quadData.ColorValue);
+      OrderQuadMeshAt(quadIdx, -11, quadData.ColorValue);
     }
-    _groupQuadDatas.Remove(groupIdx);
+  }
+
+  int FindEmptyIndexAt(int2 gridPos, int2 direction, int _searchingDeepAmount = 1)
+  {
+    var downGridPos = gridPos;
+    var downIndex = -1;
+
+    var searchingDeepsCount = 0;
+    var chooseIndex = downIndex;
+    while (searchingDeepsCount < _searchingDeepAmount)
+    {
+      downGridPos += direction;
+      if (quadGrid.IsGridPosOutsideAt(downGridPos)) return chooseIndex;
+      downIndex = quadGrid.ConvertGridPosToIndex(downGridPos);
+      if (_quadIndexPositionDatas[downIndex] != -1) return chooseIndex;
+
+      chooseIndex = downIndex;
+      searchingDeepsCount++;
+    }
+    return chooseIndex;
   }
 
   int FindEmptyDownIndexAt(int2 gridPos)
   {
     var downGridPDirection = new int2(0, -1);
-    var downGridPos = gridPos + downGridPDirection;
-    if (quadGrid.IsGridPosOutsideAt(downGridPos)) return -1;
-
-    var downIndex = quadGrid.ConvertGridPosToIndex(downGridPos);
-    if (_quadIndexesDatas[downIndex] == -1) return downIndex;
-    return -1;
+    return FindEmptyIndexAt(gridPos, downGridPDirection, searchingDeepAmount);
   }
 
   int FindEmptyDiagonalIndexAt(int2 gridPos)
   {
-    for (int i = 0; i < _diagonalDirections.Length; ++i)
+    for (int i = 0; i < 2; ++i)
     {
-      var _direction = _diagonalDirections[i];
-      var _diagonalGridPos = gridPos + _direction;
-      if (quadGrid.IsGridPosOutsideAt(_diagonalGridPos)) continue;
-
-      var _diagonalIdx = quadGrid.ConvertGridPosToIndex(_diagonalGridPos);
-      if (_quadIndexesDatas[_diagonalIdx] == -1) return _diagonalIdx;
-    }
-    return -1;
-  }
-
-  float3 FindUnderEmptyQuadPosAt(float3 quadPos)
-  {
-    var gridPos = FindUnderEmptyQuadGridPosAt(quadPos);
-    if (gridPos.Equals(-1)) return -1;
-    return quadGrid.ConvertGridPosToWorldPos(gridPos);
-  }
-
-  int2 FindUnderEmptyQuadGridPosAt(float3 quadPos)
-  {
-    var gridPos = quadGrid.ConvertWorldPosToGridPos(quadPos);
-    var x = gridPos.x;
-    for (int y = 0; y < gridPos.y; ++y)
-    {
-      var _currGridPos = new int2(x, y);
-      var _currIdx = quadGrid.ConvertGridPosToIndex(_currGridPos);
-      if (_quadIndexesDatas[_currIdx] == -1) return _currGridPos;
+      var _direction = _fullDirections[i];
+      var emptyIdx = FindEmptyIndexAt(gridPos, _direction, 1);
+      if (emptyIdx != -1) return emptyIdx;
     }
     return -1;
   }
@@ -103,6 +181,7 @@ public partial class LevelSystem : MonoBehaviour
       _blockDatas[i] = blockData;
     }
 
+    // re-assign group id for quads
     for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
@@ -213,7 +292,7 @@ public partial class LevelSystem : MonoBehaviour
         var quadData = inactiveQuads[i];
         quadData.GroupIndex = shapeIndex;
         quadData.Position = pos;
-        quadData.PlacedIndex = -1;
+        quadData.IndexPosition = -1;
         quadData.ColorValue = newColorIndex;
         quadData.IsActive = true;
         var index = quadData.Index;
