@@ -14,6 +14,7 @@ public partial class LevelSystem : MonoBehaviour
   [SerializeField] GridWorld blockGrid;
   [SerializeField] GridWorld slotGrid;
   [SerializeField] QuadMeshSystem quadMeshSystem;
+  public QuadMeshSystem QuadMeshSystem => quadMeshSystem;
   [SerializeField] M20LevelSystem m20LevelSystem;
   [SerializeField] CinemachineCamera cinemachineCamera;
   LevelInformation _levelInformation;
@@ -121,11 +122,6 @@ public partial class LevelSystem : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.Alpha3))
     {
       using var quadsMap = CollectLinkedQuadsMatch(3);
-      RemoveQuadsFrom(quadsMap);
-    }
-    if (Input.GetKeyDown(KeyCode.Z))
-    {
-      using var quadsMap = CollectLinkedQuadsRowAt(0, 16);
       RemoveQuadsFrom(quadsMap);
     }
   }

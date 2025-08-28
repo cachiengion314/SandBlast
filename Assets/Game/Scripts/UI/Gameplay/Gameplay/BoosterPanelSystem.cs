@@ -4,9 +4,11 @@ using UnityEngine.Rendering;
 
 public partial class GameplayPanel
 {
+    [SerializeField] GameObject darkPanel;
     [SerializeField] BoosterCtrl booster1Ctrl;
     [SerializeField] BoosterCtrl booster2Ctrl;
     [SerializeField] BoosterCtrl booster3Ctrl;
+    [SerializeField] Canvas canvasBooster3;
     int levelUnlockBooster1 = 0;
     int levelUnlockBooster2 = 0;
     int levelUnlockBooster3 = 0;
@@ -38,6 +40,7 @@ public partial class GameplayPanel
         {
             LevelSystem.Instance.StartTutorial2b();
             LevelSystem.Instance.OnTriggerBooster1();
+            GameManager.Instance.Booster1--;
         }
     }
 
@@ -50,6 +53,8 @@ public partial class GameplayPanel
         else
         {
             LevelSystem.Instance.StartTutorial3b();
+            LevelSystem.Instance.OnTriggerBooster2();
+            GameManager.Instance.Booster2--;
         }
     }
 
@@ -62,7 +67,23 @@ public partial class GameplayPanel
         else
         {
             LevelSystem.Instance.StartTutorial4b();
+            ToggleBooster3();
         }
+    }
+
+    public void ToggleBooster3()
+    {
+        LevelSystem.Instance.isTriggerBooster3 = !LevelSystem.Instance.isTriggerBooster3;
+        darkPanel.SetActive(LevelSystem.Instance.isTriggerBooster3);
+        canvasBooster3.overrideSorting = LevelSystem.Instance.isTriggerBooster3;
+        var quadMeshSystem = LevelSystem.Instance.QuadMeshSystem;
+        if (!quadMeshSystem.TryGetComponent(out SortingGroup sortingGroup))
+        {
+            sortingGroup = quadMeshSystem.gameObject.AddComponent<SortingGroup>();
+            sortingGroup.sortingLayerName = "UI";
+            sortingGroup.sortingOrder = 15;
+        }
+        sortingGroup.enabled = LevelSystem.Instance.isTriggerBooster3;
     }
 
     void VisualeTriggerBooster1()

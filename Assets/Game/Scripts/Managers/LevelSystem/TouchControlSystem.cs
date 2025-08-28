@@ -41,6 +41,12 @@ public partial class LevelSystem : MonoBehaviour
         RemoveQuadsFrom(quadsMap);
     }
 
+    if (isTriggerBooster3)
+    {
+      OnTriggerBooster3();
+      return;
+    }
+
     Collider2D[] colliders = Physics2D.OverlapPointAll(
       new float2(userTouchScreenPosition.x, userTouchScreenPosition.y)
     );
