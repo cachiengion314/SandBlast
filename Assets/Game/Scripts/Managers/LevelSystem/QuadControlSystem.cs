@@ -188,7 +188,7 @@ public partial class LevelSystem : MonoBehaviour
         var currIdxPos = quadGrid.ConvertGridPosToIndex(currGridPos);
         var currQuadIdx = _quadIndexPositionDatas[currIdxPos];
         if (currQuadIdx == -1) continue;
-        
+
         if (quadHashMap.ContainsKey(currQuadIdx)) continue;
         quadHashMap.Add(currQuadIdx, true);
       }
@@ -346,9 +346,9 @@ public partial class LevelSystem : MonoBehaviour
     return -1;
   }
 
-  NativeList<QuadData> FindInactiveQuadsForShape()
+  NativeList<QuadData> FindInactiveQuadsForShape(int capacity)
   {
-    var list = new NativeList<QuadData>(64 * 4, Allocator.Temp); ;
+    var list = new NativeList<QuadData>(capacity, Allocator.Temp); ;
     for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
@@ -426,7 +426,7 @@ public partial class LevelSystem : MonoBehaviour
 
     var slotPos = GetAndSetSlotGridPositionAt(slotIndex);
 
-    using var inactiveQuads = FindInactiveQuadsForShape();
+    using var inactiveQuads = FindInactiveQuadsForShape(64 * 4);
     if (inactiveQuads.Length == 0)
     {
       print("Cannot find any spare quads");

@@ -73,6 +73,8 @@ public partial class LevelSystem
             && PlayerPrefs.GetInt(KeyString.KEY_TUTORIAL_3, 0) == 0)
         {
             GameManager.Instance.SetGameState(GameState.GamepPause);
+            SpawnQuadBlockRowAt(20);
+            ApplyDrawOrders();
             tutorial.ShowTapPanelAt(KeyString.KEY_TUTORIAL_3);
             tutorial.ShowReceivePanelAt(
                 KeyString.KEY_TUTORIAL_3,
@@ -131,5 +133,55 @@ public partial class LevelSystem
         GameManager.Instance.SetGameState(GameState.Gameplay);
         PlayerPrefs.SetInt(KeyString.KEY_TUTORIAL_4, 1);
         tutorial.StopTutorial();
+    }
+
+    void SpawnQuadBlockRowAt(int amount)
+    {
+        var quadsAmount = 8 * 10 * amount;
+        using var inactiveQuads = FindInactiveQuadsForShape(quadsAmount);
+        if (inactiveQuads.Length == 0)
+        {
+            print("Cannot find any spare quads");
+            return;
+        }
+        int shapeIdx = GenerateUniqueShapeIdx();
+        var newGroupData = new GroupQuadData
+        {
+            QuadsAmount = quadsAmount,
+            ColorValue = 0,
+            IsActive = true,
+        };
+        _groupQuadDatas.Add(shapeIdx, newGroupData);
+
+        int i = 0;
+        for (int y = 0; y < amount; y++)
+        {
+            for (int x = 0; x < quadGrid.GridSize.x; x++)
+            {
+                var colorValue = 0;
+                if (x > quadGrid.GridSize.x / 2) colorValue = 1;
+                var ratio = UnityEngine.Random.Range(0f, 100f);
+                if (ratio > 80f)
+                {
+                    var xColor = UnityEngine.Random.Range(0, quadMeshSystem.GridResolution.x - 1);
+                     var colorGird = quadMeshSystem.ConvertIndexToGridPos(colorValue);
+                    var newColorGrid = new int2(xColor, colorGird.y);
+                    colorValue = quadMeshSystem.ConvertGirdPosToIndex(newColorGrid);
+                }
+                var gridPos = new int2(x, y);
+                var idx = quadGrid.ConvertGridPosToIndex(gridPos);
+                var pos = quadGrid.ConvertGridPosToWorldPos(gridPos);
+                var quadData = inactiveQuads[i++];
+                quadData.GroupIndex = shapeIdx;
+                quadData.Position = pos;
+                quadData.IndexPosition = idx;
+                quadData.ColorValue = 0;
+                quadData.IsActive = true;
+                var index = quadData.Index;
+                _quadDatas[index] = quadData;
+                _quadIndexPositionDatas[idx] = index;
+                OrderQuadMeshAt(index, pos, 0);
+            }
+        }
     }
 }

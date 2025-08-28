@@ -50,7 +50,7 @@ public partial class LevelSystem : MonoBehaviour
 
     // StartTutorial1();
     // StartTutorial2a();
-    // StartTutorial3a();
+    StartTutorial3a();
     // StartTutorial4a();
   }
 
