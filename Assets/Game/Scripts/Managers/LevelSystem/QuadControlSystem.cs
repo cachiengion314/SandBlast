@@ -207,6 +207,19 @@ public partial class LevelSystem : MonoBehaviour
     return false;
   }
 
+  bool IsGroudQuadOutsizeAt(int shapeIdx)
+  {
+    for (int i = 0; i < _quadDatas.Length; i++)
+    {
+      var quadData = _quadDatas[i];
+      if (quadData.GroupIndex != shapeIdx) continue;
+      if (quadGrid.IsPosOutsideAt(quadData.Position)) return true;
+      var idx = quadGrid.ConvertWorldPosToIndex(quadData.Position);
+      if (_quadIndexPositionDatas[idx] != -1) return true;
+    }
+    return false;
+  }
+
   float3 ConvertSlotPosToWorldPos(float2 blockSlotPos)
   {
     var slotPos = (float3)slotGrid.transform.position;
