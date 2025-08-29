@@ -201,7 +201,7 @@ public partial class LevelSystem : MonoBehaviour
   NativeHashMap<int, bool> CollectLinkedQuadsAt(int startIdxPos)
   {
     var visitedQuads = new NativeHashMap<int, bool>(
-      quadMeshSystem.QuadCapacity, Allocator.Temp
+      quadMeshSystem.QuadCapacity, Allocator.Persistent
     );
     var availableQuads = new NativeHashMap<int, bool>(
       quadMeshSystem.QuadCapacity, Allocator.Temp
@@ -234,7 +234,7 @@ public partial class LevelSystem : MonoBehaviour
   NativeHashMap<int, bool> CollectLinkedQuadsMatch(int colorValue)
   {
     var quadHashMap = new NativeHashMap<int, bool>(
-      quadMeshSystem.QuadCapacity, Allocator.Temp
+      quadMeshSystem.QuadCapacity, Allocator.Persistent
     );
     for (int x = 0; x < quadGrid.GridSize.x; ++x)
     {

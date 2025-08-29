@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -52,10 +53,18 @@ public partial class LevelSystem
         if (startQuadIdx == -1) return;
         var quadData = _quadDatas[startQuadIdx];
         var colorValue = _groupQuadDatas[quadData.GroupIndex].ColorValue;
-        using var quadsMap = CollectLinkedQuadsMatch(colorValue);
-        RemoveQuadsFrom(quadsMap);
-        FillBlastBlockAt(quadsMap);
+        var quadsMap = CollectLinkedQuadsMatch(colorValue);
         GameplayPanel.Instance.ToggleBooster3();
         GameManager.Instance.Booster3--;
+
+        Sequence seq = DOTween.Sequence();
+        float atPosition = 0f;
+        VisualizeRemoveQuads(quadsMap, ref seq, ref atPosition);
+        seq.InsertCallback(atPosition, () =>
+        {
+            RemoveQuadsFrom(quadsMap);
+            FillBlastBlockAt(quadsMap);
+            quadsMap.Dispose();
+        });
     }
 }
