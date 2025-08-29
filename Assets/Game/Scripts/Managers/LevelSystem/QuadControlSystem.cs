@@ -103,7 +103,7 @@ public partial class LevelSystem : MonoBehaviour
             var aroundCode = unionFindColors[aroundIdxPos];
             if (leftColumnCodes.ContainsKey(aroundCode))
             {
-              /// we priority left column group code more that a trivial group code 
+              /// we priority left column group code more than a trivial group code 
               unionFindColors[currIdxPos] = aroundCode;
               break;
             }
@@ -334,14 +334,14 @@ public partial class LevelSystem : MonoBehaviour
     }
   }
 
-  int FindEmptyIndexAt(int2 gridPos, int2 direction, int _searchingDeepAmount = 1)
+  int FindEmptyIndexAt(int2 gridPos, int2 direction, int _searchDeepAmount = 1)
   {
     var downGridPos = gridPos;
     var downIndex = -1;
 
-    var searchingDeepsCount = 0;
+    var searchDeepsCount = 0;
     var chooseIndex = downIndex;
-    while (searchingDeepsCount < _searchingDeepAmount)
+    while (searchDeepsCount < _searchDeepAmount)
     {
       downGridPos += direction;
       if (quadGrid.IsGridPosOutsideAt(downGridPos)) return chooseIndex;
@@ -349,7 +349,7 @@ public partial class LevelSystem : MonoBehaviour
       if (_quadIndexPositionDatas[downIndex] != -1) return chooseIndex;
 
       chooseIndex = downIndex;
-      searchingDeepsCount++;
+      searchDeepsCount++;
     }
     return chooseIndex;
   }
@@ -357,7 +357,7 @@ public partial class LevelSystem : MonoBehaviour
   int FindEmptyDownIndexAt(int2 gridPos)
   {
     var downGridPDirection = new int2(0, -1);
-    return FindEmptyIndexAt(gridPos, downGridPDirection, searchingDeepAmount);
+    return FindEmptyIndexAt(gridPos, downGridPDirection, gravitySearchDeepAmount);
   }
 
   int FindEmptyDiagonalIndexAt(int2 gridPos)
@@ -368,6 +368,22 @@ public partial class LevelSystem : MonoBehaviour
       var emptyIdx = FindEmptyIndexAt(gridPos, _direction, 1);
       if (emptyIdx != -1) return emptyIdx;
     }
+    return -1;
+  }
+
+  int FindLeftEmptyDiagonalIdxAt(int2 gridPos)
+  {
+    var leftDirection = _fullDirections[0];
+    var emptyIdx = FindEmptyIndexAt(gridPos, leftDirection, diagonalSearchDeepAmount);
+    if (emptyIdx != -1) return emptyIdx;
+    return -1;
+  }
+
+  int FindRightEmptyDiagonalIdxAt(int2 gridPos)
+  {
+    var rightDirection = _fullDirections[1];
+    var emptyIdx = FindEmptyIndexAt(gridPos, rightDirection, diagonalSearchDeepAmount);
+    if (emptyIdx != -1) return emptyIdx;
     return -1;
   }
 

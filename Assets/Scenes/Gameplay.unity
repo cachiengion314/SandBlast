@@ -2441,13 +2441,14 @@ MonoBehaviour:
   isTriggerBooster3: 0
   searchingDeepAmount: 1
   redLineRow: 79
+  loseType: 0
   quadGrid: {fileID: 963933630}
   blockGrid: {fileID: 1083012360}
   slotGrid: {fileID: 243784473}
   quadMeshSystem: {fileID: 2081467839}
   m20LevelSystem: {fileID: 498812701}
   cinemachineCamera: {fileID: 768285754}
-  levelSelected: 1
+  levelSelected: 10
   IsSelectedLevel: 1
   slotsParent: {fileID: 201795461}
   spawnedParent: {fileID: 137796742}
@@ -5410,6 +5411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blastSlots: {fileID: 1560355843}
   maxAmmunition: 10
+  maxSlot: 8
   arrangeSpeed: 2.78
   arrangeDampSpeed: 3.4
   _firingPositions: {fileID: 0}
