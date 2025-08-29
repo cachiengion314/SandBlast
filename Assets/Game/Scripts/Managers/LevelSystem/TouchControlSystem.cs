@@ -1,4 +1,5 @@
 using Lean.Touch;
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -37,8 +38,9 @@ public partial class LevelSystem : MonoBehaviour
       var pos = new float3(userTouchScreenPosition.x, userTouchScreenPosition.y, 0);
       var idxPos = quadGrid.ConvertWorldPosToIndex(pos);
       using var quadsMap = CollectLinkedQuadsAt(idxPos);
+      using var quadDatas = quadsMap.GetKeyArray(Allocator.Temp);
       if (quadsMap.Count > 0)
-        RemoveQuadsFrom(quadsMap);
+        RemoveQuadsFrom(quadDatas);
     }
 
     if (isTriggerBooster3)

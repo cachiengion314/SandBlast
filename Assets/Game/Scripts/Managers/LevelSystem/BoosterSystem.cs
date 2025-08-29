@@ -41,7 +41,16 @@ public partial class LevelSystem
     public void OnTriggerBooster2()
     {
         using var quadsMap = CollectLinkedQuadsRowAt(0, 16);
-        RemoveQuadsFrom(quadsMap);
+        var quadDatas = quadsMap.GetKeyArray(Allocator.Persistent);
+        Sequence seq = DOTween.Sequence();
+        float atPosition = 0f;
+        VisualizeRemoveQuads(quadDatas, ref seq, ref atPosition);
+        seq.InsertCallback(atPosition, () =>
+        {
+            RemoveQuadsFrom(quadDatas);
+            FillBlastBlockAt(quadDatas);
+            quadDatas.Dispose();
+        });
     }
 
     public void OnTriggerBooster3()
@@ -53,18 +62,19 @@ public partial class LevelSystem
         if (startQuadIdx == -1) return;
         var quadData = _quadDatas[startQuadIdx];
         var colorValue = _groupQuadDatas[quadData.GroupIndex].ColorValue;
-        var quadsMap = CollectQuadsMatch(colorValue);
         GameplayPanel.Instance.ToggleBooster3();
         GameManager.Instance.Booster3--;
 
+        using var quadsMap = CollectQuadsMatch(colorValue);
+        var quadDatas = quadsMap.GetKeyArray(Allocator.Persistent);
         Sequence seq = DOTween.Sequence();
         float atPosition = 0f;
-        VisualizeRemoveQuads(quadsMap, ref seq, ref atPosition);
+        VisualizeRemoveQuads(quadDatas, ref seq, ref atPosition);
         seq.InsertCallback(atPosition, () =>
         {
-            RemoveQuadsFrom(quadsMap);
-            FillBlastBlockAt(quadsMap);
-            quadsMap.Dispose();
+            RemoveQuadsFrom(quadDatas);
+            FillBlastBlockAt(quadDatas);
+            quadDatas.Dispose();
         });
     }
 }

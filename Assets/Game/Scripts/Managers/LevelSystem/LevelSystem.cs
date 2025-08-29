@@ -82,17 +82,18 @@ public partial class LevelSystem : MonoBehaviour
 
     if (Input.GetKeyDown(KeyCode.R))
     {
-      var linkedQuads = CollectLeftAndRightLinkedQuads();
+      using var linkedQuads = CollectLeftAndRightLinkedQuads();
       print("linkedQuads.Count " + linkedQuads.Count);
 
+      var quadDatas = linkedQuads.GetKeyArray(Allocator.Persistent);
       Sequence seq = DOTween.Sequence();
       float atPosition = 0f;
-      VisualizeRemoveQuads(linkedQuads, ref seq, ref atPosition);
+      VisualizeRemoveQuads(quadDatas, ref seq, ref atPosition);
       seq.InsertCallback(atPosition, () =>
       {
-        RemoveQuadsFrom(linkedQuads);
-        FillBlastBlockAt(linkedQuads);
-        linkedQuads.Dispose();
+        RemoveQuadsFrom(quadDatas);
+        FillBlastBlockAt(quadDatas);
+        quadDatas.Dispose();
       });
     }
     if (Input.GetKeyDown(KeyCode.C))
@@ -125,22 +126,26 @@ public partial class LevelSystem : MonoBehaviour
     if (Input.GetKeyDown(KeyCode.Alpha0))
     {
       using var quadsMap = CollectQuadsMatch(0);
-      RemoveQuadsFrom(quadsMap);
+      using var quadDatas = quadsMap.GetKeyArray(Allocator.Temp);
+      RemoveQuadsFrom(quadDatas);
     }
     if (Input.GetKeyDown(KeyCode.Alpha1))
     {
       using var quadsMap = CollectQuadsMatch(1);
-      RemoveQuadsFrom(quadsMap);
+      using var quadDatas = quadsMap.GetKeyArray(Allocator.Temp);
+      RemoveQuadsFrom(quadDatas);
     }
     if (Input.GetKeyDown(KeyCode.Alpha2))
     {
       using var quadsMap = CollectQuadsMatch(2);
-      RemoveQuadsFrom(quadsMap);
+      using var quadDatas = quadsMap.GetKeyArray(Allocator.Temp);
+      RemoveQuadsFrom(quadDatas);
     }
     if (Input.GetKeyDown(KeyCode.Alpha3))
     {
       using var quadsMap = CollectQuadsMatch(3);
-      RemoveQuadsFrom(quadsMap);
+      using var quadDatas = quadsMap.GetKeyArray(Allocator.Temp);
+      RemoveQuadsFrom(quadDatas);
     }
   }
 

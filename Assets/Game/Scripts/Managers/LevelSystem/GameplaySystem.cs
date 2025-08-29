@@ -11,6 +11,7 @@ public partial class LevelSystem : MonoBehaviour
   [SerializeField] int diagonalSearchDeepAmount = 1;
   [SerializeField] int redLineRow = 79;
   bool isQuadFalling = false;
+  bool isRemoveQuadTweening = false;
   public int loseType;
 
   void OrderShapePositionsTo(float3 targetPos, int shapeIdx)
@@ -221,21 +222,31 @@ public partial class LevelSystem : MonoBehaviour
   void AutoClearLinkedQuadsInUpdate()
   {
     if (isQuadFalling) return;
+    if (isRemoveQuadTweening) return;
 
     // using var linkedQuads = CollectLeftAndRightLinkedQuads();
     using var unionFindColorCodes = CreateUnionFindColorCodes();
     var leftIdxPos = FindUnionLeftIdxPosFrom(unionFindColorCodes);
     if (leftIdxPos == -1) return;
+    isRemoveQuadTweening = true;
 
     using var linkedQuads = CollectLinkedQuadsAt(leftIdxPos);
-    RemoveQuadsFrom(linkedQuads);
+    var quadDatas = linkedQuads.GetKeyArray(Allocator.Persistent);
+    Sequence seq = DOTween.Sequence();
+    float atPosition = 0f;
+    VisualizeRemoveQuads(quadDatas, ref seq, ref atPosition);
+    seq.InsertCallback(atPosition, () =>
+    {
+      RemoveQuadsFrom(quadDatas);
+      FillBlastBlockAt(quadDatas);
+      quadDatas.Dispose();
+    });
   }
 
-  void FillBlastBlockAt(NativeHashMap<int, bool> quadsMap)
+  void FillBlastBlockAt(NativeArray<int> quadDatas)
   {
-    if (quadsMap.Count == 0) return;
-    using var quadsMapArray = quadsMap.GetKeyArray(Allocator.Temp);
-    var index = quadsMapArray[0];
+    if (quadDatas.Length == 0) return;
+    var index = quadDatas[0];
     var quadData = _quadDatas[index];
     var colorValue = _groupQuadDatas[quadData.GroupIndex].ColorValue;
     m20LevelSystem.SetAmmunitionBlastColorAt(colorValue);

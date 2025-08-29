@@ -169,7 +169,7 @@ public partial class LevelSystem : MonoBehaviour
     var leftList = CollectDistinguishQuadIdxesAt(xLeft);
     var rightList = CollectDistinguishQuadIdxesAt(xRight);
     if (leftList.Length == 0 || rightList.Length == 0)
-      return new NativeHashMap<int, bool>(0, Allocator.Persistent);
+      return new NativeHashMap<int, bool>(0, Allocator.Temp);
 
     for (int i = 0; i < leftList.Length; ++i)
     {
@@ -195,7 +195,7 @@ public partial class LevelSystem : MonoBehaviour
         return linkedQuads;
       }
     }
-    return new NativeHashMap<int, bool>(0, Allocator.Persistent);
+    return new NativeHashMap<int, bool>(0, Allocator.Temp);
   }
 
   NativeList<int> FindNeighborQuadIdxesAround(QuadData quadData)
@@ -307,12 +307,11 @@ public partial class LevelSystem : MonoBehaviour
     return quadHashMap;
   }
 
-  void RemoveQuadsFrom(NativeHashMap<int, bool> quadsMap)
+  void RemoveQuadsFrom(NativeArray<int> quadDatas)
   {
-    using var quadsMapArray = quadsMap.GetKeyValueArrays(Allocator.Temp);
-    for (int i = 0; i < quadsMapArray.Length; ++i)
+    for (int i = 0; i < quadDatas.Length; ++i)
     {
-      var quadIdx = quadsMapArray.Keys[i];
+      var quadIdx = quadDatas[i];
       var quadData = _quadDatas[quadIdx];
 
       quadData.IsActive = false;

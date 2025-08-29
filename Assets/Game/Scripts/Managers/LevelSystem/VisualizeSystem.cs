@@ -19,11 +19,10 @@ public partial class LevelSystem : MonoBehaviour
     }
   }
 
-  void VisualizeRemoveQuads(NativeHashMap<int, bool> quadsMap, ref Sequence seq, ref float atPosition)
+  void VisualizeRemoveQuads(NativeArray<int> quadDatas, ref Sequence seq, ref float atPosition)
   {
-    if (quadsMap.Count == 0) return;
+    if (quadDatas.Length == 0) return;
     var duration = Time.fixedDeltaTime;
-    using var quadDatas = quadsMap.GetKeyArray(Allocator.Temp);
     for (int i = 0; i < 2; i++)
     {
       for (int y = 1; y < quadMeshSystem.GridResolution.y; y++)
