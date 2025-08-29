@@ -80,21 +80,6 @@ public partial class LevelSystem : MonoBehaviour
 
     GrabbingBlockControlInUpdate();
 
-    if (Input.GetKeyDown(KeyCode.R))
-    {
-      var linkedQuads = CollectLeftAndRightLinkedQuads();
-      print("linkedQuads.Count " + linkedQuads.Count);
-
-      Sequence seq = DOTween.Sequence();
-      float atPosition = 0f;
-      VisualizeRemoveQuads(linkedQuads, ref seq, ref atPosition);
-      seq.InsertCallback(atPosition, () =>
-      {
-        RemoveQuadsFrom(linkedQuads);
-        FillBlastBlockAt(linkedQuads);
-        linkedQuads.Dispose();
-      });
-    }
     if (Input.GetKeyDown(KeyCode.C))
     {
       using var unionFindColors = CreateUnionFindColorCodes();

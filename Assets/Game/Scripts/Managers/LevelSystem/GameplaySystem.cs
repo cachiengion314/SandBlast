@@ -6,8 +6,9 @@ using UnityEngine;
 
 public partial class LevelSystem : MonoBehaviour
 {
-  [Range(1, 16)]
+  [Range(1, 8)]
   [SerializeField] int gravitySearchDeepAmount = 1;
+  [Range(1, 8)]
   [SerializeField] int diagonalSearchDeepAmount = 1;
   [SerializeField] int redLineRow = 79;
   bool isQuadFalling = false;
@@ -90,7 +91,6 @@ public partial class LevelSystem : MonoBehaviour
 
   void CalculateQuadFallingLeftInUpdate()
   {
-    isQuadFalling = false;
     for (int x = 0; x < quadGrid.GridSize.x; ++x)
     {
       for (int y = 0; y < quadGrid.GridSize.y; ++y)
@@ -138,8 +138,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void CalculateQuadFallingRightInUpdate()
   {
-    isQuadFalling = false;
-    for (int x = quadGrid.GridSize.x - 1; x >= 0; ++x)
+    for (int x = quadGrid.GridSize.x - 1; x >= 0; --x)
     {
       for (int y = 0; y < quadGrid.GridSize.y; ++y)
       {
@@ -148,11 +147,26 @@ public partial class LevelSystem : MonoBehaviour
         if (_quadIndexPositionDatas[currIdxPos] == -1)
         {
           // case: there is no quad in this grid so we skip this one
-          continue;
+          break;
         }
         // case: there is a quad in this grid
         var quadIndex = _quadIndexPositionDatas[currIdxPos];
         var quadData = _quadDatas[quadIndex];
+        var downIdxPos = FindEmptyDownIndexAt(currQuadGridPos);
+        if (downIdxPos != -1)
+        {
+          // case: there is an empty down there so we priority move the quad to there
+          _quadIndexPositionDatas[currIdxPos] = -1;
+          var _downQuadPos = quadGrid.ConvertIndexToWorldPos(downIdxPos);
+          _quadIndexPositionDatas[downIdxPos] = quadIndex;
+          quadData.Position = _downQuadPos;
+          quadData.IndexPosition = downIdxPos;
+          _quadDatas[quadIndex] = quadData;
+          isQuadFalling = true;
+
+          OrderQuadMeshAt(quadIndex, _downQuadPos, quadData.ColorValue);
+          continue;
+        }
 
         var diagonalIdxPos = FindRightEmptyDiagonalIdxAt(currQuadGridPos);
         if (diagonalIdxPos == -1) continue;
@@ -173,56 +187,14 @@ public partial class LevelSystem : MonoBehaviour
   void CalculateQuadFallingInUpdate()
   {
     isQuadFalling = false;
-    for (int x = 0; x < quadGrid.GridSize.x; ++x)
-    {
-      for (int y = 0; y < quadGrid.GridSize.y; ++y)
-      {
-        var currQuadGridPos = new int2(x, y);
-        var currIdxPos = quadGrid.ConvertGridPosToIndex(currQuadGridPos);
-        if (_quadIndexPositionDatas[currIdxPos] == -1)
-        {
-          // case: there is no quad in this grid so we skip this one
-          continue;
-        }
-        // case: there is a quad in this grid
-        var quadIndex = _quadIndexPositionDatas[currIdxPos];
-        var quadData = _quadDatas[quadIndex];
-        var downIdxPos = FindEmptyDownIndexAt(currQuadGridPos);
-        if (downIdxPos != -1)
-        {
-          // case: there is an empty down there so we priority move the quad to there
-          _quadIndexPositionDatas[currIdxPos] = -1;
-          var _downQuadPos = quadGrid.ConvertIndexToWorldPos(downIdxPos);
-          _quadIndexPositionDatas[downIdxPos] = quadIndex;
-          quadData.Position = _downQuadPos;
-          quadData.IndexPosition = downIdxPos;
-          _quadDatas[quadIndex] = quadData;
-          isQuadFalling = true;
-
-          OrderQuadMeshAt(quadIndex, _downQuadPos, quadData.ColorValue);
-          continue;
-        }
-        var diagonalIdxPos = FindEmptyDiagonalIndexAt(currQuadGridPos);
-        if (diagonalIdxPos == -1) continue;
-        // case: there is an empty diagonal there so we move the quad to there
-        _quadIndexPositionDatas[currIdxPos] = -1;
-        var _diagonalQuadPos = quadGrid.ConvertIndexToWorldPos(diagonalIdxPos);
-        _quadIndexPositionDatas[diagonalIdxPos] = quadIndex;
-        quadData.Position = _diagonalQuadPos;
-        quadData.IndexPosition = diagonalIdxPos;
-        _quadDatas[quadIndex] = quadData;
-        isQuadFalling = true;
-
-        OrderQuadMeshAt(quadIndex, _diagonalQuadPos, quadData.ColorValue);
-      }
-    }
+    CalculateQuadFallingLeftInUpdate();
+    CalculateQuadFallingRightInUpdate();
   }
 
   void AutoClearLinkedQuadsInUpdate()
   {
     if (isQuadFalling) return;
 
-    // using var linkedQuads = CollectLeftAndRightLinkedQuads();
     using var unionFindColorCodes = CreateUnionFindColorCodes();
     var leftIdxPos = FindUnionLeftIdxPosFrom(unionFindColorCodes);
     if (leftIdxPos == -1) return;
