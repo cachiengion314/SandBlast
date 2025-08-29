@@ -169,7 +169,7 @@ public partial class LevelSystem : MonoBehaviour
     var leftList = CollectDistinguishQuadIdxesAt(xLeft);
     var rightList = CollectDistinguishQuadIdxesAt(xRight);
     if (leftList.Length == 0 || rightList.Length == 0)
-      return new NativeHashMap<int, bool>(0, Allocator.Temp);
+      return new NativeHashMap<int, bool>(0, Allocator.Persistent);
 
     for (int i = 0; i < leftList.Length; ++i)
     {
@@ -195,7 +195,7 @@ public partial class LevelSystem : MonoBehaviour
         return linkedQuads;
       }
     }
-    return new NativeHashMap<int, bool>(0, Allocator.Temp);
+    return new NativeHashMap<int, bool>(0, Allocator.Persistent);
   }
 
   NativeList<int> FindNeighborQuadIdxesAround(QuadData quadData)

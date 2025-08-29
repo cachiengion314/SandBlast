@@ -23,7 +23,7 @@ public partial class LevelSystem
 
             var startPos = GetSlotPositionAt(0);
             var endPos = quadMeshSystem.transform.position;
-            tutorial.DoHandMoveAt(KeyString.KEY_TUTORIAL_1, (Vector3)startPos, endPos);
+            tutorial.DoHandMoveAt(KeyString.KEY_TUTORIAL_1, (Vector3)startPos, endPos, -150,2f);
             tutorial.ShowTapPanelAt(KeyString.KEY_TUTORIAL_1, true, () =>
             {
                 tutorial.HideObject();
@@ -45,14 +45,14 @@ public partial class LevelSystem
             tutorial.ShowReceivePanelAt(
                 KeyString.KEY_TUTORIAL_2,
                 booster1Sprite,
-                "Shuffle", () =>
+                "<b><color=#FFA500>SHUFFLE</color></b>\nShuffle board to spawn new block", () =>
                 {
                     GameManager.Instance.Booster1++;
                     tutorial.HideReceivePanel();
                     canvasBooster1.overrideSorting = true;
-                    var endPos = canvasBooster1.transform.position + new Vector3(0, 2);
+                    var endPos = canvasBooster1.transform.position + new Vector3(0, 1.6f);
                     var startPos = endPos + new Vector3(0, 1.5f);
-                    tutorial.DoHandMoveAt(KeyString.KEY_TUTORIAL_2, startPos, endPos, 180);
+                    tutorial.DoHandMoveAt(KeyString.KEY_TUTORIAL_2, startPos, endPos);
                 });
         }
     }
@@ -80,14 +80,14 @@ public partial class LevelSystem
             tutorial.ShowReceivePanelAt(
                 KeyString.KEY_TUTORIAL_3,
                 booster2Sprite,
-                "Broom", () =>
+                "<b><color=#FFA500>BROOM</color></b>\nRemoves an entire row from the board", () =>
                 {
                     GameManager.Instance.Booster2++;
                     tutorial.HideReceivePanel();
                     canvasBooster2.overrideSorting = true;
-                    var endPos = canvasBooster2.transform.position + new Vector3(0, 2);
+                    var endPos = canvasBooster2.transform.position + new Vector3(0, 1.6f);
                     var startPos = endPos + new Vector3(0, 1.5f);
-                    tutorial.DoHandMoveAt(KeyString.KEY_TUTORIAL_3, startPos, endPos, 180);
+                    tutorial.DoHandMoveAt(KeyString.KEY_TUTORIAL_3, startPos, endPos);
                 });
         }
     }
@@ -115,14 +115,14 @@ public partial class LevelSystem
             tutorial.ShowReceivePanelAt(
                 KeyString.KEY_TUTORIAL_4,
                 booster3Sprite,
-                "Magnet", () =>
+                "<b><color=#FFA500>MAGNET</color></b>\nCollects a group of sands", () =>
                 {
                     GameManager.Instance.Booster3++;
                     tutorial.HideReceivePanel();
                     canvasBooster3.overrideSorting = true;
-                    var endPos = canvasBooster3.transform.position + new Vector3(0, 2);
+                    var endPos = canvasBooster3.transform.position + new Vector3(0, 1.6f);
                     var startPos = endPos + new Vector3(0, 1.5f);
-                    tutorial.DoHandMoveAt(KeyString.KEY_TUTORIAL_4, startPos, endPos, 180);
+                    tutorial.DoHandMoveAt(KeyString.KEY_TUTORIAL_4, startPos, endPos);
                 });
         }
     }
