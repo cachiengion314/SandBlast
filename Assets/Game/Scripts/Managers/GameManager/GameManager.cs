@@ -198,13 +198,13 @@ public partial class GameManager : MonoBehaviour
   void GetInitUserData()
   {
     _IsRemoveAds = PlayerPrefs.GetInt(KeyString.KEY_IS_REMOVE_ADS, 1) == 0;
-    _Booster1 = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_BOOSTER_1, 3);
-    _Booster2 = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_BOOSTER_2, 3);
-    _Booster3 = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_BOOSTER_3, 3);
+    _Booster1 = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_BOOSTER_1, 30);
+    _Booster2 = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_BOOSTER_2, 30);
+    _Booster3 = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_BOOSTER_3, 30);
     _IsSoundOn = PlayerPrefs.GetInt(KeyString.KEY_IS_SOUND_ON, 1) == 1;
     _IsMusicOn = PlayerPrefs.GetInt(KeyString.KEY_IS_MUSIC_ON, 1) == 1;
     _IsHapticOn = PlayerPrefs.GetInt(KeyString.KEY_IS_HAPTIC_ON, 1) == 1;
-    _CurrentCoin = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_COIN, 2000);
+    _CurrentCoin = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_COIN, 9000);
     _CurrentLevelIndex = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_LEVEL_INDEX, 0);
   }
 }
