@@ -40,11 +40,35 @@ public partial class LevelSystem : MonoBehaviour
     return false;
   }
 
-  NativeArray<int> CreateUnionFindColorsMap()
+  int FindUnionLeftIdxPosFrom(NativeArray<int> unionFindColorCodes)
+  {
+    var leftX = 0;
+    var rightX = quadGrid.GridSize.x - 1;
+    for (int leftY = 0; leftY < quadGrid.GridSize.y; ++leftY)
+    {
+      var leftGridPos = new int2(leftX, leftY);
+      var leftIdxPos = quadGrid.ConvertGridPosToIndex(leftGridPos);
+      var leftCode = unionFindColorCodes[leftIdxPos];
+      if (leftCode == 0) break;
+      for (int rightY = 0; rightY < quadGrid.GridSize.y; ++rightY)
+      {
+        var rightGridPos = new int2(rightX, rightY);
+        var rightIdxPos = quadGrid.ConvertGridPosToIndex(rightGridPos);
+        var rightCode = unionFindColorCodes[rightIdxPos];
+        if (rightCode == 0) break;
+
+        if (leftCode != rightCode) continue;
+        return leftIdxPos;
+      }
+    }
+    return -1;
+  }
+
+  NativeArray<int> CreateUnionFindColorCodes()
   {
     var unionFindColors
       = new NativeArray<int>(_quadIndexPositionDatas.Length, Allocator.Temp);
-    var leftColumnCodes = new NativeHashMap<int, bool>(16, Allocator.Temp);
+    using var leftColumnCodes = new NativeHashMap<int, bool>(16, Allocator.Temp);
 
     var globalHighestCode = 1;
     unionFindColors[0] = globalHighestCode;
@@ -99,7 +123,6 @@ public partial class LevelSystem : MonoBehaviour
           leftColumnCodes.Add(currCode, true);
       }
     }
-
     return unionFindColors;
   }
 
@@ -201,7 +224,7 @@ public partial class LevelSystem : MonoBehaviour
   NativeHashMap<int, bool> CollectLinkedQuadsAt(int startIdxPos)
   {
     var visitedQuads = new NativeHashMap<int, bool>(
-      quadMeshSystem.QuadCapacity, Allocator.Persistent
+      quadMeshSystem.QuadCapacity, Allocator.Temp
     );
     var availableQuads = new NativeHashMap<int, bool>(
       quadMeshSystem.QuadCapacity, Allocator.Temp
@@ -228,10 +251,11 @@ public partial class LevelSystem : MonoBehaviour
         availableQuads.Add(neighborQuadIdx, true);
       }
     }
+    availableQuads.Dispose();
     return visitedQuads;
   }
 
-  NativeHashMap<int, bool> CollectLinkedQuadsMatch(int colorValue)
+  NativeHashMap<int, bool> CollectQuadsMatch(int colorValue)
   {
     var quadHashMap = new NativeHashMap<int, bool>(
       quadMeshSystem.QuadCapacity, Allocator.Persistent

@@ -84,7 +84,7 @@ public partial class LevelSystem : MonoBehaviour
     {
       var linkedQuads = CollectLeftAndRightLinkedQuads();
       print("linkedQuads.Count " + linkedQuads.Count);
-      
+
       Sequence seq = DOTween.Sequence();
       float atPosition = 0f;
       VisualizeRemoveQuads(linkedQuads, ref seq, ref atPosition);
@@ -97,7 +97,7 @@ public partial class LevelSystem : MonoBehaviour
     }
     if (Input.GetKeyDown(KeyCode.C))
     {
-      using var unionFindColors = CreateUnionFindColorsMap();
+      using var unionFindColors = CreateUnionFindColorCodes();
       var leftX = 0;
       var rightX = quadGrid.GridSize.x - 1;
       for (int y = 0; y < quadGrid.GridSize.y; ++y)
@@ -124,22 +124,22 @@ public partial class LevelSystem : MonoBehaviour
     }
     if (Input.GetKeyDown(KeyCode.Alpha0))
     {
-      using var quadsMap = CollectLinkedQuadsMatch(0);
+      using var quadsMap = CollectQuadsMatch(0);
       RemoveQuadsFrom(quadsMap);
     }
     if (Input.GetKeyDown(KeyCode.Alpha1))
     {
-      using var quadsMap = CollectLinkedQuadsMatch(1);
+      using var quadsMap = CollectQuadsMatch(1);
       RemoveQuadsFrom(quadsMap);
     }
     if (Input.GetKeyDown(KeyCode.Alpha2))
     {
-      using var quadsMap = CollectLinkedQuadsMatch(2);
+      using var quadsMap = CollectQuadsMatch(2);
       RemoveQuadsFrom(quadsMap);
     }
     if (Input.GetKeyDown(KeyCode.Alpha3))
     {
-      using var quadsMap = CollectLinkedQuadsMatch(3);
+      using var quadsMap = CollectQuadsMatch(3);
       RemoveQuadsFrom(quadsMap);
     }
   }

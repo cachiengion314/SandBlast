@@ -137,11 +137,15 @@ public partial class LevelSystem : MonoBehaviour
 
   void AutoClearLinkedQuadsInUpdate()
   {
-    // if (isQuadFalling) return;
+    if (isQuadFalling) return;
 
     // using var linkedQuads = CollectLeftAndRightLinkedQuads();
-    // if (linkedQuads.Count == 0) return;
-    // RemoveQuadsFrom(linkedQuads);
+    using var unionFindColorCodes = CreateUnionFindColorCodes();
+    var leftIdxPos = FindUnionLeftIdxPosFrom(unionFindColorCodes);
+    if (leftIdxPos == -1) return;
+
+    using var linkedQuads = CollectLinkedQuadsAt(leftIdxPos);
+    RemoveQuadsFrom(linkedQuads);
   }
 
   void FillBlastBlockAt(NativeHashMap<int, bool> quadsMap)

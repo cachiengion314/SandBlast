@@ -53,7 +53,7 @@ public partial class LevelSystem
         if (startQuadIdx == -1) return;
         var quadData = _quadDatas[startQuadIdx];
         var colorValue = _groupQuadDatas[quadData.GroupIndex].ColorValue;
-        var quadsMap = CollectLinkedQuadsMatch(colorValue);
+        var quadsMap = CollectQuadsMatch(colorValue);
         GameplayPanel.Instance.ToggleBooster3();
         GameManager.Instance.Booster3--;
 
