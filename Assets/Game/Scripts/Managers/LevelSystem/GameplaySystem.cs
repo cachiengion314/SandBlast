@@ -139,7 +139,7 @@ public partial class LevelSystem : MonoBehaviour
   void CalculateQuadFallingRightInUpdate()
   {
     isQuadFalling = false;
-    for (int x = 0; x < quadGrid.GridSize.x; ++x)
+    for (int x = quadGrid.GridSize.x - 1; x >= 0; ++x)
     {
       for (int y = 0; y < quadGrid.GridSize.y; ++y)
       {
@@ -153,7 +153,6 @@ public partial class LevelSystem : MonoBehaviour
         // case: there is a quad in this grid
         var quadIndex = _quadIndexPositionDatas[currIdxPos];
         var quadData = _quadDatas[quadIndex];
-        var downIdxPos = FindEmptyDownIndexAt(currQuadGridPos);
 
         var diagonalIdxPos = FindRightEmptyDiagonalIdxAt(currQuadGridPos);
         if (diagonalIdxPos == -1) continue;
