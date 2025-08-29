@@ -40,6 +40,8 @@ public partial class LevelSystem
 
     public void OnTriggerBooster2()
     {
+        if (isRemoveQuadTweening) return;
+        isRemoveQuadTweening = true;
         using var quadsMap = CollectLinkedQuadsRowAt(0, 16);
         var quadDatas = quadsMap.GetKeyArray(Allocator.Persistent);
         Sequence seq = DOTween.Sequence();
@@ -50,16 +52,19 @@ public partial class LevelSystem
             RemoveQuadsFrom(quadDatas);
             FillBlastBlockAt(quadDatas);
             quadDatas.Dispose();
+            isRemoveQuadTweening = false;
         });
     }
 
     public void OnTriggerBooster3()
     {
+        if (isRemoveQuadTweening) return;
         var pos = new float3(userTouchScreenPosition.x, userTouchScreenPosition.y, 0);
         if (quadGrid.IsPosOutsideAt(pos)) return;
         var idxPos = quadGrid.ConvertWorldPosToIndex(pos);
         var startQuadIdx = _quadIndexPositionDatas[idxPos];
         if (startQuadIdx == -1) return;
+        isRemoveQuadTweening = true;
         var quadData = _quadDatas[startQuadIdx];
         var colorValue = _groupQuadDatas[quadData.GroupIndex].ColorValue;
         GameplayPanel.Instance.ToggleBooster3();
@@ -75,6 +80,7 @@ public partial class LevelSystem
             RemoveQuadsFrom(quadDatas);
             FillBlastBlockAt(quadDatas);
             quadDatas.Dispose();
+            isRemoveQuadTweening = false;
         });
     }
 }
