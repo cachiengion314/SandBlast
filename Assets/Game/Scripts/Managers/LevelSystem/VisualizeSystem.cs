@@ -26,7 +26,7 @@ public partial class LevelSystem : MonoBehaviour
     using var quadDatas = quadsMap.GetKeyArray(Allocator.Temp);
     for (int i = 0; i < 2; i++)
     {
-      for (int y = 0; y < quadMeshSystem.GridResolution.y; y++)
+      for (int y = 1; y < quadMeshSystem.GridResolution.y; y++)
       {
         for (int j = 0; j < quadDatas.Length; j++)
         {
