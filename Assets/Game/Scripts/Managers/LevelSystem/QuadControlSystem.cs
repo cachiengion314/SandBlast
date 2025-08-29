@@ -40,15 +40,13 @@ public partial class LevelSystem : MonoBehaviour
     return false;
   }
 
-  NativeArray<int> CreateDistinguishColorsMap()
+  NativeArray<int> CreateUnionFindColorsMap()
   {
-    var distinguishColors = new NativeArray<int>(_quadIndexPositionDatas.Length, Allocator.Temp);
-    var directions = new NativeArray<int2>(3, Allocator.Temp);
-    directions[0] = new(0, 1);
-    directions[1] = new(1, 1);
-    directions[2] = new(1, 0);
+    var unionFindColors
+      = new NativeArray<int>(_quadIndexPositionDatas.Length, Allocator.Temp);
 
-    distinguishColors[0] = 1;
+    var globalHighestCode = 1;
+    unionFindColors[0] = globalHighestCode;
     for (int x = 0; x < quadGrid.GridSize.x; ++x)
     {
       for (int y = 0; y < quadGrid.GridSize.y; ++y)
@@ -61,28 +59,34 @@ public partial class LevelSystem : MonoBehaviour
         var currIdxPos = currQuadData.IndexPosition;
         var currColorValue = GetQuadGroupColorFrom(currQuadData);
 
-        for (int i = 0; i < directions.Length; ++i)
+        var aroundHighestCode = unionFindColors[currIdxPos];
+        for (int i = 0; i < _fullDirections.Length; ++i)
         {
-          var nextGridPos = currGridPos + directions[i];
-          if (quadGrid.IsGridPosOutsideAt(nextGridPos)) continue;
+          var aroundGridPos = currGridPos + _fullDirections[i];
+          if (quadGrid.IsGridPosOutsideAt(aroundGridPos)) continue;
 
-          var nextQuadIdx = GetQuadIdxFrom(nextGridPos);
-          if (nextQuadIdx == -1) continue;
+          var aroundQuadIdx = GetQuadIdxFrom(aroundGridPos);
+          if (aroundQuadIdx == -1) continue;
 
-          var nextQuadData = _quadDatas[nextQuadIdx];
-          var nextIdxPos = nextQuadData.IndexPosition;
-          var nextColorValue = GetQuadGroupColorFrom(nextQuadData);
-          if (currColorValue == nextColorValue)
-          {
-            distinguishColors[nextIdxPos] = distinguishColors[currIdxPos];
-            continue;
-          }
-          distinguishColors[nextIdxPos] = distinguishColors[currIdxPos] + 1;
+          var aroundQuadData = _quadDatas[aroundQuadIdx];
+          var aroundIdxPos = aroundQuadData.IndexPosition;
+          aroundHighestCode = math.max(unionFindColors[aroundIdxPos], aroundHighestCode);
+
+          var aroundColorValue = GetQuadGroupColorFrom(aroundQuadData);
+          if (currColorValue == aroundColorValue && unionFindColors[aroundIdxPos] > 0)
+            unionFindColors[currIdxPos] = unionFindColors[aroundIdxPos];
+        }
+
+        if (unionFindColors[currIdxPos] == 0)
+        {
+          aroundHighestCode = math.max(aroundHighestCode, globalHighestCode);
+          unionFindColors[currIdxPos] = aroundHighestCode + 1;
+          globalHighestCode = unionFindColors[currIdxPos];
         }
       }
     }
-    directions.Dispose();
-    return distinguishColors;
+
+    return unionFindColors;
   }
 
   /// <summary>

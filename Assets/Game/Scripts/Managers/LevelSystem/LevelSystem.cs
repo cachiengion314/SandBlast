@@ -89,7 +89,7 @@ public partial class LevelSystem : MonoBehaviour
     }
     if (Input.GetKeyDown(KeyCode.C))
     {
-      using var distinguishColors = CreateDistinguishColorsMap();
+      using var unionFindColors = CreateUnionFindColorsMap();
       var leftX = 0;
       var rightX = quadGrid.GridSize.x - 1;
       for (int y = 0; y < quadGrid.GridSize.y; ++y)
@@ -98,7 +98,7 @@ public partial class LevelSystem : MonoBehaviour
         var currQuadIdx = GetQuadIdxFrom(currGridPos);
         if (currQuadIdx == -1) continue;
         var currIdxPos = _quadDatas[currQuadIdx].IndexPosition;
-        print("left " + distinguishColors[currIdxPos]);
+        print("left " + unionFindColors[currIdxPos]);
       }
       for (int y = 0; y < quadGrid.GridSize.y; ++y)
       {
@@ -106,7 +106,7 @@ public partial class LevelSystem : MonoBehaviour
         var currQuadIdx = GetQuadIdxFrom(currGridPos);
         if (currQuadIdx == -1) continue;
         var currIdxPos = _quadDatas[currQuadIdx].IndexPosition;
-        print("right " + distinguishColors[currIdxPos]);
+        print("right " + unionFindColors[currIdxPos]);
       }
     }
     if (Input.GetKeyDown(KeyCode.V))
