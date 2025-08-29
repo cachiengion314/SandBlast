@@ -85,6 +85,7 @@ public partial class LevelSystem : MonoBehaviour
       using var linkedQuads = CollectLeftAndRightLinkedQuads();
       print("linkedQuads.Count " + linkedQuads.Count);
       RemoveQuadsFrom(linkedQuads);
+      FillBlastBlockAt(linkedQuads);
     }
     if (Input.GetKeyDown(KeyCode.C))
     {

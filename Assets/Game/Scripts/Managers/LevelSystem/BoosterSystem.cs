@@ -54,6 +54,7 @@ public partial class LevelSystem
         var colorValue = _groupQuadDatas[quadData.GroupIndex].ColorValue;
         using var quadsMap = CollectLinkedQuadsMatch(colorValue);
         RemoveQuadsFrom(quadsMap);
+        FillBlastBlockAt(quadsMap);
         GameplayPanel.Instance.ToggleBooster3();
         GameManager.Instance.Booster3--;
     }

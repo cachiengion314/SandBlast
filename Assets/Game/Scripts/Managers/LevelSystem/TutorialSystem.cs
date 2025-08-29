@@ -134,7 +134,7 @@ public partial class LevelSystem
         tutorial.HideObject();
         canvasBooster3.overrideSorting = false;
         GameManager.Instance.SetGameState(GameState.Gameplay);
-        // PlayerPrefs.SetInt(KeyString.KEY_TUTORIAL_4, 1);
+        PlayerPrefs.SetInt(KeyString.KEY_TUTORIAL_4, 1);
         tutorial.StopTutorial();
     }
 

@@ -1,3 +1,4 @@
+using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -130,6 +131,16 @@ public partial class LevelSystem : MonoBehaviour
     // using var linkedQuads = CollectLeftAndRightLinkedQuads();
     // if (linkedQuads.Count == 0) return;
     // RemoveQuadsFrom(linkedQuads);
+  }
+
+  void FillBlastBlockAt(NativeHashMap<int, bool> quadsMap)
+  {
+    if (quadsMap.Count == 0) return;
+    using var quadsMapArray = quadsMap.GetKeyArray(Allocator.Temp);
+    var index = quadsMapArray[0];
+    var quadData = _quadDatas[index];
+    var colorValue = _groupQuadDatas[quadData.GroupIndex].ColorValue;
+    m20LevelSystem.SetAmmunitionBlastColorAt(colorValue);
   }
 
   void CheckLoseInUpdate()
