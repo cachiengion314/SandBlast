@@ -38,7 +38,7 @@ public partial class GameplayPanel : MonoBehaviour
     InitBooster();
     UpdateCoin();
     GameManager.Instance.OnCoinChange += UpdateCoin;
-    // levelText.text = $"Level\n{GameManager.Instance.CurrentLevelIndex + 1}";
+    levelText.text = $"Level {GameManager.Instance.CurrentLevelIndex + 1}";
   }
 
   private void OnDestroy()

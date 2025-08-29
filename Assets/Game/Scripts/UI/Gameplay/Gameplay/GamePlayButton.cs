@@ -13,7 +13,7 @@ public partial class GameplayPanel
     [SerializeField] Transform startPos;
     [SerializeField] Transform endPos;
     [SerializeField] TextMeshProUGUI coinText;
-    [SerializeField] TextMeshPro levelText;
+    [SerializeField] TextMeshProUGUI levelText;
     [SerializeField] string _urlGame;
     public void SendEmail()
     {
