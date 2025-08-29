@@ -128,11 +128,14 @@ public partial class M20LevelSystem : MonoBehaviour
             if (!blast.TryGetComponent(out IColorBlock colorBlast)) continue;
             if (IsThereAtLeastOneBlockOfTheSameColor(colorBlast.GetColorValue())) return;
         }
-
+        LevelSystem.Instance.loseType = 2;
         GameManager.Instance.SetGameState(GameState.Gameover);
         DOVirtual.DelayedCall(1f, () =>
         {
-            GameplayPanel.Instance.ToggleLevelFailedModal();
+            if (_currentSlot == maxSlot)
+                GameplayPanel.Instance.ToggleLevelFailedModal();
+            else
+                GameplayPanel.Instance.ToggleOutOfSpaceModal();
         });
 
         FirebaseAnalytics.LogEvent(KeyString.FIREBASE_END_LEVEL,
@@ -141,5 +144,34 @@ public partial class M20LevelSystem : MonoBehaviour
         new ("level_id", (GameManager.Instance.CurrentLevelIndex + 1).ToString()),
         new ("result", 0),
            });
+    }
+
+    public void PlayOn()
+    {
+        if (_currentSlot == maxSlot) return;
+
+        var duration = 0.3f;
+        var slots = FindQueueSlotsPosParent(++_currentSlot);
+        var pos = slots.GetChild(slots.childCount - 1).position;
+        var blast = SpawnBlastBlockAt(pos, spawnedParent);
+        if (blast.TryGetComponent<IColorBlock>(out var blastColor))
+        {
+            blastColor.SetIndex(-1);
+            blastColor.SetColorValue(-1);
+        }
+        if (blast.TryGetComponent<IGun>(out var blastGun))
+        {
+            blastGun.SetAmmunition(0);
+        }
+        _firingSlots.Add(blast.gameObject);
+        var currentScale = blast.transform.localScale;
+        blast.transform.localScale = float3.zero;
+        blast.transform.DOScale(currentScale, duration).SetEase(Ease.Linear);
+        for (int i = 0; i < _firingSlots.Count; i++)
+        {
+            var blast1 = _firingSlots[i];
+            var pos1 = slots.GetChild(i).position;
+            blast1.transform.DOMove(pos1, duration).SetEase(Ease.Linear);
+        }
     }
 }

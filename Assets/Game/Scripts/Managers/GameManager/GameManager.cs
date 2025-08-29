@@ -204,7 +204,7 @@ public partial class GameManager : MonoBehaviour
     _IsSoundOn = PlayerPrefs.GetInt(KeyString.KEY_IS_SOUND_ON, 1) == 1;
     _IsMusicOn = PlayerPrefs.GetInt(KeyString.KEY_IS_MUSIC_ON, 1) == 1;
     _IsHapticOn = PlayerPrefs.GetInt(KeyString.KEY_IS_HAPTIC_ON, 1) == 1;
-    _CurrentCoin = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_COIN, 200);
+    _CurrentCoin = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_COIN, 2000);
     _CurrentLevelIndex = PlayerPrefs.GetInt(KeyString.KEY_CURRENT_LEVEL_INDEX, 0);
   }
 }

@@ -6,11 +6,16 @@ public partial class M20LevelSystem
 {
     [SerializeField] Transform blastSlots;
     [SerializeField] int maxAmmunition = 10;
+    [SerializeField] int maxSlot = 8;
+    int _currentSlot;
     Transform FindQueueSlotsPosParent(int currentSlot)
     {
+        _currentSlot = currentSlot;
+        if (_currentSlot > maxSlot) _currentSlot = maxSlot;
+
         foreach (Transform child in blastSlots)
         {
-            if (child.name.Equals($"{currentSlot}SlotPos"))
+            if (child.name.Equals($"{_currentSlot}SlotPos"))
                 return child;
         }
         return null;

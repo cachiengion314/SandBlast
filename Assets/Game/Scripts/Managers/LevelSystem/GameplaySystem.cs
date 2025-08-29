@@ -1,3 +1,5 @@
+using DG.Tweening;
+using Firebase.Analytics;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
@@ -8,6 +10,7 @@ public partial class LevelSystem : MonoBehaviour
   [SerializeField] int searchingDeepAmount = 1;
   [SerializeField] int redLineRow = 79;
   bool isQuadFalling = false;
+  public int loseType;
 
   void OrderShapePositionsTo(float3 targetPos, int shapeIdx)
   {
@@ -151,9 +154,44 @@ public partial class LevelSystem : MonoBehaviour
     {
       var idx = quadGrid.ConvertGridPosToIndex(new int2(i, redLineRow));
       if (_quadIndexPositionDatas[idx] == -1) continue;
-      GameplayPanel.Instance.ToggleLevelFailedModal();
+      loseType = 1;
       GameManager.Instance.SetGameState(GameState.Gameover);
+      DOVirtual.DelayedCall(1f, () =>
+      {
+        GameplayPanel.Instance.ToggleOutOfSpaceModal();
+      });
+
+      FirebaseAnalytics.LogEvent(KeyString.FIREBASE_END_LEVEL,
+         new Parameter[]
+         {
+        new ("level_id", (GameManager.Instance.CurrentLevelIndex + 1).ToString()),
+        new ("result", 0),
+         });
       break;
     }
+  }
+
+  public void PLayOn()
+  {
+    if (loseType == 1) PlayOnLose1();
+    else if (loseType == 2) PlayOnLose2();
+  }
+
+  void PlayOnLose1()
+  {
+    for (int i = 0; i < _quadDatas.Length; i++)
+    {
+      var quadData = _quadDatas[i];
+      quadData.IsActive = false;
+      if (quadData.IndexPosition == -1) continue;
+      _quadIndexPositionDatas[quadData.IndexPosition] = -1;
+      _quadDatas[i] = quadData;
+      OrderQuadMeshAt(i, -11, quadData.ColorValue);
+    }
+  }
+
+  void PlayOnLose2()
+  {
+    m20LevelSystem.PlayOn();
   }
 }

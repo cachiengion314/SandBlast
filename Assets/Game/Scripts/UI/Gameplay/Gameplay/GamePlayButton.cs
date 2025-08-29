@@ -80,7 +80,7 @@ public partial class GameplayPanel
         }
         ToggleOutOfSpaceModal();
         GameManager.Instance.CurrentCoin -= coin;
-        // PlayOn
+        LevelSystem.Instance.PLayOn();
     }
 
     public void ShowLevelFail()
