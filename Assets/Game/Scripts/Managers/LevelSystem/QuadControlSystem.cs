@@ -29,17 +29,6 @@ public partial class LevelSystem : MonoBehaviour
     return _quadIndexPositionDatas[idxPos];
   }
 
-  bool IsPairQuadLinked(
-    int leftIdxPos,
-    int rightIdxPos,
-    out NativeHashMap<int, bool> linkedQuads)
-  {
-    linkedQuads = CollectLinkedQuadsAt(leftIdxPos);
-    var rightQuadIdx = _quadIndexPositionDatas[rightIdxPos];
-    if (linkedQuads.ContainsKey(rightQuadIdx)) return true;
-    return false;
-  }
-
   int FindUnionLeftIdxPosFrom(NativeArray<int> unionFindColorCodes)
   {
     var leftX = 0;
@@ -160,42 +149,6 @@ public partial class LevelSystem : MonoBehaviour
       }
     }
     return list;
-  }
-
-  NativeHashMap<int, bool> CollectLeftAndRightLinkedQuads()
-  {
-    var xLeft = 0;
-    var xRight = quadGrid.GridSize.x - 1;
-    var leftList = CollectDistinguishQuadIdxesAt(xLeft);
-    var rightList = CollectDistinguishQuadIdxesAt(xRight);
-    if (leftList.Length == 0 || rightList.Length == 0)
-      return new NativeHashMap<int, bool>(0, Allocator.Temp);
-
-    for (int i = 0; i < leftList.Length; ++i)
-    {
-      var leftQuadIdx = leftList[i];
-      var leftQuadData = _quadDatas[leftQuadIdx];
-      var leftColorValue = GetQuadGroupColorFrom(leftQuadData);
-      for (int j = 0; j < rightList.Length; ++j)
-      {
-        var rightQuadIdx = rightList[j];
-        var rightQuadData = _quadDatas[rightQuadIdx];
-        var rightColorValue = GetQuadGroupColorFrom(rightQuadData);
-        if (leftColorValue != rightColorValue) continue;
-
-        if (
-          !IsPairQuadLinked(
-            leftQuadData.IndexPosition, rightQuadData.IndexPosition, out var linkedQuads
-          )
-        )
-        {
-          linkedQuads.Dispose();
-          continue;
-        }
-        return linkedQuads;
-      }
-    }
-    return new NativeHashMap<int, bool>(0, Allocator.Temp);
   }
 
   NativeList<int> FindNeighborQuadIdxesAround(QuadData quadData)
@@ -357,17 +310,6 @@ public partial class LevelSystem : MonoBehaviour
   {
     var downGridPDirection = new int2(0, -1);
     return FindEmptyIndexAt(gridPos, downGridPDirection, gravitySearchDeepAmount);
-  }
-
-  int FindEmptyDiagonalIndexAt(int2 gridPos)
-  {
-    for (int i = 0; i < 2; ++i)
-    {
-      var _direction = _fullDirections[i];
-      var emptyIdx = FindEmptyIndexAt(gridPos, _direction, 1);
-      if (emptyIdx != -1) return emptyIdx;
-    }
-    return -1;
   }
 
   int FindLeftEmptyDiagonalIdxAt(int2 gridPos)
