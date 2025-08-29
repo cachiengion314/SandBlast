@@ -44,6 +44,7 @@ public partial class LevelSystem : MonoBehaviour
   {
     var unionFindColors
       = new NativeArray<int>(_quadIndexPositionDatas.Length, Allocator.Temp);
+    var leftColumnCodes = new NativeHashMap<int, bool>(16, Allocator.Temp);
 
     var globalHighestCode = 1;
     unionFindColors[0] = globalHighestCode;
@@ -74,7 +75,16 @@ public partial class LevelSystem : MonoBehaviour
 
           var aroundColorValue = GetQuadGroupColorFrom(aroundQuadData);
           if (currColorValue == aroundColorValue && unionFindColors[aroundIdxPos] > 0)
+          {
+            var aroundCode = unionFindColors[aroundIdxPos];
+            if (leftColumnCodes.ContainsKey(aroundCode))
+            {
+              /// we priority left column group code more that a trivial group code 
+              unionFindColors[currIdxPos] = aroundCode;
+              break;
+            }
             unionFindColors[currIdxPos] = unionFindColors[aroundIdxPos];
+          }
         }
 
         if (unionFindColors[currIdxPos] == 0)
@@ -83,6 +93,10 @@ public partial class LevelSystem : MonoBehaviour
           unionFindColors[currIdxPos] = aroundHighestCode + 1;
           globalHighestCode = unionFindColors[currIdxPos];
         }
+
+        var currCode = unionFindColors[currIdxPos];
+        if (x == 0 && !leftColumnCodes.ContainsKey(currCode))
+          leftColumnCodes.Add(currCode, true);
       }
     }
 
@@ -287,7 +301,7 @@ public partial class LevelSystem : MonoBehaviour
 
   void RemoveAvailableBlock()
   {
-    for (int i = _quadDatas.Length -1; i >= _quadDatas.Length - 64*4; i--)
+    for (int i = _quadDatas.Length - 1; i >= _quadDatas.Length - 64 * 4; i--)
     {
       var quadDataTemp = _quadDatas[i];
       quadDataTemp.IsActive = false;
