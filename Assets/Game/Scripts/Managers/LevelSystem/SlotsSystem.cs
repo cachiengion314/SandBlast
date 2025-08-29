@@ -105,6 +105,7 @@ public partial class LevelSystem : MonoBehaviour
 
     var newGroupIdx = GenerateUniqueShapeIdx();
     AssignQuadsToNewGroup(newGroupIdx, _currentGrabbingShapeIndex);
+    RemoveAvailableBlock();
 
     if (IsSlotsEmpty())
     {

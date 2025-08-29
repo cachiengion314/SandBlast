@@ -285,6 +285,17 @@ public partial class LevelSystem : MonoBehaviour
     }
   }
 
+  void RemoveAvailableBlock()
+  {
+    for (int i = _quadDatas.Length -1; i >= _quadDatas.Length - 64*4; i--)
+    {
+      var quadDataTemp = _quadDatas[i];
+      quadDataTemp.IsActive = false;
+      _quadDatas[i] = quadDataTemp;
+      OrderQuadMeshAt(i, -11, 0);
+    }
+  }
+
   int FindEmptyIndexAt(int2 gridPos, int2 direction, int _searchingDeepAmount = 1)
   {
     var downGridPos = gridPos;

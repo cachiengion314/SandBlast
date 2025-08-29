@@ -29,7 +29,7 @@ public partial class LevelSystem : MonoBehaviour
 
       _blockDatas[i] = blockData;
     }
-
+    int j = 0;
     for (int i = 0; i < _quadDatas.Length; ++i)
     {
       var quadData = _quadDatas[i];
@@ -41,6 +41,14 @@ public partial class LevelSystem : MonoBehaviour
 
       _quadDatas[i] = quadData;
       OrderQuadMeshAt(i, nextQuadPos, quadData.ColorValue);
+
+      j++;
+      var quadDataTemp = _quadDatas[_quadDatas.Length - j];
+      quadDataTemp.IsActive = true;
+      quadDataTemp.Position = quadData.Position;
+      quadDataTemp.ColorValue = quadData.ColorValue;
+      _quadDatas[_quadDatas.Length - j] = quadDataTemp;
+      OrderQuadMeshAt(_quadDatas.Length - j, nextQuadPos, quadDataTemp.ColorValue);
     }
   }
 
